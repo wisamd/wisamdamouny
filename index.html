@@ -53,7 +53,12 @@
   ul li::before{content:""; position:absolute; left:2px; top:.6em; width:6px; height:1.6px; background:var(--ring)}
   .contact a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--border); margin-right:18px}
   footer{padding:36px 0; text-align:center; color:var(--muted); font-size:13px}
-  @media(max-width:600px){.nav-links a{margin-left:12px}.proj{flex-direction:column}}
+  @media(max-width:600px){
+    nav{height:auto; flex-wrap:wrap; gap:10px; padding:12px 0}
+    .nav-links{display:flex; flex-wrap:wrap; gap:6px 12px}
+    .nav-links a{margin-left:0}
+    .proj{flex-direction:column}
+  }
 </style>
 </head>
 <body>
