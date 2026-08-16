@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wisam Damouny — CV & Portfolio</title>
+<meta name="description" content="Wisam Damouny — software engineer building Hebrew-first, self-hosted, premium software. CV and portfolio." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f9f9f9; --fg:#1d1b1f; --muted:#6f6b73; --card:#ffffff;
+    --border:#e8e5ea; --accent:#6a4e3b; --accent-2:#986e8c;
+    --ring:#a978ab; --shadow:0 1px 2px rgba(0,0,0,.04),0 10px 28px -14px rgba(90,70,110,.25);
+  }
+  .dark{ --bg:#17161a; --fg:#ece9ec; --muted:#94909a; --card:#1e1d22;
+    --border:rgba(255,255,255,.08); --accent:#e0b9a8; --accent-2:#c9a0bf; --ring:#b48fc2;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 40px -16px rgba(0,0,0,.6); }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Inter",system-ui,sans-serif; background:var(--bg); color:var(--fg);
+       font-weight:420; letter-spacing:-.01em; line-height:1.6; transition:background .2s,color .2s;}
+  .wrap{max-width:880px; margin:0 auto; padding:0 24px}
+  header{position:sticky; top:0; z-index:10; backdrop-filter:blur(10px);
+    background:color-mix(in srgb,var(--bg) 82%, transparent); border-bottom:1px solid var(--border)}
+  nav{display:flex; align-items:center; justify-content:space-between; height:60px}
+  .brand{font-weight:700; letter-spacing:-.02em}
+  .nav-links a{color:var(--muted); margin-left:20px; text-decoration:none; font-size:14px}
+  .nav-links a:hover{color:var(--fg)}
+  .theme{background:none; border:1px solid var(--border); border-radius:8px; padding:6px 10px; font-size:13px; color:var(--fg); cursor:pointer}
+  section{padding:64px 0; border-bottom:1px solid var(--border)}
+  h1{font-size:clamp(32px,6vw,52px); letter-spacing:-.03em; line-height:1.05; margin:14px 0 8px}
+  .name em{font-style:normal; color:var(--accent)}
+  .lead{color:var(--muted); font-size:18px; max-width:560px}
+  .pill{display:inline-block; border:1px solid var(--border); border-radius:999px; padding:4px 12px; font-size:13px; color:var(--muted); margin:2px 4px 2px 0}
+  .hero-links{margin-top:22px; display:flex; gap:12px; flex-wrap:wrap}
+  .btn{display:inline-block; padding:10px 18px; border-radius:10px; text-decoration:none; font-size:14px; font-weight:600}
+  .btn.primary{background:var(--fg); color:var(--bg)}
+  .btn.ghost{border:1px solid var(--border); color:var(--fg)}
+  h2{font-size:22px; letter-spacing:-.02em; margin-bottom:18px}
+  .grid{display:grid; gap:16px}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:var(--shadow)}
+  .job-head{display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px}
+  .job-title{font-weight:650}
+  .date{color:var(--muted); font-size:13px}
+  .proj{display:flex; justify-content:space-between; align-items:flex-start; gap:12px}
+  .proj h3{font-size:16px; font-weight:650}
+  .proj p{color:var(--muted); font-size:14px; margin-top:4px}
+  .proj a{color:var(--accent); text-decoration:none; font-size:13px; white-space:nowrap}
+  ul{list-style:none; margin-top:8px}
+  ul li{padding-left:18px; position:relative; color:var(--fg); font-size:14px}
+  ul li::before{content:""; position:absolute; left:2px; top:.6em; width:6px; height:1.6px; background:var(--ring)}
+  .contact a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--border); margin-right:18px}
+  footer{padding:36px 0; text-align:center; color:var(--muted); font-size:13px}
+  @media(max-width:600px){.nav-links a{margin-left:12px}.proj{flex-direction:column}}
+</style>
+</head>
+<body>
+<header>
+  <nav class="wrap">
+    <div class="brand">Wisam Damouny</div>
+    <div class="nav-links">
+      <a href="#about">About</a><a href="#experience">Experience</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+      <button class="theme" id="theme" aria-label="Toggle theme">☾</button>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="pill">CV & Portfolio</div>
+    <h1>Hi, I'm <em>Wisam Damouny</em></h1>
+    <p class="lead">I design and build <strong>self-hosted, human-first software</strong> — fast, beautiful, and private. I make products where people and AI agents actually work together.</p>
+    <div class="hero-links">
+      <a class="btn primary" href="#contact">Get in touch</a>
+      <a class="btn ghost" href="#projects">See my work</a>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="wrap">
+  <h2>About</h2>
+  <div class="card">
+    <p>A software engineer and product builder focused on premium, self-hosted tools. I speak fluent Hebrew (עברית) and English, and I care deeply about design quality, privacy, and autonomy.</p>
+    <div style="margin-top:14px">
+      <span class="pill">Self-hosted</span><span class="pill">Product design</span><span class="pill">AI agents</span><span class="pill">Hebrew / RTL</span><span class="pill">Node.js · React</span>
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="wrap">
+  <h2>Experience</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="job-head"><span class="job-title">Founder — ikando</span><span class="date">2026 — present</span></div>
+      <p style="color:var(--muted);font-size:14px">Project management for humans & agents on one board.  <a href="https://ikando.tech">ikando.tech</a></p>
+      <ul><li>Hebrew-native, premium, self-hosted</li><li>Humans + AI agents work the same kanban</li></ul>
+    </div>
+    <div class="card">
+      <div class="job-head"><span class="job-title">Founder — Zrikat</span><span class="date">Construction software</span></div>
+      <p style="color:var(--muted);font-size:14px">Hebrew-first construction & quantities platform.</p>
+      <ul><li>BOQ / quantities tooling</li><li>Construction-domain domain workspace</li></ul>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="wrap">
+  <h2>Projects</h2>
+  <div class="grid">
+    <div class="card proj"><div><h3>ikando</h3><p>The board where humans and AI agents work together. Hebrew-native, self-hosted.</p></div> <a href="https://ikando.tech">ikando.tech →</a></div>
+    <div class="card proj"><div><h3>Zrikat</h3><p>Hebrew-first construction & quantities platform.</p></div> <a href="https://zrikat.com">zrikat.com →</a></div>
+    <div class="card proj"><div><h3>Kaneo (contributor)</h3><p>Open-source project management — Hebrew + RTL + theme.</p></div> <a href="https://github.com/usekaneo/kaneo">GitHub →</a></div>
+  </div>
+</section>
+
+<section id="contact" class="wrap">
+  <h2>Contact</h2>
+  <div class="contact" style="font-size:15px">
+    <a href="https://github.com/wisamd">GitHub</a>
+    <a href="https://ikando.tech">ikando</a>
+    <a href="https://zrikat.com">Zrikat</a>
+  </div>
+</section>
+
+<footer>© <span id="yr"></span> Wisam Damouny · built by hand</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const th = document.getElementById('theme');
+  th.addEventListener('click', () => {
+    const d = document.documentElement.classList.toggle('dark');
+    th.textContent = d ? '☀' : '☾';
+    localStorage.setItem('theme', d ? 'dark' : 'light');
+  });
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+    th.textContent = '☀';
+  }
+</script>
+</body>
+</html>
