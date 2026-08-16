@@ -40,7 +40,11 @@
   .btn.ghost{border:1px solid var(--border); color:var(--fg)}
   h2{font-size:22px; letter-spacing:-.02em; margin-bottom:18px}
   .grid{display:grid; gap:16px}
+  .skills{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:600px){ .skills{grid-template-columns:1fr} }
   .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:var(--shadow)}
+  .skill h3{font-size:15px; font-weight:650; margin-bottom:4px}
+  .skill p{color:var(--muted); font-size:14px}
   .job-head{display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px}
   .job-title{font-weight:650}
   .date{color:var(--muted); font-size:13px}
@@ -61,7 +65,7 @@
   <nav class="wrap">
     <div class="brand">Wisam Damouny</div>
     <div class="nav-links">
-      <a href="#about">About</a><a href="#experience">Experience</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+      <a href="#about">About</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
       <button class="theme" id="theme" aria-label="Toggle theme">☾</button>
     </div>
   </nav>
@@ -86,6 +90,16 @@
     <div style="margin-top:14px">
       <span class="pill">Self-hosted</span><span class="pill">Product design</span><span class="pill">AI agents</span><span class="pill">Hebrew / RTL</span><span class="pill">Node.js · React</span>
     </div>
+  </div>
+</section>
+
+<section id="skills" class="wrap">
+  <h2>Skills</h2>
+  <div class="grid skills">
+    <div class="card skill"><h3>Self-hosted</h3><p>Private, portable tools you own and run anywhere.</p></div>
+    <div class="card skill"><h3>Product design</h3><p>Premium, human-first interfaces with obsessive detail.</p></div>
+    <div class="card skill"><h3>AI agents</h3><p>Building systems where people and agents collaborate.</p></div>
+    <div class="card skill"><h3>React / Node</h3><p>Full-stack engineering from API to polished UI.</p></div>
   </div>
 </section>
 
