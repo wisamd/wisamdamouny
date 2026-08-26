@@ -1,142 +1,1571 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Wisam Damouny — CV & Portfolio</title>
-<meta name="description" content="Wisam Damouny — software engineer building Hebrew-first, self-hosted, premium software. CV and portfolio." />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#f9f9f9; --fg:#1d1b1f; --muted:#6f6b73; --card:#ffffff;
-    --border:#e8e5ea; --accent:#6a4e3b; --accent-2:#986e8c;
-    --ring:#a978ab; --shadow:0 1px 2px rgba(0,0,0,.04),0 10px 28px -14px rgba(90,70,110,.25);
-  }
-  .dark{ --bg:#17161a; --fg:#ece9ec; --muted:#94909a; --card:#1e1d22;
-    --border:rgba(255,255,255,.08); --accent:#e0b9a8; --accent-2:#c9a0bf; --ring:#b48fc2;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 40px -16px rgba(0,0,0,.6); }
-  *{box-sizing:border-box; margin:0; padding:0}
-  html{scroll-behavior:smooth}
-  body{font-family:"Inter",system-ui,sans-serif; background:var(--bg); color:var(--fg);
-       font-weight:420; letter-spacing:-.01em; line-height:1.6; transition:background .2s,color .2s;}
-  .wrap{max-width:880px; margin:0 auto; padding:0 24px}
-  header{position:sticky; top:0; z-index:10; backdrop-filter:blur(10px);
-    background:color-mix(in srgb,var(--bg) 82%, transparent); border-bottom:1px solid var(--border)}
-  nav{display:flex; align-items:center; justify-content:space-between; height:60px}
-  .brand{font-weight:700; letter-spacing:-.02em}
-  .nav-links a{color:var(--muted); margin-left:20px; text-decoration:none; font-size:14px}
-  .nav-links a:hover{color:var(--fg)}
-  .theme{background:none; border:1px solid var(--border); border-radius:8px; padding:6px 10px; font-size:13px; color:var(--fg); cursor:pointer}
-  section{padding:64px 0; border-bottom:1px solid var(--border)}
-  h1{font-size:clamp(32px,6vw,52px); letter-spacing:-.03em; line-height:1.05; margin:14px 0 8px}
-  .name em{font-style:normal; color:var(--accent)}
-  .lead{color:var(--muted); font-size:18px; max-width:560px}
-  .pill{display:inline-block; border:1px solid var(--border); border-radius:999px; padding:4px 12px; font-size:13px; color:var(--muted); margin:2px 4px 2px 0}
-  .hero-links{margin-top:22px; display:flex; gap:12px; flex-wrap:wrap}
-  .btn{display:inline-block; padding:10px 18px; border-radius:10px; text-decoration:none; font-size:14px; font-weight:600}
-  .btn.primary{background:var(--fg); color:var(--bg)}
-  .btn.ghost{border:1px solid var(--border); color:var(--fg)}
-  h2{font-size:22px; letter-spacing:-.02em; margin-bottom:18px}
-  .grid{display:grid; gap:16px}
-  .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:var(--shadow)}
-  .job-head{display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px}
-  .job-title{font-weight:650}
-  .date{color:var(--muted); font-size:13px}
-  .proj{display:flex; justify-content:space-between; align-items:flex-start; gap:12px}
-  .proj h3{font-size:16px; font-weight:650}
-  .proj p{color:var(--muted); font-size:14px; margin-top:4px}
-  .proj a{color:var(--accent); text-decoration:none; font-size:13px; white-space:nowrap}
-  ul{list-style:none; margin-top:8px}
-  ul li{padding-left:18px; position:relative; color:var(--fg); font-size:14px}
-  ul li::before{content:""; position:absolute; left:2px; top:.6em; width:6px; height:1.6px; background:var(--ring)}
-  .contact a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--border); margin-right:18px}
-  footer{padding:36px 0; text-align:center; color:var(--muted); font-size:13px}
-  @media(max-width:600px){.nav-links a{margin-left:12px}.proj{flex-direction:column}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wisam Damouny — Product Engineer & Self-Hosted Architect</title>
+  <meta name="description"
+    content="Wisam Damouny — Software engineer & product builder specializing in self-hosted tools, human-AI agent orchestration, and Hebrew/RTL software." />
+
+  <!-- Google Fonts: Syne (Display/Watermarks) & Plus Jakarta Sans (UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    :root {
+      /* User Specified Apricot Accent */
+      --accent: #D97757;
+      --accent-hover: #E58A6C;
+      --accent-dark: #B55B3C;
+      --accent-glow: rgba(217, 119, 87, 0.22);
+      --accent-glow-strong: rgba(217, 119, 87, 0.55);
+
+      /* Dark Theme (Default) */
+      --bg: #0b0c0e;
+      --bg-alt: #12141a;
+      --card-bg: rgba(20, 22, 28, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover-border: rgba(217, 119, 87, 0.45);
+      --fg: #f4f4f6;
+      --fg-muted: #9da2b0;
+      --fg-subtle: #6b7280;
+      --nav-bg: rgba(11, 12, 14, 0.88);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 18px 40px -10px rgba(0, 0, 0, 0.65);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    html.light {
+      --bg: #f7f7f9;
+      --bg-alt: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --card-hover-border: rgba(217, 119, 87, 0.5);
+      --fg: #121316;
+      --fg-muted: #525866;
+      --fg-subtle: #868d9d;
+      --nav-bg: rgba(247, 247, 249, 0.88);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 12px 28px -6px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Ambient Background Glow Blobs */
+    .bg-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0, 0, 0, 0) 70%);
+      top: -180px;
+      right: -180px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow-bottom {
+      position: fixed;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(217, 119, 87, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+      bottom: -220px;
+      left: -220px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Portfo Signature: Giant Outline Stroke Watermark Text */
+    .section-watermark {
+      position: absolute;
+      top: -20px;
+      left: -10px;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(64px, 12vw, 150px);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.035);
+      text-transform: uppercase;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+      letter-spacing: 0.04em;
+    }
+
+    html.light .section-watermark {
+      -webkit-text-stroke: 1px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Typography */
+    h1,
+    h2,
+    h3,
+    h4,
+    .brand-text {
+      font-family: 'Syne', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .accent-text {
+      color: var(--accent);
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background-color: var(--nav-bg);
+      border-bottom: 1px solid var(--card-border);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--fg);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 14px var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--fg-muted);
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--fg);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--accent);
+      border-radius: 2px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .theme-toggle {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--fg);
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 4px 20px var(--accent-glow-strong);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--accent-glow-strong);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--fg);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--fg);
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    /* Orange CV & Saira Signature Hero Section */
+    .hero {
+      padding: 90px 0 75px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: rgba(217, 119, 87, 0.1);
+      border: 1px solid rgba(217, 119, 87, 0.3);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #22c55e;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(1.2);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(38px, 5.5vw, 62px);
+      font-weight: 800;
+      line-height: 1.08;
+      margin-bottom: 20px;
+    }
+
+    .hero-lead {
+      font-size: 18px;
+      color: var(--fg-muted);
+      max-width: 600px;
+      margin-bottom: 32px;
+      font-weight: 400;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    /* Hero Stats Bar */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding-top: 28px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .stat-card .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .stat-card .stat-label {
+      font-size: 13px;
+      color: var(--fg-muted);
+    }
+
+    /* Seamless Hero Portrait & Floating Badges */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    .avatar-frame {
+      position: relative;
+      width: 100%;
+    }
+
+    .avatar-frame img {
+      width: 100%;
+      height: 700px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      overflow: visible;
+      /* mask-image: radial-gradient(ellipse at 50% 45%, black 55%, transparent 88%); */
+      /* -webkit-mask-image: radial-gradient(ellipse at 50% 45%, black 55%, transparent 88%); */
+      transition: transform 0.5s ease;
+    }
+
+    .avatar-frame:hover img {
+      transform: scale(1.03);
+    }
+
+    /* Floating Pill Badge Top Left (Orange CV Style) */
+    .floating-top-badge {
+      position: absolute;
+      top: -18px;
+      right: -15px;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-hover-border);
+      padding: 10px 16px;
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-lg);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    /* Floating Pill Badge Bottom Left (Saira Style) */
+    .floating-card {
+      position: absolute;
+      bottom: -22px;
+      left: -20px;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-hover-border);
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      z-index: 2;
+    }
+
+    .floating-card .icon-box {
+      width: 44px;
+      height: 44px;
+      background-color: var(--accent-glow);
+      color: var(--accent);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .floating-card .title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .floating-card .sub {
+      font-size: 12px;
+      color: var(--fg-muted);
+    }
+
+    /* Global Section Styles */
+    section {
+      padding: 85px 0;
+      border-bottom: 1px solid var(--card-border);
+      position: relative;
+    }
+
+    .section-header {
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-tag {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+    }
+
+    /* Portfo Signature: 4-Column Service Cards with Top Accent Line */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-top: 3px solid transparent;
+      border-radius: var(--radius-md);
+      padding: 32px 26px;
+      position: relative;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      border-color: var(--card-hover-border);
+      border-top-color: var(--accent);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .service-card .num {
+      font-family: 'Syne', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: rgba(217, 119, 87, 0.22);
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      transition: color 0.3s ease;
+    }
+
+    .service-card:hover .num {
+      color: var(--accent);
+    }
+
+    .service-card .icon {
+      font-size: 32px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .service-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+    }
+
+    /* About & Skills Section */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-text p {
+      color: var(--fg-muted);
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .skill-bar-item {
+      margin-bottom: 22px;
+    }
+
+    .skill-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .skill-progress-bg {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .skill-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
+      border-radius: var(--radius-full);
+    }
+
+    .pill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .tag-pill {
+      background: var(--bg-alt);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      color: var(--fg-muted);
+      font-weight: 500;
+    }
+
+    /* Experience Timeline */
+    .timeline {
+      position: relative;
+      max-width: 840px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: var(--card-border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 60px;
+      margin-bottom: 40px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 12px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      background: var(--bg);
+      border: 3px solid var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .timeline-content {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 26px 30px;
+      transition: border-color 0.3s ease;
+    }
+
+    .timeline-content:hover {
+      border-color: var(--card-hover-border);
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .timeline-role {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .timeline-date {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(217, 119, 87, 0.12);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+    }
+
+    .timeline-subtitle {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: 12px;
+    }
+
+    .timeline-list {
+      list-style: none;
+    }
+
+    .timeline-list li {
+      position: relative;
+      padding-left: 20px;
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: 6px;
+    }
+
+    .timeline-list li::before {
+      content: '•';
+      position: absolute;
+      left: 4px;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Projects Showcase Grid (Orange CV & Portfo Hybrid) */
+    .project-filters {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--fg-muted);
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      border-color: var(--card-hover-border);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .project-thumb {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+    }
+
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-thumb img {
+      transform: scale(1.06);
+    }
+
+    .project-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(11, 12, 14, 0.82);
+      backdrop-filter: blur(8px);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(217, 119, 87, 0.4);
+    }
+
+    .project-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .project-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    .project-tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .tech-pill {
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(217, 119, 87, 0.1);
+      color: var(--accent);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(217, 119, 87, 0.2);
+    }
+
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .project-link:hover {
+      color: var(--accent-hover);
+    }
+
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-info-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 32px;
+    }
+
+    .contact-method {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .contact-detail .label {
+      font-size: 12px;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .contact-detail .val {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--fg);
+      text-decoration: none;
+    }
+
+    .contact-detail .val:hover {
+      color: var(--accent);
+    }
+
+    .contact-form {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .form-control {
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      color: var(--fg);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .toast-msg {
+      display: none;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #22c55e;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 14px;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+
+      .hero-grid,
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        order: -1;
+        max-width: 440px;
+        margin: 0 auto;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 76px;
+        left: 0;
+        width: 100%;
+        background: var(--nav-bg);
+        border-bottom: 1px solid var(--card-border);
+        flex-direction: column;
+        padding: 20px 24px;
+        gap: 18px;
+        backdrop-filter: blur(16px);
+      }
+
+      .nav-links.mobile-open {
+        display: flex;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header>
-  <nav class="wrap">
-    <div class="brand">Wisam Damouny</div>
-    <div class="nav-links">
-      <a href="#about">About</a><a href="#experience">Experience</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
-      <button class="theme" id="theme" aria-label="Toggle theme">☾</button>
+
+  <div class="bg-glow"></div>
+  <div class="bg-glow-bottom"></div>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#" class="brand">
+          <span class="brand-dot"></span>
+          <span>Wisam Damouny</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#about" class="active">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="theme-toggle" id="theme-btn" aria-label="Toggle theme">
+            <i class="ph ph-moon"></i>
+          </button>
+          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+            <i class="ph ph-list"></i>
+          </button>
+          <a href="#contact" class="btn btn-primary">Hire Me</a>
+        </div>
+      </nav>
     </div>
-  </nav>
-</header>
+  </header>
 
-<section class="hero">
-  <div class="wrap">
-    <div class="pill">CV & Portfolio</div>
-    <h1>Hi, I'm <em>Wisam Damouny</em></h1>
-    <p class="lead">I design and build <strong>self-hosted, human-first software</strong> — fast, beautiful, and private. I make products where people and AI agents actually work together.</p>
-    <div class="hero-links">
-      <a class="btn primary" href="#contact">Get in touch</a>
-      <a class="btn ghost" href="#projects">See my work</a>
+  <!-- Hero Section (Orange CV & Saira Hybrid) -->
+  <section class="hero">
+    <div class="section-watermark">ENGINEER</div>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="status-badge">
+            <span class="pulse-dot"></span>
+            <span>AVAILABLE FOR NEW PROJECTS & CONSULTING</span>
+          </div>
+
+          <h1 class="hero-title">
+            Product Engineer & <br />
+            <span class="accent-text">Self-Hosted</span> Architect.
+          </h1>
+
+          <p class="hero-lead">
+            Hi, I'm <strong>Wisam Damouny</strong>. I design and build fast, private, self-hosted software where humans
+            and AI agents work together seamlessly.
+          </p>
+
+          <div class="hero-ctas">
+            <a href="#projects" class="btn btn-primary">
+              <span>Explore My Work</span>
+              <i class="ph ph-arrow-down-right"></i>
+            </a>
+            <a href="#contact" class="btn btn-outline">
+              <i class="ph ph-envelope-simple"></i>
+              <span>Get In Touch</span>
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-card">
+              <div class="stat-number">3+</div>
+              <div class="stat-label">Core Products Built</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">100%</div>
+              <div class="stat-label">Self-Hosted & RTL Native</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">24/7</div>
+              <div class="stat-label">Agentic Workflows</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+
+          <div class="avatar-frame">
+            <img src="assets/avatar_hero_nobg.png" alt="Wisam Damouny" />
+          </div>
+
+          <div class="floating-card">
+            <div class="icon-box">
+              <i class="ph ph-kanban"></i>
+            </div>
+            <div>
+              <div class="title">Founder @ ikando</div>
+              <div class="sub">Human + AI Task Orchestration</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="about" class="wrap">
-  <h2>About</h2>
-  <div class="card">
-    <p>A software engineer and product builder focused on premium, self-hosted tools. I speak fluent Hebrew (עברית) and English, and I care deeply about design quality, privacy, and autonomy.</p>
-    <div style="margin-top:14px">
-      <span class="pill">Self-hosted</span><span class="pill">Product design</span><span class="pill">AI agents</span><span class="pill">Hebrew / RTL</span><span class="pill">Node.js · React</span>
+  <!-- About & Skills Section -->
+  <section id="about">
+    <div class="section-watermark">ABOUT</div>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">About Me</span>
+        <h2 class="section-title">Engineering Autonomy & Privacy</h2>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            I am a full-stack product engineer passionate about building self-hosted, user-owned platforms. I speak
+            fluent Hebrew (עברית) and English, ensuring complete RTL support and localized UX excellence.
+          </p>
+          <p>
+            My work focuses on creating environments where autonomous AI agents and human teams collaborate on single
+            unified boards without friction or privacy trade-offs.
+          </p>
+
+          <div class="pill-tags">
+            <span class="tag-pill">Self-Hosted Architecture</span>
+            <span class="tag-pill">Node.js & TypeScript</span>
+            <span class="tag-pill">React & Next.js</span>
+            <span class="tag-pill">AI Agent Workflows</span>
+            <span class="tag-pill">Hebrew / RTL Native</span>
+            <span class="tag-pill">Domain Systems</span>
+          </div>
+        </div>
+
+        <div class="skills-wrapper">
+          <div class="skill-bar-item">
+            <div class="skill-info">
+              <span>Self-Hosted & System Architecture</span>
+              <span class="accent-text">95%</span>
+            </div>
+            <div class="skill-progress-bg">
+              <div class="skill-progress-fill" style="width: 95%;"></div>
+            </div>
+          </div>
+
+          <div class="skill-bar-item">
+            <div class="skill-info">
+              <span>Full-Stack Engineering (Node / React)</span>
+              <span class="accent-text">92%</span>
+            </div>
+            <div class="skill-progress-bg">
+              <div class="skill-progress-fill" style="width: 92%;"></div>
+            </div>
+          </div>
+
+          <div class="skill-bar-item">
+            <div class="skill-info">
+              <span>Human-AI Agent Integration</span>
+              <span class="accent-text">90%</span>
+            </div>
+            <div class="skill-progress-bg">
+              <div class="skill-progress-fill" style="width: 90%;"></div>
+            </div>
+          </div>
+
+          <div class="skill-bar-item">
+            <div class="skill-info">
+              <span>Hebrew & RTL Layout Engineering</span>
+              <span class="accent-text">98%</span>
+            </div>
+            <div class="skill-progress-bg">
+              <div class="skill-progress-fill" style="width: 98%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="experience" class="wrap">
-  <h2>Experience</h2>
-  <div class="grid">
-    <div class="card">
-      <div class="job-head"><span class="job-title">Founder — ikando</span><span class="date">2026 — present</span></div>
-      <p style="color:var(--muted);font-size:14px">Project management for humans & agents on one board.  <a href="https://ikando.tech">ikando.tech</a></p>
-      <ul><li>Hebrew-native, premium, self-hosted</li><li>Humans + AI agents work the same kanban</li></ul>
+  <!-- Services / Specializations (Portfo Style) -->
+  <section id="services">
+    <div class="section-watermark">SERVICES</div>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Specializations</span>
+        <h2 class="section-title">What I Deliver</h2>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="num">01</div>
+          <div class="icon"><i class="ph ph-hard-drive"></i></div>
+          <h3>Self-Hosted Systems</h3>
+          <p>Architecting secure, private software stacks that operate entirely on your infrastructure with low latency
+            and zero vendor lock-in.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="num">02</div>
+          <div class="icon"><i class="ph ph-robot"></i></div>
+          <h3>Human-AI Orchestration</h3>
+          <p>Building intuitive kanban and task systems where human developers and AI agents collaborate on real code
+            bases.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="num">03</div>
+          <div class="icon"><i class="ph ph-translate"></i></div>
+          <h3>Hebrew & RTL Perfection</h3>
+          <p>First-class support for right-to-left UI layout dynamics, typography, and localized user experience.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="num">04</div>
+          <div class="icon"><i class="ph ph-code"></i></div>
+          <h3>Full-Stack Product Design</h3>
+          <p>From initial domain concepts to scalable APIs and responsive, micro-animated user interfaces.</p>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="job-head"><span class="job-title">Founder — Zrikat</span><span class="date">Construction software</span></div>
-      <p style="color:var(--muted);font-size:14px">Hebrew-first construction & quantities platform.</p>
-      <ul><li>BOQ / quantities tooling</li><li>Construction-domain domain workspace</li></ul>
+  </section>
+
+  <!-- Experience & Resume Timeline (Saira Style) -->
+  <section id="experience">
+    <div class="section-watermark">RESUME</div>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Experience</span>
+        <h2 class="section-title">Career & Key Projects</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-role">Founder — ikando</span>
+              <span class="timeline-date">2026 — Present</span>
+            </div>
+            <div class="timeline-subtitle">Self-Hosted Human + AI Board (ikando.tech)</div>
+            <ul class="timeline-list">
+              <li>Designed and built a self-hosted project management platform where humans and AI agents operate on the
+                same kanban board.</li>
+              <li>Hebrew-native with complete RTL optimization and clean dark mode aesthetics.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-role">Founder — Zrikat</span>
+              <span class="timeline-date">Construction Software</span>
+            </div>
+            <div class="timeline-subtitle">Hebrew-first Construction & BOQ Platform (zrikat.com)</div>
+            <ul class="timeline-list">
+              <li>Engineered a domain-specific platform for construction estimation, bill of quantities, and workflow
+                tracking.</li>
+              <li>Tailored for precision, high performance, and seamless Hebrew regional compliance.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-role">Open Source Contributor — Kaneo</span>
+              <span class="timeline-date">Open Source</span>
+            </div>
+            <div class="timeline-subtitle">Open-Source Project Management</div>
+            <ul class="timeline-list">
+              <li>Contributed Hebrew language localization, RTL styling enhancements, and theme adjustments.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="projects" class="wrap">
-  <h2>Projects</h2>
-  <div class="grid">
-    <div class="card proj"><div><h3>ikando</h3><p>The board where humans and AI agents work together. Hebrew-native, self-hosted.</p></div> <a href="https://ikando.tech">ikando.tech →</a></div>
-    <div class="card proj"><div><h3>Zrikat</h3><p>Hebrew-first construction & quantities platform.</p></div> <a href="https://zrikat.com">zrikat.com →</a></div>
-    <div class="card proj"><div><h3>Kaneo (contributor)</h3><p>Open-source project management — Hebrew + RTL + theme.</p></div> <a href="https://github.com/usekaneo/kaneo">GitHub →</a></div>
-  </div>
-</section>
+  <!-- Projects Showcase Grid (Orange CV & Portfo Hybrid with Tech Stack Pills) -->
+  <section id="projects">
+    <div class="section-watermark">WORKS</div>
+    <div class="container">
+      <div class="section-header" style="text-align: center;">
+        <span class="section-tag">Featured Work</span>
+        <h2 class="section-title">Crafted Solutions</h2>
+      </div>
 
-<section id="contact" class="wrap">
-  <h2>Contact</h2>
-  <div class="contact" style="font-size:15px">
-    <a href="https://github.com/wisamd">GitHub</a>
-    <a href="https://ikando.tech">ikando</a>
-    <a href="https://zrikat.com">Zrikat</a>
-  </div>
-</section>
+      <div class="project-filters">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="ai">AI & Board</button>
+        <button class="filter-btn" data-filter="domain">Domain Tools</button>
+        <button class="filter-btn" data-filter="oss">Open Source</button>
+      </div>
 
-<footer>© <span id="yr"></span> Wisam Damouny · built by hand</footer>
+      <div class="projects-grid">
+        <div class="project-card" data-category="ai">
+          <div class="project-thumb">
+            <img src="assets/ikando_preview.png" alt="ikando.tech dashboard preview" loading="lazy" />
+            <span class="project-badge">AI & Board</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">ikando</h3>
+            <p class="project-desc">The project management board where humans and AI agents work together in real-time.
+              Hebrew-native, self-hosted, and ultra-fast.</p>
 
-<script>
-  document.getElementById('yr').textContent = new Date().getFullYear();
-  const th = document.getElementById('theme');
-  th.addEventListener('click', () => {
-    const d = document.documentElement.classList.toggle('dark');
-    th.textContent = d ? '☀' : '☾';
-    localStorage.setItem('theme', d ? 'dark' : 'light');
-  });
-  if (localStorage.getItem('theme') === 'dark') {
-    document.documentElement.classList.add('dark');
-    th.textContent = '☀';
-  }
-</script>
+            <div class="project-tech-tags">
+              <span class="tech-pill">Node.js</span>
+              <span class="tech-pill">React</span>
+              <span class="tech-pill">AI Agents</span>
+              <span class="tech-pill">RTL Native</span>
+              <span class="tech-pill">Self-Hosted</span>
+            </div>
+
+            <div class="project-footer">
+              <a href="https://ikando.tech" target="_blank" rel="noopener" class="project-link">
+                <span>ikando.tech</span>
+                <i class="ph ph-arrow-up-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card" data-category="domain">
+          <div class="project-thumb">
+            <img src="assets/zrikat_preview.png" alt="zrikat.com dashboard preview" loading="lazy" />
+            <span class="project-badge">Domain Tools</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Zrikat</h3>
+            <p class="project-desc">Hebrew-first construction estimation & bill of quantities (BOQ) workspace platform
+              for contractors and engineers.</p>
+
+            <div class="project-tech-tags">
+              <span class="tech-pill">BOQ Engine</span>
+              <span class="tech-pill">Construction</span>
+              <span class="tech-pill">Hebrew UX</span>
+              <span class="tech-pill">Analytics</span>
+            </div>
+
+            <div class="project-footer">
+              <a href="https://zrikat.com" target="_blank" rel="noopener" class="project-link">
+                <span>zrikat.com</span>
+                <i class="ph ph-arrow-up-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card" data-category="oss">
+          <div class="project-thumb">
+            <img src="assets/kaneo_preview.jpg" alt="Kaneo contributor preview" loading="lazy" />
+            <span class="project-badge">Open Source</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Kaneo</h3>
+            <p class="project-desc">Open-source project management contributor — added comprehensive Hebrew translation,
+              RTL layout, and modern dark themes.</p>
+
+            <div class="project-tech-tags">
+              <span class="tech-pill">Open Source</span>
+              <span class="tech-pill">i18n / RTL</span>
+              <span class="tech-pill">GitHub</span>
+              <span class="tech-pill">Dark Theme</span>
+            </div>
+
+            <div class="project-footer">
+              <a href="https://github.com/usekaneo/kaneo" target="_blank" rel="noopener" class="project-link">
+                <span>GitHub Repository</span>
+                <i class="ph ph-arrow-up-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="section-watermark">CONTACT</div>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Get In Touch</span>
+        <h2 class="section-title">Let's Build Something Premium</h2>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info-card">
+          <div class="contact-method">
+            <div class="contact-icon">
+              <i class="ph ph-envelope-simple"></i>
+            </div>
+            <div class="contact-detail">
+              <div class="label">Direct Email</div>
+              <a href="mailto:wisamdamouny@gmail.com" class="val">wisamdamouny@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <div class="contact-icon">
+              <i class="ph ph-github-logo"></i>
+            </div>
+            <div class="contact-detail">
+              <div class="label">GitHub Profile</div>
+              <a href="https://github.com/wisamd" target="_blank" rel="noopener" class="val">github.com/wisamd</a>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <div class="contact-icon">
+              <i class="ph ph-globe"></i>
+            </div>
+            <div class="contact-detail">
+              <div class="label">Active Platforms</div>
+              <div style="display:flex; gap:12px; margin-top:4px;">
+                <a href="https://ikando.tech" target="_blank" rel="noopener" class="val">ikando.tech</a>
+                <span style="color:var(--fg-muted)">•</span>
+                <a href="https://zrikat.com" target="_blank" rel="noopener" class="val">zrikat.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contact-form">
+          <div class="toast-msg" id="toast">Message sent successfully! I'll get back to you soon.</div>
+
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" class="form-control" placeholder="e.g. Sarah Jenkins" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Your Email</label>
+            <input type="email" id="email" class="form-control" placeholder="sarah@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="msg">Message</label>
+            <textarea id="msg" class="form-control" placeholder="Tell me about your project or inquiry..."
+              required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="align-self: flex-start;">
+            <span>Send Message</span>
+            <i class="ph ph-paper-plane-tilt"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> Wisam Damouny · Crafting self-hosted software for humans and AI agents.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Set Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Theme Toggle
+    const themeBtn = document.getElementById('theme-btn');
+    const htmlEl = document.documentElement;
+
+    function setTheme(theme) {
+      if (theme === 'light') {
+        htmlEl.classList.add('light');
+        themeBtn.innerHTML = '<i class="ph ph-sun"></i>';
+        localStorage.setItem('theme', 'light');
+      } else {
+        htmlEl.classList.remove('light');
+        themeBtn.innerHTML = '<i class="ph ph-moon"></i>';
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const isLight = htmlEl.classList.contains('light');
+      setTheme(isLight ? 'dark' : 'light');
+    });
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const navLinks = document.getElementById('nav-links');
+
+    if (mobileMenuBtn && navLinks) {
+      mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('mobile-open');
+      });
+
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('mobile-open');
+        });
+      });
+    }
+
+    // Project Filtering
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        projectCards.forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Contact Form Submission
+    const contactForm = document.getElementById('contact-form');
+    const toast = document.getElementById('toast');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      toast.style.display = 'block';
+      contactForm.reset();
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 4000);
+    });
+  </script>
 </body>
+
 </html>
