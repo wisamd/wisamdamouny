@@ -979,12 +979,302 @@
       font-weight: 600;
     }
 
-    /* Footer */
-    footer {
-      padding: 40px 0;
-      text-align: center;
+    /* Blog Section */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+      margin-top: 32px;
+    }
+
+    .blog-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .blog-card:hover {
+      border-color: var(--card-hover-border);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .blog-card-banner {
+      height: 180px;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+    }
+
+    .blog-card-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(11, 12, 14, 0.88) 100%);
+    }
+
+    .blog-badge-group {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+    }
+
+    .blog-tag {
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .blog-read-time {
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .blog-card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .blog-date {
+      font-size: 13px;
+      color: var(--fg-subtle);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .blog-card-title {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.4;
+      color: var(--fg);
+      transition: color 0.2s ease;
+    }
+
+    .blog-card:hover .blog-card-title {
+      color: var(--accent);
+    }
+
+    .blog-card-excerpt {
+      font-size: 14px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .blog-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .blog-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .blog-author img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .blog-author-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .blog-read-btn {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Article Modal Overlay */
+    .article-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .article-modal-backdrop.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .article-modal-content {
+      background: var(--bg-alt);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      max-width: 820px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      transform: translateY(20px) scale(0.98);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .article-modal-backdrop.active .article-modal-content {
+      transform: translateY(0) scale(1);
+    }
+
+    .article-progress-bar {
+      height: 3px;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    .article-modal-header {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+    }
+
+    .article-modal-close {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--fg);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .article-modal-close:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .article-modal-body {
+      padding: 36px 40px;
+      overflow-y: auto;
+      color: var(--fg);
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .article-modal-body h1 {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .article-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
       color: var(--fg-muted);
       font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    .article-modal-body h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 32px 0 16px;
+      color: var(--fg);
+    }
+
+    .article-modal-body p {
+      margin-bottom: 20px;
+      color: var(--fg-muted);
+    }
+
+    .article-modal-body blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      background: var(--card-bg);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 24px 0;
+      font-style: italic;
+      color: var(--fg);
+    }
+
+    .article-modal-body pre {
+      background: #0d0e12;
+      border: 1px solid var(--card-border);
+      padding: 18px;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin: 24px 0;
+    }
+
+    .article-modal-body ul, .article-modal-body ol {
+      margin: 16px 0 24px 24px;
+      color: var(--fg-muted);
+    }
+
+    .article-modal-body li {
+      margin-bottom: 8px;
     }
 
     /* Mobile Responsive */
@@ -1047,6 +1337,7 @@
           <li><a href="#experience">Experience</a></li>
           <li><a href="#education">Education</a></li>
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#blog">Blog</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
 
@@ -1483,6 +1774,168 @@
     </div>
   </section>
 
+  <!-- Blog Section -->
+  <section id="blog">
+    <div class="section-watermark">ARTICLES</div>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">// ARTICLES & INSIGHTS</span>
+        <h2 class="section-title">Engineering Leadership & AI Architecture</h2>
+      </div>
+
+      <!-- Blog Filters -->
+      <div class="project-filters blog-filters">
+        <button class="filter-btn active" data-blog-filter="all">All Posts</button>
+        <button class="filter-btn" data-blog-filter="ai">AI Systems</button>
+        <button class="filter-btn" data-blog-filter="data">Data Pipelines</button>
+        <button class="filter-btn" data-blog-filter="saas">SaaS & Infrastructure</button>
+      </div>
+
+      <div class="blog-grid">
+        <!-- Post: Hermes on Hostinger -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-hermes-hostinger')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/zrikat_preview.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 27, 2026</div>
+            <h3 class="blog-card-title">Deploying a Managed Hermes Agent on Hostinger</h3>
+            <p class="blog-card-excerpt">Stand up a Hermes autonomous AI agent in one click — connect a model provider, wire messaging channels, and know when to self-host instead.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: Self-hosted Hermes on VPS -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-hermes-selfhosted')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/ikando_preview.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 27, 2026</div>
+            <h3 class="blog-card-title">Self-Hosting a Hermes Agent on a Hostinger VPS</h3>
+            <p class="blog-card-excerpt">The DIY path: a Nous Hermes 3 model as an autonomous tool-using agent on one CPU VPS — provisioning, Ollama serving, the agent loop, TLS hardening.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 1 -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-ai-agents')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 6 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 24, 2026</div>
+            <h3 class="blog-card-title">Architecting Autonomous Human-AI Collaboration Workflows</h3>
+            <p class="blog-card-excerpt">Key design principles for production multi-agent systems, tool execution sandboxes, state graph orchestration, and human-in-the-loop governance.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="blog-card" data-blog-category="data" onclick="openArticleModal('post-data-pipelines')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/ikando_preview.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">Data Pipelines</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 8 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 15, 2026</div>
+            <h3 class="blog-card-title">Scaling Enterprise Data Pipelines to Millions of Events/Sec</h3>
+            <p class="blog-card-excerpt">Architectural patterns from high-throughput enterprise data integration: backpressure handling, stateful streaming, and zero-allocation memory pools.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 3 -->
+        <article class="blog-card" data-blog-category="saas" onclick="openArticleModal('post-self-hosted')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/zrikat_preview.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">SaaS & Infrastructure</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 5 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Jul 30, 2026</div>
+            <h3 class="blog-card-title">Building Resilient Self-Hosted SaaS Infrastructure</h3>
+            <p class="blog-card-excerpt">Why self-hosting developer tooling reduces cloud overhead by 70% while improving security compliance, latency, and full operational control.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article Reader Modal -->
+  <div class="article-modal-backdrop" id="article-modal-backdrop">
+    <div class="article-modal-content">
+      <div class="article-progress-bar" id="article-progress-bar"></div>
+      <div class="article-modal-header">
+        <span class="blog-tag" id="modal-article-tag">AI Systems</span>
+        <button class="article-modal-close" onclick="closeArticleModal()" aria-label="Close article">
+          <i class="ph ph-x"></i>
+        </button>
+      </div>
+      <div class="article-modal-body" id="article-modal-body">
+        <!-- Content dynamically injected -->
+      </div>
+    </div>
+  </div>
+
   <!-- Contact Section -->
   <section id="contact">
     <div class="section-watermark">CONTACT</div>
@@ -1610,13 +2063,13 @@
       });
     }
 
-    // Project Filtering
-    const filterBtns = document.querySelectorAll('.filter-btn');
+    // Project Filtering (scoped to #projects)
+    const projectFilterBtns = document.querySelectorAll('#projects .filter-btn');
     const projectCards = document.querySelectorAll('.project-card');
 
-    filterBtns.forEach(btn => {
+    projectFilterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
+        projectFilterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
         const filter = btn.dataset.filter;
@@ -1641,6 +2094,285 @@
       setTimeout(() => {
         toast.style.display = 'none';
       }, 4000);
+    });
+
+    // Blog Posts Data
+    const ARTICLES = {
+      'post-hermes-hostinger': {
+        title: 'Deploying a Managed Hermes Agent on Hostinger',
+        category: 'AI Systems',
+        date: 'Aug 27, 2026',
+        readTime: '7 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Aug 27, 2026</span>
+            <span><i class="ph ph-clock"></i> 7 min read</span>
+            <a href="blog/hermes-agent-on-hostinger.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>There is a widening gap between "chatbot" and "agent": an agent has channels it listens on, tools it can call, memory that persists, and a loop that keeps running when you close the tab. <strong>Hermes</strong> collapses that plumbing into one deployable unit — and Hostinger now offers it as a managed, one-click product.</p>
+
+          <h2>1. What a Hermes agent is</h2>
+          <ul>
+            <li><strong>Model-agnostic:</strong> 200+ LLMs via OpenRouter, or direct Anthropic / OpenAI / custom endpoints.</li>
+            <li><strong>Multi-channel:</strong> one instance on Telegram, Discord, Slack, WhatsApp, and email.</li>
+            <li><strong>Tool-using and persistent:</strong> web search, a pre-configured email identity, CLI access, memory across sessions.</li>
+            <li><strong>Self-maintaining:</strong> on the managed plan, patching and runtime upkeep are handled.</li>
+          </ul>
+
+          <h2>2. Managed vs. self-hosted</h2>
+          <p>Managed gets you an agent in Telegram tonight — minutes, one click, no SSH, updates handled. Self-hosting on your own VPS is an afternoon of setup and your ongoing uptime burden, bought in exchange for full control of the data path and tool code. Choose managed unless a real requirement forces the other way.</p>
+
+          <p>Go straight to a discounted <a href="https://www.hostinger.com/cart?product=hagents%3Astarter&amp;period=12&amp;referral_type=cart_link&amp;REFERRALCODE=NHJWISAMDKAY&amp;referral_id=01a04384-666a-7361-bf76-90025e9ce5a8" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">Hermes Agent Starter checkout &mdash; 20% off</a>, or see the <a href="https://www.hostinger.com/managed-hermes-agent" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">product page</a> for current pricing and larger plans.</p>
+
+          <h2>3. The one-click deploy</h2>
+          <ol>
+            <li>Choose the plan and term on the Managed Hermes Agent page, then check out.</li>
+            <li>Click <strong>Deploy</strong> in hPanel — Hostinger provisions the server environment and agent config together. No OS template, no <code>docker compose</code>.</li>
+            <li>Wait for "live". The agent comes up with a visual interface and a CLI in the panel.</li>
+          </ol>
+
+          <h2>4. Connect a model and channels</h2>
+          <p>Point the agent at <strong>OpenRouter</strong> (one key, many models — best default), a <strong>direct Anthropic/OpenAI key</strong>, or a <strong>custom OpenAI-compatible endpoint</strong> to keep inference on infrastructure you control. Then enable one channel — Telegram via <code>@BotFather</code> is the fastest — confirm the round trip, and add the rest.</p>
+
+          <h2>5. If you would rather self-host</h2>
+          <p>Same shape on a plain KVM VPS: the "Ubuntu 24.04 with Docker" template, the agent in a container, Caddy in front for TLS, and a restart policy so the loop survives reboots. You then supply the model key, channel tokens, and the updates yourself.</p>
+
+          <blockquote>
+            "The decision is not technical, it is operational: do you want to be responsible for keeping an always-on service patched and alive?"
+          </blockquote>
+
+          <h2>Conclusion</h2>
+          <p>An autonomous agent used to be an infrastructure project. Hermes turns it into a product decision — take the one-click deploy, bring your own model key, and drop to a self-hosted VPS only when a concrete requirement demands it.</p>
+
+          <p style="font-size:13px; color:var(--fg-subtle); font-style:italic;">Affiliate disclosure: the Hostinger links above are referral links — you get 20% off and I may earn a commission at no extra cost to you. Pricing reflects the product page at the time of writing.</p>
+        `
+      },
+      'post-hermes-selfhosted': {
+        title: 'Self-Hosting a Hermes Agent on a Hostinger VPS',
+        category: 'AI Systems',
+        date: 'Aug 27, 2026',
+        readTime: '9 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Aug 27, 2026</span>
+            <span><i class="ph ph-clock"></i> 9 min read</span>
+            <a href="blog/self-hosted-hermes-agent-vps.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>Want a Hermes agent with the least effort? Hostinger's <a href="blog/hermes-agent-on-hostinger.html" target="_blank" style="color:var(--accent); font-weight:600;">Managed Hermes Agent</a> is a one-click deploy. This is the other path: building the agent yourself on a bare VPS so you own the model, the data path, and every tool it can call. Nous Research's <strong>Hermes 3</strong> (Llama-3.1-based, fine-tuned for tool calling) is small enough to self-host and capable enough to drive a real agent loop.</p>
+
+          <h2>1. Why Hermes, and why a plain VPS</h2>
+          <p>Hermes 3 8B has native tool calling, a <code>Q4_K_M</code> GGUF fits in ~8–10 GB of RAM, and CPU inference at 6–12 tok/sec is plenty for bursty agent work — no GPU required. Target at least 4 vCPU / 16 GB RAM (Hostinger KVM 4 / KVM 8).</p>
+
+          <p>This referral link applies <strong>20% off</strong> either route: <a href="https://www.hostinger.com?REFERRALCODE=NHJWISAMDKAY" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">hostinger.com &rarr; 20% off</a>.</p>
+
+          <h2>2. Serving Hermes with Ollama</h2>
+          <pre><code>curl -fsSL https://ollama.com/install.sh | sh
+ollama pull hermes3:8b
+
+# Keep the model resident so agent steps have no cold start
+#   Environment="OLLAMA_KEEP_ALIVE=-1"
+#   Environment="OLLAMA_NUM_PARALLEL=1"</code></pre>
+          <p>Ollama exposes an OpenAI-compatible route at <code>127.0.0.1:11434/v1</code>. Never expose that port publicly — it has no auth.</p>
+
+          <h2>3. The agent loop</h2>
+          <p>An agent is a loop: send the conversation plus a tool catalogue, execute whatever tool the model asks for, append the result, repeat until it stops. The OpenAI SDK works unchanged — only <code>base_url</code> changes.</p>
+          <pre><code>client = OpenAI(base_url="http://127.0.0.1:11434/v1", api_key="local")
+
+for _ in range(MAX_STEPS):
+    msg = client.chat.completions.create(
+        model="hermes3:8b", messages=messages, tools=TOOLS,
+    ).choices[0].message
+    messages.append(msg)
+    if not msg.tool_calls:
+        break
+    for call in msg.tool_calls:
+        out = execute(call.function.name, json.loads(call.function.arguments))
+        messages.append({"role": "tool", "tool_call_id": call.id,
+                         "content": str(out)[:4000]})</code></pre>
+          <p>Safety comes from a <strong>hard step budget</strong>, <strong>truncated tool output</strong>, and a <strong>tiny allow-listed tool surface</strong> enforced in code, not the prompt.</p>
+
+          <h2>4. TLS and auth with Caddy</h2>
+          <p>If the agent runs on the same box, talk to <code>127.0.0.1</code> and nothing is public. If something external needs the model, put Caddy in front for automatic Let's Encrypt certs and a bearer-token gate to <code>reverse_proxy 127.0.0.1:11434</code>.</p>
+
+          <h2>Conclusion</h2>
+          <p>A single CPU VPS, an 8B tool-calling model, and ~40 lines of loop code is enough for a genuinely autonomous agent you fully control. If that control is not a hard requirement, the <a href="blog/hermes-agent-on-hostinger.html" target="_blank" style="color:var(--accent); font-weight:600;">managed one-click deploy</a> gets you there in minutes instead.</p>
+
+          <p style="font-size:13px; color:var(--fg-subtle); font-style:italic;">Affiliate disclosure: the Hostinger links above are referral links — you get 20% off and I may earn a commission at no extra cost to you.</p>
+        `
+      },
+      'post-ai-agents': {
+        title: 'Architecting Autonomous Human-AI Collaboration Workflows',
+        category: 'AI Systems',
+        date: 'Aug 24, 2026',
+        readTime: '6 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Aug 24, 2026</span>
+            <span><i class="ph ph-clock"></i> 6 min read</span>
+            <a href="blog/building-autonomous-ai-agents.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>As LLMs evolve from reactive chatbots into autonomous agentic systems, software engineering leadership is shifting toward architecting robust execution sandboxes, state graphs, and human-in-the-loop governance.</p>
+
+          <h2>1. The Evolution of Agentic Systems</h2>
+          <p>Building autonomous workflows in enterprise environments requires far more than chaining API prompts. Production AI agents need deterministic guardrails, structured memory storage, and real-time execution safety.</p>
+
+          <blockquote>
+            "An AI agent is only as reliable as the boundary conditions and inspection layers surrounding its tool execution environment."
+          </blockquote>
+
+          <h2>2. Key Architectural Pillars</h2>
+          <ul>
+            <li><strong>State Graph Orchestration:</strong> Explicitly defining states, transitions, and fallback nodes rather than relying on unconstrained loops.</li>
+            <li><strong>Tool Execution Sandboxing:</strong> Running code execution, bash tasks, and database queries inside ephemeral, isolated environments.</li>
+            <li><strong>Human-in-the-Loop Verification:</strong> Requiring explicit authorization for high-consequence operations (e.g. production deployments, billing updates).</li>
+          </ul>
+
+          <h2>3. Implementation Pattern</h2>
+          <pre><code>// Example State Graph Node in TypeScript
+async function executeAgentStep(state: AgentState): Promise&lt;AgentState&gt; {
+  const decision = await plannerModel.predict(state.context);
+  if (decision.requiresApproval) {
+    return await requestHumanFeedback(state, decision);
+  }
+  return await runToolExecution(state, decision.toolCall);
+}</code></pre>
+
+          <h2>Conclusion</h2>
+          <p>The future of software architecture lies in seamless human-AI team workflows. By designing deterministic controls around generative models, organizations achieve both rapid velocity and enterprise safety.</p>
+        `
+      },
+      'post-data-pipelines': {
+        title: 'Scaling Enterprise Data Pipelines to Millions of Events/Sec',
+        category: 'Data Pipelines',
+        date: 'Aug 15, 2026',
+        readTime: '8 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Aug 15, 2026</span>
+            <span><i class="ph ph-clock"></i> 8 min read</span>
+            <a href="blog/high-throughput-data-pipelines.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>High-throughput data integration demands meticulous memory management, non-blocking asynchronous IO, and resilient backpressure mechanisms. In my work leading backend teams at Qlik, these principles form the core of enterprise data processing.</p>
+
+          <h2>1. Managing Backpressure in Streaming Architectures</h2>
+          <p>When ingest rates spike beyond downstream processing capacity, pipelines must gracefully throttle without dropping records or triggering out-of-memory crashes.</p>
+
+          <blockquote>
+            "Unbounded memory buffering is the primary root cause of silent pipeline degradation at enterprise scale."
+          </blockquote>
+
+          <h2>2. Core Technical Strategies</h2>
+          <ul>
+            <li><strong>Ring Buffer Pools:</strong> Pre-allocating fixed memory blocks to minimize Garbage Collector pressure under high throughput.</li>
+            <li><strong>Batch Vectorization:</strong> Processing records in SIMD-friendly vector chunks rather than record-by-record iteration.</li>
+            <li><strong>Partition Sharding:</strong> Distributing stateful aggregations dynamically across consumer worker threads.</li>
+          </ul>
+
+          <h2>3. Summary</h2>
+          <p>High-performance data pipelines require relentless optimization of zero-copy data structures and event-loop efficiency to deliver reliable real-time analytics.</p>
+        `
+      },
+      'post-self-hosted': {
+        title: 'Building Resilient Self-Hosted SaaS Infrastructure',
+        category: 'SaaS & Infrastructure',
+        date: 'Jul 30, 2026',
+        readTime: '5 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Jul 30, 2026</span>
+            <span><i class="ph ph-clock"></i> 5 min read</span>
+            <a href="blog/self-hosted-saas-infrastructure.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>Relying exclusively on proprietary cloud SaaS platforms often leads to ballooning operational costs, vendor lock-in, and unpredictable API changes. Self-hosting core developer tooling and infrastructure restores full operational control.</p>
+
+          <h2>1. Why Self-Host Internal Software?</h2>
+          <p>Through building platforms like <strong>ikando.tech</strong> and <strong>zrikat.com</strong>, self-hosted Docker and VPS infrastructure cut recurring cloud expenses by over 70% while improving data privacy compliance.</p>
+
+          <h2>2. The Self-Hosted Infrastructure Stack</h2>
+          <ul>
+            <li><strong>Reverse Proxy & SSL:</strong> Automated Traefik / Caddy with automated Let's Encrypt renewal.</li>
+            <li><strong>Container Orchestration:</strong> Lightweight Docker Compose / Portainer setups with blue-green deployment scripts.</li>
+            <li><strong>Telemetry & Monitoring:</strong> Self-hosted Prometheus, Grafana, and Uptime Kuma alerts.</li>
+          </ul>
+
+          <h2>3. Key Takeaway</h2>
+          <p>Self-hosting is no longer just for hobbyists — it is a strategic business decision for software leaders seeking performance, security ownership, and fiscal efficiency.</p>
+        `
+      }
+    };
+
+    // Blog Category Filtering
+    const blogFilterBtns = document.querySelectorAll('.blog-filters .filter-btn');
+    const blogCards = document.querySelectorAll('.blog-card');
+
+    blogFilterBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        blogFilterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.blogFilter;
+        blogCards.forEach(card => {
+          if (filter === 'all' || card.dataset.blogCategory === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Article Modal Logic
+    const backdrop = document.getElementById('article-modal-backdrop');
+    const modalBody = document.getElementById('article-modal-body');
+    const modalTag = document.getElementById('modal-article-tag');
+    const progressBar = document.getElementById('article-progress-bar');
+
+    function openArticleModal(postId) {
+      const article = ARTICLES[postId];
+      if (!article) return;
+
+      modalTag.textContent = article.category;
+      modalBody.innerHTML = `<h1>${article.title}</h1>${article.content}`;
+      backdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      progressBar.style.width = '0%';
+    }
+
+    function closeArticleModal() {
+      backdrop.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) {
+        closeArticleModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && backdrop.classList.contains('active')) {
+        closeArticleModal();
+      }
+    });
+
+    modalBody.addEventListener('scroll', () => {
+      const totalScroll = modalBody.scrollHeight - modalBody.clientHeight;
+      if (totalScroll > 0) {
+        const currentScroll = modalBody.scrollTop;
+        const percentage = (currentScroll / totalScroll) * 100;
+        progressBar.style.width = percentage + '%';
+      }
     });
   </script>
 </body>

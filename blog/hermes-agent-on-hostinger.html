@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deploying a Managed Hermes Agent on Hostinger — Wisam Damouny</title>
+  <meta name="description" content="How to stand up a Hermes autonomous AI agent on Hostinger in one click — connecting a model provider, wiring messaging channels, and when to self-host instead, by Wisam Damouny." />
+
+  <!-- Open Graph Meta Tags for Social & SEO -->
+  <meta property="og:title" content="Deploying a Managed Hermes Agent on Hostinger" />
+  <meta property="og:description" content="How to stand up a Hermes autonomous AI agent on Hostinger in one click — connecting a model provider, wiring messaging channels, and when to self-host instead, by Wisam Damouny." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="../assets/avatar_hero.jpg" />
+
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    :root {
+      --accent: #D97757;
+      --accent-hover: #E58A6C;
+      --accent-glow: rgba(217, 119, 87, 0.22);
+      --bg: #0b0c0e;
+      --bg-alt: #12141a;
+      --card-bg: rgba(20, 22, 28, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --fg: #f4f4f6;
+      --fg-muted: #9da2b0;
+      --fg-subtle: #6b7280;
+      --nav-bg: rgba(11, 12, 14, 0.88);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    html.light {
+      --bg: #f7f7f9;
+      --bg-alt: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --fg: #121316;
+      --fg-muted: #525866;
+      --fg-subtle: #868d9d;
+      --nav-bg: rgba(247, 247, 249, 0.88);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.8;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 18px 0;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      color: var(--fg);
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .back-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    main {
+      padding: 60px 0 100px;
+    }
+
+    .article-header {
+      margin-bottom: 40px;
+    }
+
+    .blog-tag {
+      background: #D97757;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 24px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--fg-muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .article-content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 36px 0 18px;
+      color: var(--fg);
+    }
+
+    .article-content h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 28px 0 14px;
+      color: var(--fg);
+    }
+
+    .article-content p {
+      margin-bottom: 24px;
+      color: var(--fg-muted);
+      font-size: 17px;
+    }
+
+    .article-content blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 20px 24px;
+      background: var(--card-bg);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--fg);
+      font-size: 18px;
+    }
+
+    .article-content pre {
+      background: #0d0e12;
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin: 28px 0;
+    }
+
+    .article-content pre.mermaid {
+      background: var(--card-bg);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      margin: 36px 0;
+    }
+
+    .article-content ul, .article-content ol {
+      margin: 20px 0 28px 24px;
+      color: var(--fg-muted);
+      font-size: 16px;
+    }
+
+    .article-content li {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="../index.html" class="brand">
+          <span class="brand-dot"></span>
+          <span>Wisam Damouny</span>
+        </a>
+        <a href="../index.html#blog" class="back-link">
+          <i class="ph ph-arrow-left"></i> Back to Articles
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <article class="article-header">
+        <span class="blog-tag">AI Systems</span>
+        <h1>Deploying a Managed Hermes Agent on Hostinger</h1>
+
+        <div class="article-meta">
+          <div class="author-info">
+            <img src="../assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+            <div>
+              <strong style="color:var(--fg);">Wisam Damouny</strong>
+              <div style="font-size:12px; color:var(--fg-subtle)">Software Tech Leader &amp; AI Systems Architect</div>
+            </div>
+          </div>
+          <div><i class="ph ph-calendar-blank"></i> Aug 27, 2026</div>
+          <div><i class="ph ph-clock"></i> 7 min read</div>
+        </div>
+      </article>
+
+      <div class="article-content">
+        <p>There is a widening gap between &quot;chatbot&quot; and &quot;agent&quot;. A chatbot answers when spoken to. An agent has channels it listens on, tools it can call, memory that persists, and a loop that keeps running when you close the tab. Standing that up yourself means a VPS, a model runtime, a reverse proxy, a process manager, and a pile of glue code. <strong>Hermes</strong> collapses that into a single deployable unit — and Hostinger now offers it as a managed, one-click product.</p>
+<h2>1. What a Hermes agent actually is</h2>
+<p>Hermes is an autonomous, self-improving assistant rather than a single-purpose bot. The important properties:</p>
+<ul>
+<li><strong>Model-agnostic.</strong> It targets 200+ LLMs through OpenRouter, or connects directly to Anthropic, OpenAI, or a custom endpoint. You are not locked to one provider.</li>
+<li><strong>Multi-channel.</strong> The same agent instance can listen on Telegram, Discord, Slack, WhatsApp, and email — so it is reachable where work already happens.</li>
+<li><strong>Tool-using and persistent.</strong> Web search, a pre-configured email identity, and CLI access come wired in; the agent keeps context across sessions instead of starting cold each time.</li>
+<li><strong>Self-maintaining.</strong> On the managed plan, security patching and runtime upkeep are handled for you.</li>
+</ul>
+<h2>2. Managed vs. self-hosted — pick deliberately</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Managed Hermes on Hostinger</th>
+<th>Self-hosted on your own VPS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Time to running</td>
+<td>Minutes, one click</td>
+<td>An afternoon of setup</td>
+</tr>
+<tr>
+<td>Maintenance</td>
+<td>Handled (security, updates)</td>
+<td>Yours</td>
+</tr>
+<tr>
+<td>Model keys</td>
+<td>Bring your own / included AI credits</td>
+<td>Bring your own</td>
+</tr>
+<tr>
+<td>Data path</td>
+<td>Through Hostinger&#39;s managed stack</td>
+<td>Entirely your box</td>
+</tr>
+<tr>
+<td>Cost shape</td>
+<td>Flat monthly</td>
+<td>VPS + your inference bill</td>
+</tr>
+<tr>
+<td>Best when</td>
+<td>You want the agent, not the plumbing</td>
+<td>You need full control or custom tooling</td>
+</tr>
+</tbody></table>
+<p>If your goal is <em>&quot;I want an agent in Telegram by tonight&quot;</em>, the managed route is the right call. If you are building something bespoke around the agent — private tools, air-gapped data, a custom model server — jump to section 6.</p>
+<div style="border:1px solid var(--accent); border-radius:12px; padding:20px 24px; margin:32px 0; background:rgba(217,119,87,0.08);">
+  <strong style="color:var(--fg); display:block; margin-bottom:8px;">Setting up an account</strong>
+  <p style="margin:0; color:var(--fg-muted); font-size:16px;">This link opens the Hermes Agent <strong>Starter</strong> plan (12-month term) with <strong>20% off</strong> applied: <a href="https://www.hostinger.com/cart?product=hagents%3Astarter&amp;period=12&amp;referral_type=cart_link&amp;REFERRALCODE=NHJWISAMDKAY&amp;referral_id=01a04384-666a-7361-bf76-90025e9ce5a8" style="color:var(--accent); font-weight:600;">Hermes Agent Starter &rarr; 20% off</a>. At the time of writing it promotes around $5.99/mo (renewing higher on renewal) with a 30-day money-back guarantee — the <a href="https://www.hostinger.com/managed-hermes-agent" style="color:var(--accent); font-weight:600;">product page</a> has current numbers and the larger plans.</p>
+</div><h2>3. The one-click deploy</h2>
+<p>From the <a href="https://www.hostinger.com/managed-hermes-agent">Managed Hermes Agent</a> page — or straight to a discounted <a href="https://www.hostinger.com/cart?product=hagents%3Astarter&period=12&referral_type=cart_link&REFERRALCODE=NHJWISAMDKAY&referral_id=01a04384-666a-7361-bf76-90025e9ce5a8">Starter checkout</a>:</p>
+<ol>
+<li><strong>Choose the plan and term</strong>, then check out. The referral link applies the 20% discount at this step.</li>
+<li><strong>Click Deploy</strong> in hPanel. Hostinger provisions the server environment and the agent configuration together — there is no OS template to pick, no SSH session, no <code>docker compose</code>.</li>
+<li><strong>Wait for &quot;live&quot;</strong>. The agent comes up with its visual interface and a CLI you can reach from the panel.</li>
+</ol>
+<p>That is the whole server-side story. Everything remaining is configuration inside the agent.</p>
+<h2>4. Connect a model provider</h2>
+<p>The agent needs an LLM behind it. You have three sane options:</p>
+<ul>
+<li><strong>OpenRouter</strong> — one API key, 200+ models, easy A/B testing between them. Best default.</li>
+<li><strong>Direct Anthropic or OpenAI</strong> — lower latency and often lower cost if you already know which model you want. Paste the provider key into the agent&#39;s model settings.</li>
+<li><strong>Custom endpoint</strong> — point it at your own OpenAI-compatible server (vLLM, Ollama, a gateway). This is how you keep inference on infrastructure you control while still using the managed agent shell.</li>
+</ul>
+<p>Included AI credits let you validate the setup before attaching your own billing.</p>
+<h2>5. Wire up channels</h2>
+<p>Each channel is a connector you enable and authorize:</p>
+<ul>
+<li><strong>Telegram</strong> — create a bot with <code>@BotFather</code>, paste the token, done. This is the fastest channel to demo.</li>
+<li><strong>Discord / Slack</strong> — register an app, grant the bot scopes, invite it to the workspace or server.</li>
+<li><strong>WhatsApp / email</strong> — WhatsApp goes through the Business API; the managed plan ships a pre-configured email identity so the agent can send and receive without you standing up a mail server.</li>
+</ul>
+<p>Start with one channel, confirm the round trip (message in → tool call → reply out), then add the rest.</p>
+<h2>6. Architecture</h2>
+<pre class="mermaid">graph TD
+    TG([Telegram]) --> Hub
+    DC([Discord]) --> Hub
+    SL([Slack]) --> Hub
+    EM([Email]) --> Hub
+    Hub[Hermes Agent Core · managed by Hostinger] --> Loop{Agent Loop}
+    Loop -->|prompt + tools| Model[Model Provider]
+    Model -->|OpenRouter / Anthropic / OpenAI / custom| Loop
+    Loop --> Tools[Web Search · Email · CLI]
+    Tools --> Loop
+    Loop --> Mem[(Persistent Memory)]
+    Loop --> Reply([Response back to channel])
+
+    style Hub fill:#331b18,stroke:#d97757,color:#fff
+    style Model fill:#0f291e,stroke:#10b981,color:#fff
+    style Tools fill:#1e293b,stroke:#3b82f6,color:#fff</pre>
+<h2>7. If you would rather self-host</h2>
+<p>The managed product is the agent shell as a service. To run the same shape yourself on a plain Hostinger KVM VPS — with a Nous Hermes 3 model, Ollama, and your own agent loop — I have a <a href="self-hosted-hermes-agent-vps.html">full walkthrough here</a>. The short version:</p>
+<pre><code class="language-bash"># Ubuntu 24.04 with Docker template — skips base setup
+adduser hermes &amp;&amp; usermod -aG sudo hermes
+ufw allow OpenSSH &amp;&amp; ufw allow 443/tcp &amp;&amp; ufw enable
+
+# Bring the agent up in a container, put Caddy in front for TLS
+# Caddyfile:
+#   hermes.example.com {
+#       reverse_proxy 127.0.0.1:8080
+#   }</code></pre>
+<p>You then supply the same things the managed plan configures for you: a model API key, channel tokens, and a process manager (systemd or Docker restart policy) so the loop survives reboots. You own the updates and the uptime in exchange for full control over the data path and the tool code.</p>
+<blockquote>
+<p>The decision is not technical, it is operational: do you want to be responsible for keeping an always-on service patched and alive? If not, pay for managed and spend the time on what the agent actually does.</p>
+</blockquote>
+<h2>Conclusion</h2>
+<p>An autonomous agent used to be an infrastructure project. Hermes turns it into a product decision. Take the managed one-click deploy to get a Telegram-reachable agent running in minutes, bring your own model key so you control cost and quality, and only drop down to a self-hosted VPS when a real requirement — private tooling, data residency, a custom model server — forces the issue.</p>
+<p style="font-size:13px; color:var(--fg-subtle); font-style:italic; border-top:1px solid var(--card-border); padding-top:16px; margin-top:40px;">Affiliate disclosure: the Hostinger links in this article are referral links. Buying a plan through them gives you 20% off and may earn me a commission at no extra cost to you. Pricing and plan details reflect the Hostinger product page at the time of writing and may change.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Wisam Damouny · Crafting self-hosted software for humans and AI agents.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'dark',
+          securityLevel: 'loose',
+          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
