@@ -1,0 +1,29 @@
+name: Deploy wisamdamouny to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy static site over SSH
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          SSH_OPTS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/deploy_key"
+          # ship index.html + assets (rsync over ssh, delete stale files in assets)
+          ssh $SSH_OPTS root@"$HOST" "mkdir -p /opt/wisamdamouny/assets"
+          rsync -az --delete -e "ssh $SSH_OPTS" \
+            index.html assets/ root@"$HOST":/opt/wisamdamouny/
+          echo "=== live check ==="
+          ssh $SSH_OPTS root@"$HOST" "ls -la /opt/wisamdamouny/ && du -sh /opt/wisamdamouny/assets && echo DEPLOYED"
