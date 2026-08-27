@@ -21,9 +21,9 @@ jobs:
           printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           SSH_OPTS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/deploy_key"
-          # ship index.html + assets (rsync over ssh, delete stale files in assets)
+          # ship index.html into the root, and assets/ contents into assets/ (keeps structure)
           ssh $SSH_OPTS root@"$HOST" "mkdir -p /opt/wisamdamouny/assets"
-          rsync -az --delete -e "ssh $SSH_OPTS" \
-            index.html assets/ root@"$HOST":/opt/wisamdamouny/
+          rsync -az -e "ssh $SSH_OPTS" index.html root@"$HOST":/opt/wisamdamouny/
+          rsync -az --delete -e "ssh $SSH_OPTS" assets/ root@"$HOST":/opt/wisamdamouny/assets/
           echo "=== live check ==="
-          ssh $SSH_OPTS root@"$HOST" "ls -la /opt/wisamdamouny/ && du -sh /opt/wisamdamouny/assets && echo DEPLOYED"
+          ssh $SSH_OPTS root@"$HOST" "ls /opt/wisamdamouny/ && echo 'assets...' && ls /opt/wisamdamouny/assets/ && echo DEPLOYED"
