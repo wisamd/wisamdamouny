@@ -5,6 +5,8 @@ const matter = require('gray-matter');
 
 const POSTS_DIR = path.join(__dirname, '../content/posts');
 const OUTPUT_DIR = path.join(__dirname, '../blog');
+const SITE_ROOT = path.join(__dirname, '..');
+const SITE_ORIGIN = 'https://wisamdamouny.com';
 
 // Ensure output directory exists
 if (!fs.existsSync(OUTPUT_DIR)) {
@@ -33,7 +35,16 @@ function escapeHtml(html) {
     .replace(/'/g, '&#039;');
 }
 
-function generateHtmlTemplate(meta, contentHtml, hasMermaid) {
+function toIsoDate(raw) {
+  const d = new Date(raw);
+  if (isNaN(d)) return '';
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
+  const canonical = `${SITE_ORIGIN}/blog/${slug}.html`;
+  const isoDate = toIsoDate(meta.date);
   const title = meta.title || 'Wisam Damouny Article';
   const description = meta.description || '';
   const tag = meta.tag || 'Article';
@@ -68,12 +79,33 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${escapeHtml(title)} — Wisam Damouny</title>
   <meta name="description" content="${escapeHtml(description)}" />
+  <link rel="canonical" href="${canonical}" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="${escapeHtml(author)}" />
 
   <!-- Open Graph Meta Tags for Social & SEO -->
   <meta property="og:title" content="${escapeHtml(title)}" />
   <meta property="og:description" content="${escapeHtml(description)}" />
   <meta property="og:type" content="article" />
-  <meta property="og:image" content="${escapeHtml(ogImage)}" />
+  <meta property="og:url" content="${canonical}" />
+  <meta property="og:site_name" content="Wisam Damouny" />
+  <meta property="og:image" content="${escapeHtml(ogImage.replace(/^\.\.\//, SITE_ORIGIN + '/'))}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="${escapeHtml(ogImage.replace(/^\.\.\//, SITE_ORIGIN + '/'))}" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": ${JSON.stringify(title)},
+    "description": ${JSON.stringify(description)},
+    "url": "${canonical}",
+    "datePublished": ${JSON.stringify(isoDate)},
+    "author": { "@type": "Person", "name": ${JSON.stringify(author)}, "url": "${SITE_ORIGIN}/" },
+    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
+    "mainEntityOfPage": "${canonical}"
+  }
+  </script>
 
   <!-- Google Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -352,6 +384,7 @@ function buildBlog() {
 
   const mdFiles = fs.readdirSync(POSTS_DIR).filter(file => file.endsWith('.md'));
   let count = 0;
+  const urls = [];
 
   for (const file of mdFiles) {
     const filePath = path.join(POSTS_DIR, file);
@@ -360,17 +393,32 @@ function buildBlog() {
     const { data: meta, content } = matter(fileContent);
     const contentHtml = marked.parse(content);
     const hasMermaid = contentHtml.includes('class="mermaid"');
+    const slug = file.replace(/\.md$/, '');
 
-    const htmlOutput = generateHtmlTemplate(meta, contentHtml, hasMermaid);
-    const outputFileName = file.replace(/\.md$/, '.html');
-    const outputPath = path.join(OUTPUT_DIR, outputFileName);
+    const htmlOutput = generateHtmlTemplate(meta, contentHtml, hasMermaid, slug);
+    const outputPath = path.join(OUTPUT_DIR, `${slug}.html`);
 
     fs.writeFileSync(outputPath, htmlOutput, 'utf8');
-    console.log(`  ✓ Built: blog/${outputFileName} ${hasMermaid ? '(with Mermaid diagrams)' : ''}`);
+    console.log(`  ✓ Built: blog/${slug}.html ${hasMermaid ? '(with Mermaid diagrams)' : ''}`);
+    urls.push(`${SITE_ORIGIN}/blog/${slug}.html`);
     count++;
   }
 
-  console.log(`✨ Successfully generated ${count} article page(s).`);
+  writeSitemap(urls);
+  console.log(`✨ Successfully generated ${count} article page(s) and sitemap.xml.`);
+}
+
+function writeSitemap(blogUrls) {
+  const today = new Date().toISOString().slice(0, 10);
+  const entries = [`${SITE_ORIGIN}/`, ...blogUrls]
+    .map(loc => `  <url><loc>${loc}</loc><lastmod>${today}</lastmod></url>`)
+    .join('\n');
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${entries}
+</urlset>
+`;
+  fs.writeFileSync(path.join(SITE_ROOT, 'sitemap.xml'), xml, 'utf8');
 }
 
 buildBlog();
