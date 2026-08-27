@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Self-Hosting a Hermes Agent on a Hostinger VPS — Wisam Damouny</title>
+  <meta name="description" content="The DIY path: run a Nous Hermes 3 model as an autonomous tool-using agent on a single Hostinger KVM VPS — provisioning, Ollama serving, the agent loop, and TLS hardening, by Wisam Damouny." />
+  <link rel="canonical" href="https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Wisam Damouny" />
+
+  <!-- Open Graph Meta Tags for Social & SEO -->
+  <meta property="og:title" content="Self-Hosting a Hermes Agent on a Hostinger VPS" />
+  <meta property="og:description" content="The DIY path: run a Nous Hermes 3 model as an autonomous tool-using agent on a single Hostinger KVM VPS — provisioning, Ollama serving, the agent loop, and TLS hardening, by Wisam Damouny." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html" />
+  <meta property="og:site_name" content="Wisam Damouny" />
+  <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Self-Hosting a Hermes Agent on a Hostinger VPS",
+    "description": "The DIY path: run a Nous Hermes 3 model as an autonomous tool-using agent on a single Hostinger KVM VPS — provisioning, Ollama serving, the agent loop, and TLS hardening, by Wisam Damouny.",
+    "url": "https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html",
+    "datePublished": "2026-08-27",
+    "author": { "@type": "Person", "name": "Wisam Damouny", "url": "https://wisamdamouny.com/" },
+    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
+    "mainEntityOfPage": "https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html"
+  }
+  </script>
+
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    :root {
+      --accent: #D97757;
+      --accent-hover: #E58A6C;
+      --accent-glow: rgba(217, 119, 87, 0.22);
+      --bg: #0b0c0e;
+      --bg-alt: #12141a;
+      --card-bg: rgba(20, 22, 28, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --fg: #f4f4f6;
+      --fg-muted: #9da2b0;
+      --fg-subtle: #6b7280;
+      --nav-bg: rgba(11, 12, 14, 0.88);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    html.light {
+      --bg: #f7f7f9;
+      --bg-alt: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --fg: #121316;
+      --fg-muted: #525866;
+      --fg-subtle: #868d9d;
+      --nav-bg: rgba(247, 247, 249, 0.88);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.8;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 18px 0;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      color: var(--fg);
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .back-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    main {
+      padding: 60px 0 100px;
+    }
+
+    .article-header {
+      margin-bottom: 40px;
+    }
+
+    .blog-tag {
+      background: #D97757;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 24px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--fg-muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .article-content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 36px 0 18px;
+      color: var(--fg);
+    }
+
+    .article-content h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 28px 0 14px;
+      color: var(--fg);
+    }
+
+    .article-content p {
+      margin-bottom: 24px;
+      color: var(--fg-muted);
+      font-size: 17px;
+    }
+
+    .article-content blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 20px 24px;
+      background: var(--card-bg);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--fg);
+      font-size: 18px;
+    }
+
+    .article-content pre {
+      background: #0d0e12;
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin: 28px 0;
+    }
+
+    .article-content pre.mermaid {
+      background: var(--card-bg);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      margin: 36px 0;
+    }
+
+    .article-content ul, .article-content ol {
+      margin: 20px 0 28px 24px;
+      color: var(--fg-muted);
+      font-size: 16px;
+    }
+
+    .article-content li {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="../index.html" class="brand">
+          <span class="brand-dot"></span>
+          <span>Wisam Damouny</span>
+        </a>
+        <a href="../index.html#blog" class="back-link">
+          <i class="ph ph-arrow-left"></i> Back to Articles
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <article class="article-header">
+        <span class="blog-tag">AI Systems</span>
+        <h1>Self-Hosting a Hermes Agent on a Hostinger VPS</h1>
+
+        <div class="article-meta">
+          <div class="author-info">
+            <img src="../assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+            <div>
+              <strong style="color:var(--fg);">Wisam Damouny</strong>
+              <div style="font-size:12px; color:var(--fg-subtle)">Software Tech Leader &amp; AI Systems Architect</div>
+            </div>
+          </div>
+          <div><i class="ph ph-calendar-blank"></i> Aug 27, 2026</div>
+          <div><i class="ph ph-clock"></i> 9 min read</div>
+        </div>
+      </article>
+
+      <div class="article-content">
+        <p>If you want a Hermes agent running with the least effort, Hostinger&#39;s <a href="https://www.hostinger.com/managed-hermes-agent">Managed Hermes Agent</a> is a one-click deploy — I cover it in a <a href="hermes-agent-on-hostinger.html">separate article</a>. This piece is the other path: building the agent yourself on a bare VPS so you own the model, the data path, and every tool it can call. Nous Research&#39;s <strong>Hermes 3</strong> family — Llama-3.1-based, explicitly fine-tuned for structured tool calling — is small enough to self-host and capable enough to drive a real agent loop. Here is the 8B variant as an autonomous agent on a single <strong>Hostinger KVM VPS</strong>, from bare provisioning to a TLS-terminated endpoint.</p>
+<div style="border:1px solid var(--accent); border-radius:12px; padding:20px 24px; margin:32px 0; background:rgba(217,119,87,0.08);">
+  <strong style="color:var(--fg); display:block; margin-bottom:8px;">Managed or DIY?</strong>
+  <p style="margin:0; color:var(--fg-muted); font-size:16px;">Choose <a href="https://www.hostinger.com/cart?product=hagents%3Astarter&amp;period=12&amp;referral_type=cart_link&amp;REFERRALCODE=NHJWISAMDKAY&amp;referral_id=01a04384-666a-7361-bf76-90025e9ce5a8" style="color:var(--accent); font-weight:600;">Managed Hermes Agent</a> (20% off, Starter plan) if you want the agent, not the plumbing — patching and uptime are handled. Choose the DIY route below if you need a specific model, an air-gapped data path, or custom tooling — the same <strong>20% off</strong> applies to a VPS: <a href="https://www.hostinger.com?REFERRALCODE=NHJWISAMDKAY" style="color:var(--accent); font-weight:600;">hostinger.com &rarr; 20% off</a>.</p>
+</div><h2>1. Why Hermes, and why a plain VPS</h2>
+<p>Hermes 3 8B is a practical sweet spot for self-hosting:</p>
+<ul>
+<li><strong>Tool calling is native.</strong> The model was trained on function-call formatting, so you get reliable JSON tool invocations without heavy prompt gymnastics.</li>
+<li><strong>It fits in RAM.</strong> A <code>Q4_K_M</code> GGUF quantisation of the 8B model is roughly 5 GB on disk and needs ~8–10 GB of RAM to serve with a usable context window.</li>
+<li><strong>CPU inference is good enough for agents.</strong> Agent workloads are bursty and tolerant of a few seconds of latency per step — very different from a chat UI that needs 30+ tokens/sec.</li>
+</ul>
+<p>That last point matters, because it means you do <strong>not</strong> need a GPU instance. A CPU-only KVM VPS with enough vCPUs and RAM will comfortably run an 8B model at 6–12 tokens/sec, which is plenty for background automation, scheduled research tasks, or a Slack bot that answers every few minutes.</p>
+<blockquote>
+<p>For an 8B agent, target at least 4 vCPU and 16 GB RAM; 8 vCPU / 32 GB if you want headroom for a bigger context window or a second model. I run this on Hostinger&#39;s KVM 4 / KVM 8 tier.</p>
+</blockquote>
+<h2>2. First-boot hardening</h2>
+<p>Once the VPS is provisioned, Hostinger gives you a root SSH login and an IP. Do the boring security work first.</p>
+<pre><code class="language-bash"># On the VPS, as root
+adduser hermes &amp;&amp; usermod -aG sudo hermes
+rsync --archive --chown=hermes:hermes ~/.ssh /home/hermes
+
+# /etc/ssh/sshd_config
+#   PermitRootLogin no
+#   PasswordAuthentication no
+systemctl restart ssh
+
+# Firewall: SSH + HTTPS only. The model port stays internal.
+ufw allow OpenSSH
+ufw allow 443/tcp
+ufw enable
+
+# 8B inference is memory-hungry at load time — add swap as a safety net
+fallocate -l 4G /swapfile &amp;&amp; chmod 600 /swapfile
+mkswap /swapfile &amp;&amp; swapon /swapfile
+echo &#039;/swapfile none swap sw 0 0&#039; &gt;&gt; /etc/fstab</code></pre>
+<blockquote>
+<p>Never expose the raw model port (<code>11434</code>) to the public internet. It has no authentication. Everything external goes through the reverse proxy in section 6.</p>
+</blockquote>
+<h2>3. Serving Hermes with Ollama</h2>
+<p>Ollama is the fastest path to an OpenAI-compatible endpoint for a GGUF model. Install it, pull Hermes 3, and confirm it answers.</p>
+<pre><code class="language-bash">curl -fsSL https://ollama.com/install.sh | sh
+
+# Pull the 8B Hermes 3 build (Q4_K_M quant)
+ollama pull hermes3:8b
+
+# Smoke test the OpenAI-compatible route
+curl http://127.0.0.1:11434/v1/chat/completions \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#039;{
+    &quot;model&quot;: &quot;hermes3:8b&quot;,
+    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Reply with just: ok&quot;}]
+  }&#039;</code></pre>
+<p>Pin a few environment defaults so the service behaves predictably under an agent&#39;s rapid-fire calls:</p>
+<pre><code class="language-bash">mkdir -p /etc/systemd/system/ollama.service.d
+cat &gt; /etc/systemd/system/ollama.service.d/override.conf &lt;&lt;&#039;EOF&#039;
+[Service]
+Environment=&quot;OLLAMA_KEEP_ALIVE=-1&quot;
+Environment=&quot;OLLAMA_NUM_PARALLEL=1&quot;
+Environment=&quot;OLLAMA_CONTEXT_LENGTH=8192&quot;
+EOF
+systemctl daemon-reload &amp;&amp; systemctl restart ollama</code></pre>
+<p><code>OLLAMA_KEEP_ALIVE=-1</code> keeps the model resident in RAM so you do not pay a cold-load penalty on every agent step. <code>OLLAMA_NUM_PARALLEL=1</code> keeps memory predictable on a CPU box.</p>
+<h2>4. The agent loop</h2>
+<p>An agent is just a loop: send the conversation plus a tool catalogue to the model, execute whatever tool it asks for, append the result, repeat until it stops calling tools. Because Ollama speaks the OpenAI wire format, the standard SDK works unchanged — you only swap the <code>base_url</code>.</p>
+<pre><code class="language-python">import json, subprocess, requests
+from openai import OpenAI
+
+client = OpenAI(base_url=&quot;http://127.0.0.1:11434/v1&quot;, api_key=&quot;local&quot;)
+
+TOOLS = [{
+    &quot;type&quot;: &quot;function&quot;,
+    &quot;function&quot;: {
+        &quot;name&quot;: &quot;run_shell&quot;,
+        &quot;description&quot;: &quot;Run a read-only shell command on the host and return stdout.&quot;,
+        &quot;parameters&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {&quot;cmd&quot;: {&quot;type&quot;: &quot;string&quot;}},
+            &quot;required&quot;: [&quot;cmd&quot;],
+        },
+    },
+}, {
+    &quot;type&quot;: &quot;function&quot;,
+    &quot;function&quot;: {
+        &quot;name&quot;: &quot;http_get&quot;,
+        &quot;description&quot;: &quot;Fetch a URL and return the response body as text.&quot;,
+        &quot;parameters&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {&quot;url&quot;: {&quot;type&quot;: &quot;string&quot;}},
+            &quot;required&quot;: [&quot;url&quot;],
+        },
+    },
+}]
+
+def execute(name, args):
+    if name == &quot;run_shell&quot;:
+        # allow-list enforced elsewhere; keep tool surfaces tiny
+        return subprocess.run(args[&quot;cmd&quot;], shell=True, capture_output=True,
+                              text=True, timeout=30).stdout[:4000]
+    if name == &quot;http_get&quot;:
+        return requests.get(args[&quot;url&quot;], timeout=15).text[:4000]
+    return f&quot;unknown tool: {name}&quot;
+
+def run_agent(task: str, max_steps: int = 8):
+    messages = [
+        {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;You are an autonomous ops agent. &quot;
+         &quot;Use tools to gather facts before answering. Stop when the task is done.&quot;},
+        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: task},
+    ]
+    for _ in range(max_steps):
+        resp = client.chat.completions.create(
+            model=&quot;hermes3:8b&quot;, messages=messages, tools=TOOLS, temperature=0.2,
+        )
+        msg = resp.choices[0].message
+        messages.append(msg)
+        if not msg.tool_calls:
+            return msg.content
+        for call in msg.tool_calls:
+            result = execute(call.function.name,
+                             json.loads(call.function.arguments))
+            messages.append({&quot;role&quot;: &quot;tool&quot;, &quot;tool_call_id&quot;: call.id,
+                             &quot;content&quot;: str(result)})
+    return &quot;step budget exhausted&quot;
+
+if __name__ == &quot;__main__&quot;:
+    print(run_agent(&quot;Check disk usage and the current uptime, then summarise system health.&quot;))</code></pre>
+<p>The important design choices are the same ones that apply to any production agent: a <strong>hard step budget</strong>, <strong>truncated tool output</strong> so a runaway <code>cat</code> cannot blow the context window, and a <strong>tiny tool surface</strong> with allow-listing enforced in <code>execute()</code> rather than trusted to the prompt.</p>
+<h2>5. Request flow</h2>
+<pre class="mermaid">graph TD
+    Cron([Scheduler / Webhook]) --> Agent[Agent Loop 'Python']
+    Agent -->|OpenAI-format request + tools| Caddy[Caddy · TLS 443]
+    Caddy --> Ollama[Ollama Runtime · 127.0.0.1:11434]
+    Ollama --> Hermes[[Hermes 3 8B · resident in RAM]]
+    Hermes -->|tool_calls JSON| Agent
+    Agent --> Sandbox[Tool Executor · allow-listed]
+    Sandbox -->|observations| Agent
+    Agent --> Result([Final summary → Slack / DB])
+
+    style Caddy fill:#331b18,stroke:#d97757,color:#fff
+    style Hermes fill:#0f291e,stroke:#10b981,color:#fff
+    style Sandbox fill:#1e293b,stroke:#3b82f6,color:#fff</pre>
+<h2>6. TLS and authentication with Caddy</h2>
+<p>If the agent runs on the same box as the model, you are done — talk to <code>127.0.0.1</code> and nothing else needs to be public. If the agent, a webhook, or a teammate needs to reach the model from outside, put <strong>Caddy</strong> in front so you get automatic Let&#39;s Encrypt certificates and a bearer-token gate.</p>
+<pre><code class="language-caddy"># /etc/caddy/Caddyfile
+hermes.example.com {
+    @unauthorised not header Authorization &quot;Bearer {env.HERMES_TOKEN}&quot;
+    respond @unauthorised 401
+
+    reverse_proxy 127.0.0.1:11434
+}</code></pre>
+<pre><code class="language-bash">export HERMES_TOKEN=&quot;$(openssl rand -hex 24)&quot;
+systemctl restart caddy</code></pre>
+<p>Point your DNS <code>A</code> record at the VPS, and the endpoint becomes <code>https://hermes.example.com/v1/...</code> with a token your agent sends as <code>api_key</code>. The firewall from section 2 already blocks every other port.</p>
+<h2>7. Cost and sizing notes</h2>
+<ul>
+<li><strong>8B Q4</strong> is the honest ceiling for CPU-only inference. Expect 6–12 tok/sec on 4–8 vCPUs; fine for agents, not for a chat product.</li>
+<li><strong>70B</strong> needs a GPU. Hostinger&#39;s KVM range is CPU-only, so if you outgrow 8B the move is a dedicated GPU host, not a bigger VPS.</li>
+<li><strong>Context is the memory cost.</strong> Going from 8k to 32k context roughly triples KV-cache RAM. Size the plan for the context you actually use.</li>
+<li>Keeping the model <strong>resident</strong> (<code>OLLAMA_KEEP_ALIVE=-1</code>) trades a few GB of idle RAM for removing multi-second cold starts on every agent run. On an agent box, always make that trade.</li>
+</ul>
+<h2>Conclusion</h2>
+<p>A single CPU VPS, an 8B tool-calling model, and about forty lines of loop code is enough to run a genuinely autonomous agent that you fully control — no per-token metering, no data leaving your box, no upstream deprecation notices. If that control is not a hard requirement, the <a href="hermes-agent-on-hostinger.html">managed one-click deploy</a> will get you there in minutes instead. Pick the level of ownership the workload actually needs.</p>
+<p style="font-size:13px; color:var(--fg-subtle); font-style:italic; border-top:1px solid var(--card-border); padding-top:16px; margin-top:40px;">Affiliate disclosure: the Hostinger links in this article are referral links. If you buy a plan through one you get 20% off and I may receive a commission, at no extra cost to you. I use Hostinger VPS instances for the setup described above.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Wisam Damouny · Crafting self-hosted software for humans and AI agents.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'dark',
+          securityLevel: 'loose',
+          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

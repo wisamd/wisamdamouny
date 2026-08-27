@@ -1,0 +1,25 @@
+{
+  "name": "wisamdamouny",
+  "version": "1.0.0",
+  "description": "Personal brand, CV and portfolio site for **Wisam Damouny**.",
+  "main": "index.js",
+  "scripts": {
+    "build": "node scripts/build-blog.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wisamd/wisamdamouny.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wisamd/wisamdamouny/issues"
+  },
+  "homepage": "https://github.com/wisamd/wisamdamouny#readme",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.11"
+  }
+}
