@@ -107,11 +107,13 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
   }
   </script>
 
-  <!-- Google Fonts & Icons -->
+  <!-- Google Fonts & Icons — non-render-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
     :root {
@@ -123,8 +125,8 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
       --card-bg: rgba(20, 22, 28, 0.78);
       --card-border: rgba(255, 255, 255, 0.08);
       --fg: #f4f4f6;
-      --fg-muted: #9da2b0;
-      --fg-subtle: #6b7280;
+      --fg-muted: #a7acba;
+      --fg-subtle: #8b909c;
       --nav-bg: rgba(11, 12, 14, 0.88);
       --radius-sm: 8px;
       --radius-md: 16px;
@@ -138,8 +140,8 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
       --card-bg: rgba(255, 255, 255, 0.88);
       --card-border: rgba(0, 0, 0, 0.08);
       --fg: #121316;
-      --fg-muted: #525866;
-      --fg-subtle: #868d9d;
+      --fg-muted: #4b515f;
+      --fg-subtle: #666c7b;
       --nav-bg: rgba(247, 247, 249, 0.88);
     }
 

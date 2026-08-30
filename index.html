@@ -59,15 +59,23 @@
   }
   </script>
 
-  <!-- Google Fonts: Syne (Display/Watermarks) & Plus Jakarta Sans (UI) -->
+  <!-- LCP image: fetch early -->
+  <link rel="preload" as="image" href="assets/avatar_hero_nobg.png" fetchpriority="high" />
+
+  <!-- Google Fonts: Syne (Display/Watermarks) & Plus Jakarta Sans (UI) — loaded non-render-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap"
-    rel="stylesheet">
+    rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap">
+  </noscript>
 
-  <!-- Phosphor Icons -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- Phosphor Icons (deferred; not needed for first paint) -->
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
     :root {
@@ -85,8 +93,8 @@
       --card-border: rgba(255, 255, 255, 0.08);
       --card-hover-border: rgba(217, 119, 87, 0.45);
       --fg: #f4f4f6;
-      --fg-muted: #9da2b0;
-      --fg-subtle: #6b7280;
+      --fg-muted: #a7acba;
+      --fg-subtle: #8b909c;
       --nav-bg: rgba(11, 12, 14, 0.88);
       --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
       --shadow-lg: 0 18px 40px -10px rgba(0, 0, 0, 0.65);
@@ -103,8 +111,8 @@
       --card-border: rgba(0, 0, 0, 0.08);
       --card-hover-border: rgba(217, 119, 87, 0.5);
       --fg: #121316;
-      --fg-muted: #525866;
-      --fg-subtle: #868d9d;
+      --fg-muted: #4b515f;
+      --fg-subtle: #666c7b;
       --nav-bg: rgba(247, 247, 249, 0.88);
       --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
       --shadow-lg: 0 12px 28px -6px rgba(0, 0, 0, 0.08);
@@ -1405,6 +1413,8 @@
     </div>
   </header>
 
+  <main>
+
   <!-- Hero Section (Orange CV & Saira Hybrid) -->
   <section class="hero">
     <div class="section-watermark">ENGINEER</div>
@@ -1459,7 +1469,8 @@
           </div>
 
           <div class="avatar-frame">
-            <img src="assets/avatar_hero_nobg.png" alt="Wisam Damouny" />
+            <img src="assets/avatar_hero_nobg.png" alt="Wisam Damouny" width="640" height="640"
+              fetchpriority="high" decoding="async" />
           </div>
 
           <div class="floating-card">
@@ -2060,6 +2071,8 @@
       </div>
     </div>
   </section>
+
+  </main>
 
   <!-- Footer -->
   <footer>
