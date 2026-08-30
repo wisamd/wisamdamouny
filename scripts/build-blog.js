@@ -56,6 +56,15 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
   const authorImage = meta.authorImage || '../assets/avatar_hero_wisam.jpg';
   const ogImage = meta.ogImage || '../assets/avatar_hero.jpg';
 
+  // Prefer a .webp sibling if it exists (smaller payload, faster LCP). Author/avatar
+  // images are above the fold on blog pages; og:image stays JPG for social crawlers.
+  function preferWebp(asset) {
+    if (!asset) return asset;
+    const webp = asset.replace(/\.(jpe?g|png)$/i, '.webp');
+    return fs.existsSync(path.join(SITE_ROOT, webp.replace(/^\.\.\//, ''))) ? webp : asset;
+  }
+  const authorImageSrc = preferWebp(authorImage);
+
   const mermaidScript = hasMermaid ? `
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
   <script>
@@ -350,7 +359,10 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
 
         <div class="article-meta">
           <div class="author-info">
-            <img src="${escapeHtml(authorImage)}" alt="${escapeHtml(author)}" />
+            <picture>
+              <source srcset="${escapeHtml(authorImageSrc)}" type="image/webp" />
+              <img src="${escapeHtml(authorImage)}" alt="${escapeHtml(author)}" width="40" height="40" />
+            </picture>
             <div>
               <strong style="color:var(--fg);">${escapeHtml(author)}</strong>
               <div style="font-size:12px; color:var(--fg-subtle)">${escapeHtml(authorRole)}</div>
