@@ -1846,6 +1846,31 @@
       </div>
 
       <div class="blog-grid">
+        <!-- Post: Enterprise AI Agents (newest) -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-enterprise-ai-agents')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 8 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 04, 2026</div>
+            <h3 class="blog-card-title">Why Your Enterprise AI Agents Fail Without an Architecture</h3>
+            <p class="blog-card-excerpt">Why most enterprise AI-agent initiatives die — and the sandboxing, authorization, and observability patterns that separate working autonomous systems from demo toys.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
         <!-- Post: Hermes on Hostinger -->
         <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-hermes-hostinger')">
           <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/zrikat_preview.jpg');">
@@ -2196,6 +2221,37 @@
 
     // Blog Posts Data
     const ARTICLES = {
+      'post-enterprise-ai-agents': {
+        title: 'Why Your Enterprise AI Agents Fail Without an Architecture',
+        category: 'AI Systems',
+        date: 'Sep 04, 2026',
+        readTime: '8 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Sep 04, 2026</span>
+            <span><i class="ph ph-clock"></i> 8 min read</span>
+            <a href="blog/enterprise-ai-agents-fail-without-architecture.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>Every week I talk to teams that shipped a ChatGPT wrapper, declared victory, and then watched their \u201cagent\u201d quietly rot. The pattern is always the same, and it is never the model\u2019s fault. The failures are structural \u2014 which means they are fixable, with architecture, not prayers.</p>
+
+          <blockquote>\u201cAn AI agent is only as reliable as the boundary conditions and inspection layers surrounding its tool execution environment.\u201d</blockquote>
+
+          <h2>1. The three ways enterprise agents actually die</h2>
+          <p><strong>Death one \u2014 the demo-vs-production cliff.</strong> A chatbot is a calculator. An agent that reads your database, writes tickets, or triggers a deploy is a new, untrusted user with direct tool access. The engineering bar is not higher, it is categorically different: sandboxing, authorization, audit, rollback.</p>
+          <p><strong>Death two \u2014 no state graph.</strong> Wiring prompts to tools with if/else glue produces unconstrained loops that cannot be inspected, resumed, or audited. Production agents need explicit states, transitions, and fallback nodes.</p>
+          <p><strong>Death three \u2014 no human-in-the-loop gate.</strong> When an agent acts on high-consequence operations without explicit approval, one mistake erases a year of trust.</p>
+
+          <h2>2. The architecture that fixes all three</h2>
+          <p>The production pattern is a state-graph orchestrator with a mandatory human verification gate, backed by three non-negotiables: <strong>tool execution sandboxing</strong> (ephemeral, isolated, no host write access), <strong>explicit authorization boundaries</strong> (high-consequence actions always stop at the gate), and <strong>full trajectory observability</strong> (log the exact JSON so any decision can be replayed for compliance).</p>
+
+          <blockquote>The sandbox and the audit trail are not overhead \u2014 they are the product. They are what make an autonomous system something a compliance officer, CTO, and CFO will each sign off on.</blockquote>
+
+          <p><strong>Get the audit your team actually needs.</strong> I\u2019ll spend 30 minutes reviewing your agent architecture and hand you a concrete list of the sandboxing, authorization, and observability gaps \u2014 no obligation. Reach me at <a href="mailto:wisamdamouny@gmail.com" style="color:var(--accent);">wisamdamouny@gmail.com</a> or via the contact form.</p>
+          <p><a href="blog/enterprise-ai-agents-fail-without-architecture.html" target="_blank" style="display:inline-block; margin-top:8px; font-weight:600; color:var(--accent);">Read the full article \u2192</a></p>
+        `
+      },
       'post-hermes-hostinger': {
         title: 'Deploying a Managed Hermes Agent on Hostinger',
         category: 'AI Systems',
