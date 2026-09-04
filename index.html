@@ -2037,27 +2037,31 @@
         </div>
 
         <form class="contact-form" id="contact-form">
-          <div class="toast-msg" id="toast">Message sent successfully! I'll get back to you soon.</div>
+          <div class="toast-msg" id="toast" style="display:none"></div>
+
+          <input type="text" id="honey" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="text" name="_template" value="table" hidden>
+          <input type="text" name="_subject" value="New inquiry via wisamdamouny.com" hidden>
 
           <div class="form-group">
             <label for="name">Your Name</label>
-            <input type="text" id="name" class="form-control" placeholder="e.g. Sarah Jenkins" required />
+            <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Sarah Jenkins" required />
           </div>
 
           <div class="form-group">
             <label for="email">Your Email</label>
-            <input type="email" id="email" class="form-control" placeholder="sarah@example.com" required />
+            <input type="email" id="email" name="email" class="form-control" placeholder="sarah@example.com" required />
           </div>
 
           <div class="form-group">
             <label for="msg">Message</label>
-            <textarea id="msg" class="form-control" placeholder="Tell me about your project or inquiry..."
+            <textarea id="msg" name="message" class="form-control" placeholder="Tell me about your project or inquiry..."
               required></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="align-self: flex-start;">
-            <span>Send Message</span>
-            <i class="ph ph-paper-plane-tilt"></i>
+          <button type="submit" id="submit-btn" class="btn btn-primary" style="align-self: flex-start;">
+            <span id="submit-label">Send Message</span>
+            <i class="ph ph-paper-plane-tilt" id="submit-icon"></i>
           </button>
         </form>
       </div>
@@ -2137,17 +2141,57 @@
       });
     });
 
-    // Contact Form Submission
+    // Contact Form Submission (delivers to inbox via FormSubmit.co AJAX endpoint)
     const contactForm = document.getElementById('contact-form');
     const toast = document.getElementById('toast');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitLabel = document.getElementById('submit-label');
+    const submitIcon = document.getElementById('submit-icon');
+    // Must match an activated FormSubmit.co account for this inbox.
+    const formEndpoint = 'https://formsubmit.co/ajax/wisamdamouny@gmail.com';
 
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+    function showToast(msg, isError) {
+      toast.textContent = msg;
       toast.style.display = 'block';
-      contactForm.reset();
-      setTimeout(() => {
-        toast.style.display = 'none';
-      }, 4000);
+      // Simple inline styling since we cannot rely on a theme class here.
+      toast.style.color = isError ? '#e05b5b' : '';
+      toast.style.borderLeftColor = isError ? '#e05b5b' : '';
+      setTimeout(() => { toast.style.display = 'none'; }, 5000);
+    }
+
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // Honeypot anti-spam: bots fill the hidden field, humans don't.
+      const honey = document.getElementById('honey').value;
+      if (honey) { return; }
+
+      const payload = Object.fromEntries(
+        new FormData(contactForm).entries()
+      );
+
+      submitBtn.disabled = true;
+      submitLabel.textContent = 'Sending...';
+      submitIcon.className = 'ph ph-circle-notch';
+
+      try {
+        const res = await fetch(formEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (!res.ok || (json && json.success === false)) {
+          throw new Error(json && json.message ? json.message : 'Delivery failed');
+        }
+        showToast("Message sent successfully! I'll get back to you soon.");
+        contactForm.reset();
+      } catch (err) {
+        showToast('Sorry, the message could not be delivered. Please email wisamdamouny@gmail.com directly.', true);
+      } finally {
+        submitBtn.disabled = false;
+        submitLabel.textContent = 'Send Message';
+        submitIcon.className = 'ph ph-paper-plane-tilt';
+      }
     });
 
     // Blog Posts Data
