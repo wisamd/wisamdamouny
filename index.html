@@ -1846,6 +1846,31 @@
       </div>
 
       <div class="blog-grid">
+        <!-- Post: Multi-Agent Observability & Audit (newest) -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-multi-agent-observability')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(129, 140, 248, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/kaneo_preview.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 07, 2026</div>
+            <h3 class="blog-card-title">Making Multi-Agent Systems Auditable &amp; Observable in Production</h3>
+            <p class="blog-card-excerpt">Why production AI agents fail on observability — and the OpenTelemetry-based tracing, trajectory logs, and replay surface that turn "the agent seems fine" into proof.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
         <!-- Post: Enterprise AI Agents (newest) -->
         <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-enterprise-ai-agents')">
           <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
@@ -2221,6 +2246,38 @@
 
     // Blog Posts Data
     const ARTICLES = {
+      'post-multi-agent-observability': {
+        title: 'Making Multi-Agent Systems Auditable & Observable in Production',
+        category: 'AI Systems',
+        date: 'Sep 07, 2026',
+        readTime: '9 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Sep 07, 2026</span>
+            <span><i class="ph ph-clock"></i> 9 min read</span>
+            <a href="blog/multi-agent-observability-audit.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>When your multi-agent system works in the demo but nobody can explain, in plain terms, \u201cwhat one of its autonomous steps actually did in the last hour\u201d \u2014 that is not engineering small-print, it is a production blocker. Auditors and customers will ask a question no accuracy benchmark can answer: \u201cProve it.\u201d Most teams buy a better model when they should buy better telemetry.</p>
+
+          <h2>1. Why the model is the least interesting part of production</h2>
+          <p>The hard production problems are <strong>reproducibility</strong> (the same prompt yields different tool calls, so you must be able to replay what happened), <strong>multi-hop blame</strong> (one task fans out across sub-agents and parallel tool calls a stack trace never sees), <strong>latency hunting</strong>, and <strong>compliance</strong>. The solution is not trust \u2014 it is engineering: treat every agent run as a distributed trace and build a replay surface on top of it.</p>
+
+          <h2>2. Reuse the OSS telemetry stack you already run</h2>
+          <p><strong>OpenTelemetry</strong> is the universal standard for distributed traces, metrics, and logs, and it is already in your stack. Represent an agent run as a <strong>trace</strong> and its reasoning steps as <strong>spans</strong>: orchestrator, thinking, human-gate approval, each tool execution, and each LLM call \u2014 correlated by <code>run_id</code> and <code>trace_id</code> so an auditor can follow from request to the exact row the agent touched.</p>
+
+          <blockquote>\u201cThe sandbox and the audit trail are not overhead \u2014 they are the product. They are what make an autonomous system something a compliance officer, a CTO, and a CFO will each sign off on.\u201d</blockquote>
+
+          <h2>3. A minimal wiring you can copy today</h2>
+          <p>A small OTel-instrumented <code>run_step()</code> wrapper \u2014 wrapping the event loop, not the model \u2014 emits a span per step with model fingerprint, tool inputs/outputs (redacted), gate decisions, retries, latency, and a stable <code>run_id</code>. Keep a companion append-only <strong>trajectory log</strong> per run as the canonical audit object: <code>run_id</code>, user, session, policy version, every intent and gate decision, redacted snapshots (not raw PII), and a content hash on each line for tamper-evidence.</p>
+
+          <h2>4. Make observability a product, not a fire drill</h2>
+          <p>Turn telemetry into something engineers open daily: a <strong>trajectory view</strong> of the gated decision graph, <strong>diff against a golden baseline</strong> to alert on loops and drift, and a one-button <strong>\u201cexplain this run\u201d</strong> report in natural language for compliance.</p>
+          <p><strong>Get an audit pass on your agent architecture.</strong> I\u2019ll spend 30 minutes reviewing your telemetry, sandboxing, and human-in-the-loop coverage and hand you a concrete list of the observability gaps \u2014 no obligation. Reach me at <a href="mailto:wisamdamouny@gmail.com" style="color:var(--accent);">wisamdamouny@gmail.com</a> or via the contact form.</p>
+          <p><a href="blog/multi-agent-observability-audit.html" target="_blank" style="display:inline-block; margin-top:8px; font-weight:600; color:var(--accent);">Read the full article \u2192</a></p>
+        `
+      },
       'post-enterprise-ai-agents': {
         title: 'Why Your Enterprise AI Agents Fail Without an Architecture',
         category: 'AI Systems',

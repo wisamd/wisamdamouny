@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Making Multi-Agent Systems Auditable &amp; Observable in Production — Wisam Damouny</title>
+  <meta name="description" content="Why production AI agents fail on observability, not on model quality — and a practical OpenTelemetry-based telemetry, tracing, and replay strategy for multi-agent systems, by Wisam Damouny." />
+  <link rel="canonical" href="https://wisamdamouny.com/blog/multi-agent-observability-audit.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Wisam Damouny" />
+
+  <!-- Open Graph Meta Tags for Social & SEO -->
+  <meta property="og:title" content="Making Multi-Agent Systems Auditable &amp; Observable in Production" />
+  <meta property="og:description" content="Why production AI agents fail on observability, not on model quality — and a practical OpenTelemetry-based telemetry, tracing, and replay strategy for multi-agent systems, by Wisam Damouny." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://wisamdamouny.com/blog/multi-agent-observability-audit.html" />
+  <meta property="og:site_name" content="Wisam Damouny" />
+  <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Making Multi-Agent Systems Auditable & Observable in Production",
+    "description": "Why production AI agents fail on observability, not on model quality — and a practical OpenTelemetry-based telemetry, tracing, and replay strategy for multi-agent systems, by Wisam Damouny.",
+    "url": "https://wisamdamouny.com/blog/multi-agent-observability-audit.html",
+    "datePublished": "2026-09-07",
+    "author": { "@type": "Person", "name": "Wisam Damouny", "url": "https://wisamdamouny.com/" },
+    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
+    "mainEntityOfPage": "https://wisamdamouny.com/blog/multi-agent-observability-audit.html"
+  }
+  </script>
+
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    :root {
+      --accent: #D97757;
+      --accent-hover: #E58A6C;
+      --accent-glow: rgba(217, 119, 87, 0.22);
+      --bg: #0b0c0e;
+      --bg-alt: #12141a;
+      --card-bg: rgba(20, 22, 28, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --fg: #f4f4f6;
+      --fg-muted: #9da2b0;
+      --fg-subtle: #6b7280;
+      --nav-bg: rgba(11, 12, 14, 0.88);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    html.light {
+      --bg: #f7f7f9;
+      --bg-alt: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --fg: #121316;
+      --fg-muted: #525866;
+      --fg-subtle: #868d9d;
+      --nav-bg: rgba(247, 247, 249, 0.88);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.8;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 18px 0;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      color: var(--fg);
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .back-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    main {
+      padding: 60px 0 100px;
+    }
+
+    .article-header {
+      margin-bottom: 40px;
+    }
+
+    .blog-tag {
+      background: #D97757;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 24px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--fg-muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .article-content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 36px 0 18px;
+      color: var(--fg);
+    }
+
+    .article-content h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 28px 0 14px;
+      color: var(--fg);
+    }
+
+    .article-content p {
+      margin-bottom: 24px;
+      color: var(--fg-muted);
+      font-size: 17px;
+    }
+
+    .article-content blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 20px 24px;
+      background: var(--card-bg);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--fg);
+      font-size: 18px;
+    }
+
+    .article-content pre {
+      background: #0d0e12;
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin: 28px 0;
+    }
+
+    .article-content pre.mermaid {
+      background: var(--card-bg);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      margin: 36px 0;
+    }
+
+    .article-content ul, .article-content ol {
+      margin: 20px 0 28px 24px;
+      color: var(--fg-muted);
+      font-size: 16px;
+    }
+
+    .article-content li {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="../index.html" class="brand">
+          <span class="brand-dot"></span>
+          <span>Wisam Damouny</span>
+        </a>
+        <a href="../index.html#blog" class="back-link">
+          <i class="ph ph-arrow-left"></i> Back to Articles
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <article class="article-header">
+        <span class="blog-tag">AI Systems</span>
+        <h1>Making Multi-Agent Systems Auditable &amp; Observable in Production</h1>
+
+        <div class="article-meta">
+          <div class="author-info">
+            <picture>
+              <source srcset="../assets/avatar_hero_wisam.webp" type="image/webp" />
+              <img src="../assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" width="40" height="40" />
+            </picture>
+            <div>
+              <strong style="color:var(--fg);">Wisam Damouny</strong>
+              <div style="font-size:12px; color:var(--fg-subtle)">Software Tech Leader &amp; AI Systems Architect</div>
+            </div>
+          </div>
+          <div><i class="ph ph-calendar-blank"></i> Sep 07, 2026</div>
+          <div><i class="ph ph-clock"></i> 9 min read</div>
+        </div>
+      </article>
+
+      <div class="article-content">
+        <p>When your multi-agent system works in the demo but nobody can explain, in plain terms, <em>what one of its autonomous steps actually did in the last hour</em> — that is not an engineering small-print problem, that is a production blocker. Auditors, compliance officers, and increasingly the customers themselves will ask a question that no accuracy benchmark can answer: <strong>&quot;Prove it.&quot;</strong></p>
+<p>Most teams buy a better model when they should buy better telemetry. This post is the observability-and-audit layer I put in front of every production deploy: tracing that goes <em>through</em> the reasoning, not just around it; structured trajectory logs you can replay; and the control surfaces that turn &quot;the agent seems fine&quot; into &quot;here is the decision, the path, the tools, and the owner.&quot;</p>
+<h2>1. Why the model is the least interesting part of production</h2>
+<p>The hard production problems are not token-related. They are:</p>
+<ul>
+<li><strong>Reproducibility.</strong> The same prompt yields different tool calls on a different run. If you cannot replay what happened, you cannot debug, and you cannot defend it.</li>
+<li><strong>Multi-hop blame.</strong> One task fans out across several sub-agents, parallel tool calls, retries, and a human gate. A fifty-line stack trace sees none of that.</li>
+<li><strong>Latency hunting.</strong> A single user request can trigger dozens of model and tool round trips. Without distributed tracing, the slow step is a needle with no stack.</li>
+<li><strong>Compliance.</strong> If your agent touches production, billing, or PII, an auditor will demand a decision-by-decision reconstruction. A raw chat log is not a decision record.</li>
+</ul>
+<p>The solution is not trust. It is engineering: treat every agent run as a distributed trace, emit it to a standards-based backend, and build the replay surface on top.</p>
+<h2>2. Reuse the OSS telemetry stack you already run</h2>
+<p>You do not need agent-specific cobbled-together tooling. OpenTelemetry (OTel) is the universal standard for distributed traces, metrics, and logs, and it is already inside your stack if you run anything production-grade. The trick is to represent an agent run as a <strong>trace</strong> and its individual reasoning steps as <strong>spans</strong>.</p>
+<pre class="mermaid">graph TD
+    Req([User Request]) --> Root[TraceRoot / Orchestrator Span]
+    Root --> Planner[Thinking Span]
+    Root --> Gate{Approval?}
+    Gate -- Yes --> Hum[Human Approval Span]
+    Hum -- OK --> Tool[Tool Exec Span]
+    Tool --> DB[(DB / API)]
+    Tool --> Snapshot[ToolResult Snapshot Attr]
+    Root --> SubA[Sub-Agent Trace]
+    Root --> SubB[Sub-Agent Trace]
+    Root --> LLM[LLM Call Span + Response Fingerprint]
+    Root --> Audit[(Structured Trajectory Log)]</pre>
+<p>Every step above emits a span with structured attributes: model name and fingerprint, tool name + inputs/outputs (redacted), decision, retries, latency, and a stable <code>run_id</code>. Spans are correlated by <code>trace_id</code>, so an auditor can follow from the original request to the exact file the agent touched — without reading any prose.</p>
+<h2>3. A minimal wiring you can copy today</h2>
+<p>Here is the shape of an instrumented <code>step()</code> in Python using the OTel SDK. It is deliberately small: wrapping the event loop, not the model.</p>
+<pre><code class="language-python">from opentelemetry import trace
+from opentelemetry.trace import Status, StatusCode
+
+tracer = trace.get_tracer(&quot;agent&quot;)
+
+def run_step(run_id: str, step: dict, call_model, approve=False):
+    with tracer.start_as_current_span(f&quot;agent.{step[&#039;kind&#039;]}&quot;) as span:
+        span.set_attribute(&quot;run.id&quot;, run_id)
+        span.set_attribute(&quot;agent.step&quot;, step[&quot;id&quot;])
+        span.set_attribute(&quot;model&quot;, step.get(&quot;model&quot;))
+        span.set_attribute(&quot;tool&quot;, step.get(&quot;tool&quot;))
+        # never put raw PII here:
+        span.set_attribute(&quot;llm.prompt_hash&quot;, fingerprint(step[&quot;prompt&quot;]))
+        if approve and not get_approval(run_id, step):
+            span.set_status(Status(StatusCode.ERROR, &quot;blocked by gate&quot;))
+            record_rejection(run_id, step)
+            return None
+        try:
+            result = call(**step[&quot;args&quot;])
+            span.set_attribute(&quot;tool.snapshot_hash&quot;,
+                               fingerprint(result[&quot;snapshot&quot;]))
+            return result
+        except Exception as e:
+            span.record_exception(e)
+            span.set_status(Status(StatusCode.ERROR))
+            raise</code></pre>
+<p>Set a sampler that keeps 100% of spans tagged <code>run.id</code> present or high-risk (billing, production writes), and sample the rest. Cheap when you need it, complete when it matters.</p>
+<h2>4. The trajectory log is the audit object</h2>
+<p>Distributed traces give you the <em>what and when</em>. The audit additionally needs the <em>why and who</em>. Keep a companion, append-only trajectory document per run — a decision-level event log that is the canonical, immutable record:</p>
+<ul>
+<li><code>run_id</code>, <code>user</code>, <code>session</code>, and the approved policy version.</li>
+<li>Every emitted intent, the chosen action, the gate decision, and the ownership CAP.</li>
+<li>Tool inputs and outputs <strong>as redacted snapshots</strong>, not raw secrets.</li>
+<li><code>published_at</code> timestamps and a content hash on every line for tamper-evidence.</li>
+</ul>
+<p>Write it to an object store (S3-compatible or a WORM blob bucket) with a key like <code>runs/&lt;yyyy&gt;/&lt;mm&gt;/&lt;run_id&gt;.ndjson</code>. Attach it to the trace so a single click assigns the audit record.</p>
+<pre><code class="language-json">{&quot;ts&quot;:&quot;2026-09-07T09:12:44Z&quot;,&quot;run_id&quot;:&quot;a1b2c3&quot;,&quot;user&quot;:&quot;u_17&quot;,&quot;step&quot;:&quot;intent&quot;,
+ &quot;act&quot;:&quot;update_billing_plan&quot;,&quot;gate&quot;:&quot;human_required&quot;,&quot;status&quot;:&quot;approved&quot;,
+ &quot;owner&quot;:&quot;wdamouny&quot;,&quot;snapshot&quot;:&quot;sha256:9f2...&quot;,&quot;pol_ver&quot;:&quot;2026-08-v3&quot;}</code></pre>
+<p>Do not store raw PII. Store the fingerprint <code>sha256:</code> plus a reference; only expand it from a protected datastore on a signed audit request. That keeps you GDPR-clean while staying replayable.</p>
+<h2>5. Making multi-agent observability a product, not a fire drill</h2>
+<p>Three everyday features turn telemetry into something engineers actually open every day rather than during the incident:</p>
+<ul>
+<li><strong>The trajectory view.</strong> Render the gated graph (the Mermaid diagram above as the UI for a run) so a human can scroll the exact decision path that produced an output. Collapsible at every step: model, tool, gate, snapshot diff.</li>
+<li><strong>Diff against baseline.</strong> Retain a baseline run for a golden path. Alert when an agent veers from the expected tool sequence or dwells too long in a loop — an early smell of a regression you cannot see on any chart.</li>
+<li><strong>The &quot;explain this&quot; report.</strong> One button from any trace restates the run in natural language for compliance: what was requested, what was touched, who approved it, what changed. This is the artifact an external auditor receives.</li>
+</ul>
+<h2>6. When you ship the audit layer, not the agent</h2>
+<p>If I only had the time to give one piece of advice to a team putting agents in production:</p>
+<blockquote>
+<p>&quot;The sandbox and the audit trail are not overhead — they are the product. They are what make an autonomous system something a compliance officer, a CTO, and a CFO will each sign off on.&quot;</p>
+</blockquote>
+<p>Good observability redeems: it reframes every &quot;the agent is weird&quot; report into a precise, replayable, attributable incident with an owner and a decision. It is the difference between an agent you demo and an agent you can be responsible for at 2 a.m. because it moved a production row.</p>
+<h2>Get an audit pass on your agent architecture</h2>
+<p>If your team has shipped an AI agent (or is about to), I will spend 30 minutes reviewing your telemetry, sandboxing, and human-in-the-loop coverage and hand you a concrete list of the observability gaps — what is production-safe and what isn&#39;t. No obligation, and no model-brand pitch.</p>
+<p>Reach me directly at <strong><a href="mailto:wisamdamouny@gmail.com">wisamdamouny@gmail.com</a></strong> or via the contact form below.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Wisam Damouny · Crafting self-hosted software for humans and AI agents.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'dark',
+          securityLevel: 'loose',
+          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
