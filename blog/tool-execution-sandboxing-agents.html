@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tooling a Safe Sandbox for Enterprise AI Agents — Wisam Damouny</title>
+  <meta name="description" content="The practical playbook Wisam Damouny uses to isolate AI agent tool execution — gVisor/Firecracker isolation, seccomp and eBPF syscall filtering, egress control, and permission gates that let senior teams ship agents that touch production safely." />
+  <link rel="canonical" href="https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Wisam Damouny" />
+
+  <!-- Open Graph Meta Tags for Social & SEO -->
+  <meta property="og:title" content="Tooling a Safe Sandbox for Enterprise AI Agents" />
+  <meta property="og:description" content="The practical playbook Wisam Damouny uses to isolate AI agent tool execution — gVisor/Firecracker isolation, seccomp and eBPF syscall filtering, egress control, and permission gates that let senior teams ship agents that touch production safely." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html" />
+  <meta property="og:site_name" content="Wisam Damouny" />
+  <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Tooling a Safe Sandbox for Enterprise AI Agents",
+    "description": "The practical playbook Wisam Damouny uses to isolate AI agent tool execution — gVisor/Firecracker isolation, seccomp and eBPF syscall filtering, egress control, and permission gates that let senior teams ship agents that touch production safely.",
+    "url": "https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html",
+    "datePublished": "2026-09-14",
+    "author": { "@type": "Person", "name": "Wisam Damouny", "url": "https://wisamdamouny.com/" },
+    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
+    "mainEntityOfPage": "https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html"
+  }
+  </script>
+
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    :root {
+      --accent: #D97757;
+      --accent-hover: #E58A6C;
+      --accent-glow: rgba(217, 119, 87, 0.22);
+      --bg: #0b0c0e;
+      --bg-alt: #12141a;
+      --card-bg: rgba(20, 22, 28, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --fg: #f4f4f6;
+      --fg-muted: #9da2b0;
+      --fg-subtle: #6b7280;
+      --nav-bg: rgba(11, 12, 14, 0.88);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    html.light {
+      --bg: #f7f7f9;
+      --bg-alt: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --fg: #121316;
+      --fg-muted: #525866;
+      --fg-subtle: #868d9d;
+      --nav-bg: rgba(247, 247, 249, 0.88);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.8;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 18px 0;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      color: var(--fg);
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .back-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    main {
+      padding: 60px 0 100px;
+    }
+
+    .article-header {
+      margin-bottom: 40px;
+    }
+
+    .blog-tag {
+      background: #D97757;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 24px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--fg-muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .article-content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 36px 0 18px;
+      color: var(--fg);
+    }
+
+    .article-content h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 28px 0 14px;
+      color: var(--fg);
+    }
+
+    .article-content p {
+      margin-bottom: 24px;
+      color: var(--fg-muted);
+      font-size: 17px;
+    }
+
+    .article-content blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 20px 24px;
+      background: var(--card-bg);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--fg);
+      font-size: 18px;
+    }
+
+    .article-content pre {
+      background: #0d0e12;
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin: 28px 0;
+    }
+
+    .article-content pre.mermaid {
+      background: var(--card-bg);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      margin: 36px 0;
+    }
+
+    .article-content ul, .article-content ol {
+      margin: 20px 0 28px 24px;
+      color: var(--fg-muted);
+      font-size: 16px;
+    }
+
+    .article-content li {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="../index.html" class="brand">
+          <span class="brand-dot"></span>
+          <span>Wisam Damouny</span>
+        </a>
+        <a href="../index.html#blog" class="back-link">
+          <i class="ph ph-arrow-left"></i> Back to Articles
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <article class="article-header">
+        <span class="blog-tag">AI Systems</span>
+        <h1>Tooling a Safe Sandbox for Enterprise AI Agents</h1>
+
+        <div class="article-meta">
+          <div class="author-info">
+            <picture>
+              <source srcset="../assets/avatar_hero_wisam.webp" type="image/webp" />
+              <img src="../assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" width="40" height="40" />
+            </picture>
+            <div>
+              <strong style="color:var(--fg);">Wisam Damouny</strong>
+              <div style="font-size:12px; color:var(--fg-subtle)">Software Tech Leader &amp; AI Systems Architect</div>
+            </div>
+          </div>
+          <div><i class="ph ph-calendar-blank"></i> Sep 14, 2026</div>
+          <div><i class="ph ph-clock"></i> 8 min read</div>
+        </div>
+      </article>
+
+      <div class="article-content">
+        <p>An agent is a new, untrusted user that can run code, call your APIs, and mutate state — and the most debated part of a production AI system is not the model, it is <em>where the tools execute</em>. I have seen teams replace a convincing demo with a production incident in one afternoon because the agent had full host access and &quot;just knew&quot; how to call the runbook. This post is the sandboxing layer I put between an agent and anything that matters: what is worth isolating, which isolation primitives to reach for at each trust level, and the permission gate that turns &quot;the agent can do it&quot; into &quot;the agent can do it after a human or policy says so.&quot;</p>
+<h2>1. The threat model is the design brief</h2>
+<p>Before choosing a sandbox, write down what fails. For an enterprise agent that reads your database, writes tickets, and triggers deploys, the realistic failure modes are not a rogue model plotting world domination. They are banal and specific:</p>
+<ul>
+<li><strong>Prompt-injected commands.</strong> An LLM reads an untrusted document containing <code>curl ... | sh</code> and, if the model has a shell tool, faithfully executes it. This is the #1 incident source in practice.</li>
+<li><strong>Billion-dollar loop.</strong> A retry loop that punches through an idempotency guard and writes the same billing row forty thousand times.</li>
+<li><strong>Privilege amplification.</strong> The agent holds a token with more scope than the task needs, and any compromise inherits that scope.</li>
+<li><strong>Data exfiltration.</strong> The agent reads a sensitive file while processing, and a later step posts it to a public endpoint.</li>
+</ul>
+<p>The principle is simple: <strong>an agent must never run with the privileges of the human orchestrating it.</strong> It runs with the minimum privilege its current task requires, inside an environment that can fail closed. Sandboxing is how you make that true without making the agent unusable.</p>
+<p>The decision tree that follows is about choosing the <em>thinnest</em> boundary that contains the agent&#39;s blast radius at each risk tier.</p>
+<h2>2. Pick isolation by trust level</h2>
+<p>Sandboxes are not one size. I bucket tool execution into four tiers, each with a different boundary:</p>
+<pre class="mermaid">graph LR
+    A[User Query] --> B{Trust level?}
+    B -- Read-only / simple tools --> C[In-process + seccomp]
+    B -- Code / shell / npm --> D[gVisor or Firecracker microVM]
+    B -- External APIs only --> E[Sandboxed egress + token scoping]
+    B -- Untrusted input processing --> F[Full microVM + no egress]
+    C --> G[Host OS]
+    D --> G</pre>
+<ul>
+<li><strong>Tier 1 — in-process with seccomp.</strong> For tools that only call well-known APIs, run them in a worker thread fenced off by a <code>seccomp</code> allowlist of syscalls plus resource limits. Fastest; sufficient for read-only operations.</li>
+<li><strong>Tier 2 — user-space sandbox.</strong> For tools that execute code or scripts but don&#39;t need the host kernel — think <code>node</code> for a headless browser task, or a LISP/JS eval. A user-space sandbox like gVisor&#39;s <code>runsc</code> or a <code>bwrap</code> bubblewrap layer gives you syscall interception without a full VM.</li>
+<li><strong>Tier 3 — microVM.</strong> For anything that runs untrusted, third-party, or genuinely arbitrary code, use a Firecracker or Cloud Hypervisor microVM with a read-only rootfs and no network by default. Boot times are 100–200ms, so the cost is low enough to use per-call.</li>
+<li><strong>Tier 4 — in / out anonymizer.</strong> For processing untrusted documents, the microVM also gets <strong>no outbound network</strong> unless the task explicitly needs it, and if it does, it goes through an egress proxy that filters destinations.</li>
+</ul>
+<p>Every tier still needs the two cross-cutting controls below: a syscall policy and an egress policy.</p>
+<h2>3. syscalls: the allowlist that does the heavy lifting</h2>
+<p>On Linux, the boundary your agent actually feels is the kernel syscall surface. <code>seccomp-bpf</code> lets you deny everything except an allowlist. Working from an allowlist (not a deny list) is the whole game — deny lists always leak one stray syscall you hadn&#39;t thought of.</p>
+<p>A pragmatic start for a typed, single-purpose tool runner is a <em>reserved</em> set of syscalls:</p>
+<pre><code class="language-c">// seccomp filter sketch: allow only the syscalls a
+// function-calling tool runner needs; kill everything else
+#define MAX_SYSCALLS 256
+
+struct sock_filter filter[] = {
+    /* all-or-nothing default: kill the process */
+    BPF_STMT(BPF_RET | BPF_K, SECCOMP_RET_KILL_PROCESS),
+    /* ...then insert explicit BPF_JUMP allow rules for: */
+    /* read write close fcntl ioctl clock_gettime getpid   */
+    /* mmap munmap mprotect exit exit_group (your subset)  */
+};</code></pre>
+<p>The exact whitelist depends on your runtime, but the discipline is identical: <strong>deny by default, then add back only what the tool provably needs.</strong> When you add a syscall, you add it with the reasoning, not because a stack trace complained once.</p>
+<p>If your tool runtime needs more syscalls than a comfortable allowlist allows, or you need to filter at the <em>network</em> and <em>file-path</em> level rather than the syscall level, move from raw seccomp to a syscall-intercepting user-space sandbox (gVisor <code>runsc</code>) or to eBPF-based filtering with tools like <code>bpftrace</code>/<code>badger</code> for visibility and <code>LVE</code> for enforcement. The principle is unchanged — you are shrinking the kernel surface the untrusted code sees.</p>
+<h2>4. Egress control: the firewall is the GDPR layer</h2>
+<p>Almost every serious leak in an agent system is not syscall abuse — it is the agent phoning home, or phoning out. An agent with a <code>.env</code> in scope and a working internet connection is a DIMM slot away from an outbound POST. The fix is that an agent&#39;s network is a proxy you control, not a pipe to the world.</p>
+<p>Concretely, per tool invocation pass a scoped, short-lived token and route all outbound traffic through an egress filter that answers one question: <em>is this destination one this task is permitted to reach?</em> Deny by default, then allow a small set:</p>
+<pre><code class="language-yaml"># per-sandbox egress policy (deny-by-default)
+egress:
+  default: deny
+  allow:
+    - host: &quot;api.qlik.example&quot;
+      tls: required
+      token_scope: &quot;tickets:write&quot;
+    - host: &quot;pypi.org&quot;            # only for build/verify steps
+      tls: required
+  deny:
+    - host: &quot;*&quot;                   # everything else fails closed
+      reason: &quot;not in task allowlist&quot;</code></pre>
+<p>The two most overlooked details: the token scope travels with the request (so a compromise of the sandbox does not bequeath a long-lived credential), and the policy is attached to the <em>task</em>, not to the model or the tool. Change the task, change the policy.</p>
+<h2>5. Files: read-only rootfs, tmpfs working dir, no host writes</h2>
+<p>File access is where agents blunder into production. The rule is: <strong>the sandbox rootfs is read-only, the working directory is an ephemeral tmpfs, and there is no mount of host paths by default.</strong> Anything the agent must produce is staged out through an explicit, policy-checked handoff rather than an implicit write.</p>
+<pre><code class="language-python"># build a lower-layer rootfs for the microVM (read-only),
+# an upper tmpfs for the working dir, and NO host mounts
+def make_sandbox_root():
+    return overlay_fs(
+        lower=[&quot;/opt/agent/rootfs&quot;],   # read-only base
+        upper=&quot;/dev/shm/work&quot;,          # ephemeral, no persistence
+        workdir=&quot;/tmp/overlay-work&quot;,
+        no_host_mounts=True,
+    )</code></pre>
+<p>If an agent needs to read a real file, mount a <em>scoped, read-only copy</em> or give it the redacted content via a temporary object-store read, not the live file. If it needs to write, the write lands in a staging bucket that requires a human or an approving system to promote. You buy back one thing with all this friction: <strong>an agent cannot irreversibly destroy or silently exfiltrate state it was never given access to touch.</strong></p>
+<h2>6. The permission gate: sandbox ≠ authority</h2>
+<p>A sandbox isolates <em>blast radius</em>. It does not <em>authorize</em> anything. The two are complementary and both mandatory. I pair every sandbox with an explicit permission gate that lives <strong>between request and execution</strong>, mirroring the human-in-the-loop pattern regular readers will recognize from my posts on agent architecture:</p>
+<pre><code class="language-text">Agent intent --&gt; classify: risky? 
+   -&gt; if yes --&gt; STOP --&gt; human approval (or policy permits)
+   --&gt; issue scoped token for this one execution
+   --&gt; run in sandbox with that token&#039;s egress/file scopes
+   --&gt; enforce quota/idempotency --&gt; record trajectory</code></pre>
+<p>High-consequence executions (write paths, billing, deploys, anything touching PII) always stop at the gate. Low-risk read-only steps proceed but still record their trajectory. The sandbox makes the blast radius small; the gate decides which explosions are allowed at all. Ship both, and an agent becomes a tool you can be responsible for at 2 a.m., because a runaway call dies inside the sandbox instead of inside your database.</p>
+<h2>Get a sandboxing review of your agent stack</h2>
+<p>If your team&#39;s agents have tool access and you are not certain what that means for your blast radius, I will spend 30 minutes reviewing your tool execution layer — isolation boundaries, syscall policy, egress control, and permission gates — and hand you a concrete list of what is production-safe and what is not. No obligation, and no product pitch.</p>
+<p>Reach me directly at <strong><a href="mailto:wisamdamouny@gmail.com">wisamdamouny@gmail.com</a></strong> or via the contact form below.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Wisam Damouny · Crafting self-hosted software for humans and AI agents.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'dark',
+          securityLevel: 'loose',
+          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

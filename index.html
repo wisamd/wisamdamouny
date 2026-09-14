@@ -1846,6 +1846,31 @@
       </div>
 
       <div class="blog-grid">
+        <!-- Post: Tool Execution Sandboxing (newest) -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-tool-sandboxing')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(139, 92, 246, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 8 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 14, 2026</div>
+            <h3 class="blog-card-title">Tooling a Safe Sandbox for Enterprise AI Agents</h3>
+            <p class="blog-card-excerpt">The practical playbook for isolating agent tool execution — gVisor/Firecracker boundaries, seccomp syscall allowlists, egress control, and permission gates that contain an agent's blast radius.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
         <!-- Post: Multi-Agent Observability & Audit (newest) -->
         <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-multi-agent-observability')">
           <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(129, 140, 248, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/kaneo_preview.jpg');">
@@ -2246,6 +2271,38 @@
 
     // Blog Posts Data
     const ARTICLES = {
+      'post-tool-sandboxing': {
+        title: 'Tooling a Safe Sandbox for Enterprise AI Agents',
+        category: 'AI Systems',
+        date: 'Sep 14, 2026',
+        readTime: '8 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Sep 14, 2026</span>
+            <span><i class="ph ph-clock"></i> 8 min read</span>
+            <a href="blog/tool-execution-sandboxing-agents.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>An agent is a new, untrusted user that can run code, call your APIs, and mutate state \u2014 and the most debated part of a production AI system is not the model, it is <em>where the tools execute</em>. The sandboxing layer I put between an agent and anything that matters decides which failures are contained and which become incidents.</p>
+
+          <h2>1. The threat model is the design brief</h2>
+          <p>Before choosing a sandbox, write down what fails: <strong>prompt-injected commands</strong> (an LLM reads an untrusted doc containing <code>curl \u2026 | sh</code> and faithfully runs it), a <strong>billion-dollar loop</strong> that punches through idempotency and writes the same row thousands of times, <strong>privilege amplification</strong>, and <strong>data exfiltration</strong>. The principle: <strong>an agent must never run with the privileges of the human orchestrating it</strong> \u2014 it runs with the minimum privilege its current task requires, inside an environment that fails closed.</p>
+
+          <h2>2. Pick isolation by trust level</h2>
+          <p>Sandboxes are not one size. Four tiers: <strong>in-process with seccomp</strong> for read-only tools; a <strong>user-space sandbox</strong> (gVisor <code>runsc</code> or bubblewrap) for tools that execute scripts; a <strong>microVM</strong> (Firecracker) for arbitrary or third-party code \u2014 boot time is 100\u2013200ms so it is affordable per-call; and <strong>an egress-less microVM</strong> for untrusted document processing. Every tier still needs a syscall policy and an egress policy.</p>
+
+          <blockquote>\u201cDeny by default, then add back only what the tool provably needs.\u201d The syscall allowlist (not a deny list) shrinks the kernel surface the untrusted code sees.</blockquote>
+
+          <h2>3. syscalls, egress, and files</h2>
+          <p>On Linux the boundary your agent feels is the syscall surface. <code>seccomp-bpf</code> with a hard <code>SECCOMP_RET_KILL_PROCESS</code> default, then explicit allow rules, contains most single-purpose runners. The egress control is the GDPR layer \u2014 route all outbound traffic through a deny-by-default proxy that only permits task-scoped destinations. And the file rule is: <strong>read-only rootfs, ephemeral <code>tmpfs</code> working dir, no host mounts by default</strong>, with writes staged through a policy-checked handoff.</p>
+
+          <h2>4. The permission gate: sandbox \u2260 authority</h2>
+          <p>A sandbox isolates <em>blast radius</em>; it does not <em>authorize</em>. Pair every sandbox with a gate that lives between request and execution: classify intent, stop high-consequence steps for human approval (or an explicit policy), issue a short-lived scoped token for that one execution, run it in the sandbox with those egress/file scopes, and record the trajectory. The sandbox makes the explosion small; the gate decides which explosions are allowed at all.</p>
+          <p><strong>Get a sandboxing review of your agent stack.</strong> I\u2019ll spend 30 minutes reviewing your tool execution layer \u2014 isolation boundaries, syscall policy, egress control, and permission gates \u2014 and hand you a concrete list of what is production-safe and what isn\u2019t, no obligation. Reach me at <a href="mailto:wisamdamouny@gmail.com" style="color:var(--accent);">wisamdamouny@gmail.com</a> or via the contact form.</p>
+          <p><a href="blog/tool-execution-sandboxing-agents.html" target="_blank" style="display:inline-block; margin-top:8px; font-weight:600; color:var(--accent);">Read the full article \u2192</a></p>
+        `
+      },
       'post-multi-agent-observability': {
         title: 'Making Multi-Agent Systems Auditable & Observable in Production',
         category: 'AI Systems',
