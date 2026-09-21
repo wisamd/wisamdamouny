@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://wisamdamouny.com/</loc><lastmod>2026-09-14</lastmod></url>
-  <url><loc>https://wisamdamouny.com/blog/building-autonomous-ai-agents.html</loc><lastmod>2026-09-14</lastmod></url>
-  <url><loc>https://wisamdamouny.com/blog/enterprise-ai-agents-fail-without-architecture.html</loc><lastmod>2026-09-14</lastmod></url>
-  <url><loc>https://wisamdamouny.com/blog/hermes-agent-on-hostinger.html</loc><lastmod>2026-09-14</lastmod></url>
-  <url><loc>https://wisamdamouny.com/blog/high-throughput-data-pipelines.html</loc><lastmod>2026-09-14</lastmod></url>
-  <url><loc>https://wisamdamouny.com/blog/multi-agent-observability-audit.html</loc><lastmod>2026-09-14</lastmod></url>
-  <url><loc>https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html</loc><lastmod>2026-09-14</lastmod></url>
-  <url><loc>https://wisamdamouny.com/blog/self-hosted-saas-infrastructure.html</loc><lastmod>2026-09-14</lastmod></url>
-  <url><loc>https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html</loc><lastmod>2026-09-14</lastmod></url>
+  <url><loc>https://wisamdamouny.com/</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://wisamdamouny.com/blog/building-autonomous-ai-agents.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://wisamdamouny.com/blog/enterprise-ai-agents-fail-without-architecture.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://wisamdamouny.com/blog/hermes-agent-on-hostinger.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://wisamdamouny.com/blog/high-throughput-data-pipelines.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://wisamdamouny.com/blog/multi-agent-observability-audit.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://wisamdamouny.com/blog/self-hosted-saas-infrastructure.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://wisamdamouny.com/blog/state-graph-orchestration-agents.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html</loc><lastmod>2026-09-21</lastmod></url>
 </urlset>

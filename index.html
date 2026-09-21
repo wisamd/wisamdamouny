@@ -1846,6 +1846,31 @@
       </div>
 
       <div class="blog-grid">
+        <!-- Post: State Graph Orchestration (newest) -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-state-graph-orchestration')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(45, 212, 191, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero_serious.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 21, 2026</div>
+            <h3 class="blog-card-title">State Graph Orchestration: Production-Grade Control for AI Agents</h3>
+            <p class="blog-card-excerpt">Why raw LLM control flow does not scale in production — and the typed states, human-in-the-loop gates, checkpointing, and fallbacks that turn a stochastic agent into a deterministic, resumable machine.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
         <!-- Post: Tool Execution Sandboxing (newest) -->
         <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-tool-sandboxing')">
           <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(139, 92, 246, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
@@ -2271,6 +2296,44 @@
 
     // Blog Posts Data
     const ARTICLES = {
+      'post-state-graph-orchestration': {
+        title: 'State Graph Orchestration: Production-Grade Control for AI Agents',
+        category: 'AI Systems',
+        date: 'Sep 21, 2026',
+        readTime: '9 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Sep 21, 2026</span>
+            <span><i class="ph ph-clock"></i> 9 min read</span>
+            <a href="blog/state-graph-orchestration-agents.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>The difference between a demo agent and a production agent is rarely the model. It is almost always the <strong>control flow</strong>. A demo wires a prompt to a tool with <code>if/else</code> glue and hopes; a production agent knows exactly where it is, what it is allowed to do at each point, how to pause for a human, and how to resume after a crash. That is what a <strong>state graph</strong> gives you \u2014 the orchestration layer that turns a stochastic model into a deterministic, inspectable, resumable machine.</p>
+
+          <h2>1. Why raw LLM control flow does not scale</h2>
+          <p>Wiring everything into one long prompt collapses in production for three structural reasons: <strong>no defined states</strong> (you cannot answer \u201cwhat is this agent doing right now?\u201d), <strong>unbounded loops</strong> (a retry spins forever, each iteration paying an LLM call and mutating state), and <strong>no resume point</strong> (the orchestrator dies and the run restarts from zero \u2014 or repeats a side effect). A state graph replaces all three: instead of the model improvising, it picks one of N named transitions out of an explicit state, so the set of possibilities is bounded, auditable, and safe.</p>
+
+          <h2>2. States, transitions, and a schema you can serialize</h2>
+          <p>An agent run becomes a <strong>finite state machine</strong>. You define a finite set of states, allowed transitions, and a typed payload that rides with the run \u2014 with <code>request_id</code> surviving restarts. In LangGraph terms you add nodes for parse, plan, execute, and escalate, then wire conditional edges with a classifier choosing between named transitions. Three things make it production-grade: <strong>typed state</strong> (serialize, log, replay), <strong>bounded transitions</strong> (the model can only reach states you designed, even when it behaves badly), and a <strong>deterministic identity</strong> that ties checkpoints, crashes, and resumes to the same logical task.</p>
+
+          <h2>3. The human-in-the-loop gate is a state, not a callback</h2>
+          <blockquote>\u201cWhen a transition leads to a high-consequence action, the orchestrator moves to <code>AWAIT_APPROVAL</code> and stops. No clock ticks, no hidden retry \u2014 the run is simply paused at a defined point with a defined payload.\u201d</blockquote>
+          <p>Approval is an explicit graph state, not a detached callback. The gate lives between <em>intent</em> and <em>execution</em>; on approval it moves to executing, on rejection or timeout it fails closed to terminated. State graphs are the <em>mechanism</em> that makes human-in-the-loop first-class, deterministic, and testable.</p>
+
+          <h2>4. Checkpointing: cheap persistence, failover for free</h2>
+          <p>Because the entire state is a serializable object, you persist it after every transition almost for free \u2014 and that persistence delivers resumability without re-doing side effects. A checkpointer (e.g. <code>SqliteSaver</code>) lets you resume a run by <code>thread_id</code> exactly where it stopped. The payoffs: an <strong>orchestrator crash</strong> resumes instantly from the last checkpoint, <strong>tool idempotency</strong> improves because you persist state before executing a side-effecting tool (never re-running a completed transition), and the <strong>checkpoint log is already your audit trail</strong>.</p>
+
+          <h2>5. Fallback and max-retry: design the failure first</h2>
+          <p>Every graph needs a bounded answer to \u201cwhat happens when this is stuck?\u201d A retry policy (max attempts, exponential backoff) that on exhaustion routes to a <code>fallback</code> node does the job \u2014 a real state, not an exception. The discipline is that a stuck run <strong>fails closed into a reviewable state</strong> rather than burning tokens or repeating mutations. This is the circuit-breaker equivalent: when a dependency misbehaves, stop amplifying it and route to a controlled shutdown your operations team can see as one clean row.</p>
+
+          <h2>6. Observability falls out of the graph</h2>
+          <p>Because every run is a sequence of named states, observability becomes a property of the system rather than a bolt-on. Each transition is a natural event with a timestamp, a <code>request_id</code>, and a state delta \u2014 composing directly with the OpenTelemetry tracing and trajectory logging from my post on multi-agent auditability. \u201cWhere is every agent right now, where do they get stuck, and what did this run do?\u201d all become single dashboard queries over named states and replayable checkpoint logs.</p>
+
+          <p><strong>Bring state graph orchestration to your agent stack.</strong> If your team\u2019s agent is a long prompt or <code>if/else</code> glue, the structural failure modes that state graphs eliminate will surface the first time a run matters at 2 a.m. I\u2019ll spend 30 minutes reviewing your orchestration \u2014 whether states and transitions are explicit, where the human-in-the-loop gates belong, how checkpoints and fallbacks are wired, and what your audit trail actually proves \u2014 with no obligation. Reach me at <a href="mailto:wisamdamouny@gmail.com" style="color:var(--accent);">wisamdamouny@gmail.com</a> or via the contact form.</p>
+          <p><a href="blog/state-graph-orchestration-agents.html" target="_blank" style="display:inline-block; margin-top:8px; font-weight:600; color:var(--accent);">Read the full article \u2192</a></p>
+        `
+      },
       'post-tool-sandboxing': {
         title: 'Tooling a Safe Sandbox for Enterprise AI Agents',
         category: 'AI Systems',
