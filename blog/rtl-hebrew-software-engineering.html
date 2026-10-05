@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RTL &amp; Hebrew Software Engineering: What Most Teams Miss — Wisam Damouny</title>
+  <meta name="description" content="How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, builds production software for Hebrew and right-to-left interfaces — the bidi algorithm, logical properties, layout reflow, and localization test disciplines that separate shippable RTL products from broken ones." />
+  <link rel="canonical" href="https://wisamdamouny.com/blog/rtl-hebrew-software-engineering.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Wisam Damouny" />
+
+  <!-- Open Graph Meta Tags for Social & SEO -->
+  <meta property="og:title" content="RTL &amp; Hebrew Software Engineering: What Most Teams Miss" />
+  <meta property="og:description" content="How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, builds production software for Hebrew and right-to-left interfaces — the bidi algorithm, logical properties, layout reflow, and localization test disciplines that separate shippable RTL products from broken ones." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://wisamdamouny.com/blog/rtl-hebrew-software-engineering.html" />
+  <meta property="og:site_name" content="Wisam Damouny" />
+  <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "RTL & Hebrew Software Engineering: What Most Teams Miss",
+    "description": "How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, builds production software for Hebrew and right-to-left interfaces — the bidi algorithm, logical properties, layout reflow, and localization test disciplines that separate shippable RTL products from broken ones.",
+    "url": "https://wisamdamouny.com/blog/rtl-hebrew-software-engineering.html",
+    "datePublished": "2026-10-05",
+    "author": { "@type": "Person", "name": "Wisam Damouny", "url": "https://wisamdamouny.com/" },
+    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
+    "mainEntityOfPage": "https://wisamdamouny.com/blog/rtl-hebrew-software-engineering.html"
+  }
+  </script>
+
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    :root {
+      --accent: #D97757;
+      --accent-hover: #E58A6C;
+      --accent-glow: rgba(217, 119, 87, 0.22);
+      --bg: #0b0c0e;
+      --bg-alt: #12141a;
+      --card-bg: rgba(20, 22, 28, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --fg: #f4f4f6;
+      --fg-muted: #9da2b0;
+      --fg-subtle: #6b7280;
+      --nav-bg: rgba(11, 12, 14, 0.88);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    html.light {
+      --bg: #f7f7f9;
+      --bg-alt: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --fg: #121316;
+      --fg-muted: #525866;
+      --fg-subtle: #868d9d;
+      --nav-bg: rgba(247, 247, 249, 0.88);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.8;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 18px 0;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      color: var(--fg);
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .back-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    main {
+      padding: 60px 0 100px;
+    }
+
+    .article-header {
+      margin-bottom: 40px;
+    }
+
+    .blog-tag {
+      background: #f59e0b;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 24px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--fg-muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .article-content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 36px 0 18px;
+      color: var(--fg);
+    }
+
+    .article-content h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 28px 0 14px;
+      color: var(--fg);
+    }
+
+    .article-content p {
+      margin-bottom: 24px;
+      color: var(--fg-muted);
+      font-size: 17px;
+    }
+
+    .article-content blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 20px 24px;
+      background: var(--card-bg);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--fg);
+      font-size: 18px;
+    }
+
+    .article-content pre {
+      background: #0d0e12;
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin: 28px 0;
+    }
+
+    .article-content pre.mermaid {
+      background: var(--card-bg);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      margin: 36px 0;
+    }
+
+    .article-content ul, .article-content ol {
+      margin: 20px 0 28px 24px;
+      color: var(--fg-muted);
+      font-size: 16px;
+    }
+
+    .article-content li {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="../index.html" class="brand">
+          <span class="brand-dot"></span>
+          <span>Wisam Damouny</span>
+        </a>
+        <a href="../index.html#blog" class="back-link">
+          <i class="ph ph-arrow-left"></i> Back to Articles
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <article class="article-header">
+        <span class="blog-tag">SaaS &amp; Infrastructure</span>
+        <h1>RTL &amp; Hebrew Software Engineering: What Most Teams Miss</h1>
+
+        <div class="article-meta">
+          <div class="author-info">
+            <picture>
+              <source srcset="../assets/avatar_hero_wisam.webp" type="image/webp" />
+              <img src="../assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" width="40" height="40" />
+            </picture>
+            <div>
+              <strong style="color:var(--fg);">Wisam Damouny</strong>
+              <div style="font-size:12px; color:var(--fg-subtle)">Software Tech Leader &amp; AI Systems Architect</div>
+            </div>
+          </div>
+          <div><i class="ph ph-calendar-blank"></i> Oct 05, 2026</div>
+          <div><i class="ph ph-clock"></i> 9 min read</div>
+        </div>
+      </article>
+
+      <div class="article-content">
+        <p>RTL (&quot;right-to-left&quot;) support is the rare engineering problem where <strong>the production bug lives in the browser&#39;s text algorithm, not in your code</strong>. A Hebrew string can be stored, fetched, and rendered perfectly left-to-right and still display wrong the moment a number, an emoji, or an English product name shares the same line. I have spent the last ten years shipping products that must be correct in Hebrew, Arabic, and English at once, and the pattern that survives is not &quot;add <code>dir=&quot;rtl&quot;</code> and hope&quot; — it is understanding the Unicode Bidi Algorithm and building the layout, locale, and test discipline around it. This post is the playbook.</p>
+<h2>1. The bidi algorithm is the actual bug surface</h2>
+<p>Every time you render a string with mixed-direction text, the browser runs the <strong>Unicode Bidirectional Algorithm</strong> (UBA, UAX #9). It walks the characters, classifies each into one of ~29 directionality types, and then applies a nested algorithm that <em>reorders</em> them for display without ever changing the underlying stored string. Most teams never learn it, so most RTL bugs are simply UBA mispredictions.</p>
+<p>The three layers, from outer to inner:</p>
+<ul>
+<li><strong>Direction context.</strong> <code>dir=&quot;rtl&quot;</code> on the document or element sets the base direction. This decides which end of the line is the &quot;start&quot; (right, in RTL) and which is &quot;end&quot; (left).</li>
+<li><strong>The algorithm.</strong> The UBA takes the directional runs and <code>mirror</code>s paired punctuation (parentheses, brackets, angle brackets, braces) so they face inward. <code>(English)</code> in an RTL line renders as a mirrored pair around the English text — a common source of &quot;why are my parentheses backwards?&quot; bugs.</li>
+<li><strong>Number handling.</strong> In RTL text, Western digits (<code>123</code>) keep their own directionality (they form a &quot;weak&quot; left-to-right run) and the thousands separator and decimal point are rendered as the locale dictates — a comma is <em>not</em> automatically a decimal separator in every locale.</li>
+</ul>
+<pre><code class="language-python"># The dir() you never see: a demonstration of how the same string
+# reorders for *display* while the stored value stays byte-identical.
+# Visual order is a presentation-layer concern; logical order is the
+# canonical source of truth for storage, search, and API payloads.
+import unicodedata
+
+sample = &quot;English text עם עברית: 42 و60% عربي 5,000&quot;
+# Stored/logical order is exactly this string — never flip it.
+for ch in sample:
+    bidi = unicodedata.bidirectional(ch)
+    if bidi in (&quot;R&quot;, &quot;AL&quot;, &quot;RLE&quot;, &quot;RLO&quot;):
+        pass  # strong right-to-left / Arabic letter</code></pre>
+<p>The lesson: <strong>never try to &quot;fix&quot; a mixed-direction string by flipping it.</strong> Store and transmit logical order; let the renderer apply the algorithm. The moment a developer starts reversing strings, they have already lost.</p>
+<pre class="mermaid">graph TD
+    A[User types logical order] --> B[Input stored as codepoints]
+    B --> C{UBA runs the Bidi Algorithm}
+    C --> D[Directional runs resolved]
+    D --> E[Mirror paired brackets]
+    E --> F[Render visual line: RTL start at right]
+    F --> G{Validate with screenshot test?}
+    G -->|yes / no regressions| H[Ship]
+    G -->|visual mismatch| I[Fix: logical property / dir scope, not string flip]
+    I --> C</pre>
+<h2>2. Write your layout in logical properties, not physical ones</h2>
+<p>The single highest-leverage change for RTL correctness is to stop writing <code>margin-left</code>, <code>padding-right</code>, <code>text-align: left</code>, and <code>float: left</code>, and instead write the <strong>logical</strong> properties that follow the writing direction: <code>margin-inline-start</code>, <code>padding-inline-end</code>, <code>text-align: start</code>, <code>inset-inline-start</code>.</p>
+<pre><code class="language-css">/* Physical (brittle): breaks the moment dir flips */
+.chat-message {
+  margin-left: 12px;        /* becomes wrong in RTL */
+  padding-right: 16px;
+  border-left: 3px solid;   /* the &quot;attachment&quot; border ends up on the wrong side */
+}
+
+/* Logical (direction-aware): correct in LTR and RTL with zero overrides */
+.chat-message {
+  margin-inline-start: 12px;
+  padding-inline-end: 16px;
+  border-inline-start: 3px solid;
+}</code></pre>
+<p>When you use logical properties, the <em>same stylesheet</em> serves Hebrew, Arabic, and English. The alternative — physical properties plus a giant cascade of <code>[dir=&quot;rtl&quot;]</code> overrides — is how &quot;RTL support&quot; becomes a 2,000-line patch of <code>!important</code> that nobody can maintain. I have walked into more than one codebase where the RTL layer was a separate file of hacks; every one of them would have been trivial with logical properties.</p>
+<p>The same reasoning applies to alignment and iconography:</p>
+<ul>
+<li><strong><code>text-align: start</code></strong> instead of <code>left</code> — cards, headings, and cell content reflow automatically.</li>
+<li><strong>Flexbox and grid</strong> default to the writing direction for <code>flex-direction: row</code> and <code>grid</code> auto-placement, so a <code>row</code> begins at the right in RTL for free — but only if you don&#39;t hard-code <code>order</code> or a left/right margin.</li>
+<li><strong>Icons with motion</strong> (arrows for &quot;next&quot;, chevrons) should be <em>mirrored</em> in RTL. A &quot;→&quot; that means &quot;forward&quot; in English points the wrong way in Hebrew. Use <code>transform: scaleX(-1)</code> on a directional icon under <code>[dir=&quot;rtl&quot;]</code>, or ship direction-aware icon sets.</li>
+</ul>
+<h2>3. Hebrew specifics beyond direction</h2>
+<p>Direction is the headline, but Hebrew ships its own set of traps that have nothing to do with the UBA:</p>
+<ul>
+<li><strong>Numbers, dates, and currency.</strong> <code>10/05/2026</code> vs <code>05/10/2026</code> — Hebrew uses day/month/year by default. Reject any UI that hard-codes positions or assumes <code>en-US</code> digit grouping. Use the locale-aware formatter in your stack, never string interpolation.</li>
+<li><strong>Pluralization and gender.</strong> Hebrew has singular/plural <em>and</em> grammatical gender, and unlike English it inflects adjectives and verbs. <code>&quot;3 items&quot;</code> becomes different strings for masculine vs. feminine nouns. A naive <code>count + &quot; פריטים&quot;</code> will look broken or wrong for many counts — use a proper pluralization/ICU message library with gender-aware rules, not <code>&lt;count&gt; items</code>.</li>
+<li><strong>Vowel points (niqqud) and typography.</strong> Hebrew can be written with or without vowel marks. In user-facing copy, avoid niqqud in headings (sparser, reads cleaner); preserve it only where linguistic precision matters (educational or legal text). Also note Hebrew fonts have different metrics — a <code>font-family</code> tuned for Latin glyphs may render Hebrew letters cramped or with broken diacritics. Set a good Hebrew-capable fallback stack (<code>&quot;Heebo&quot;, &quot;Noto Sans Hebrew&quot;, &quot;Open Sans Hebrew&quot;</code>).</li>
+<li><strong>Slugs, URLs, and search.</strong> A Hebrew slug like <code>https://site.com/עמוד-رئيسي</code> is valid but unwieldy. Decide a policy: keep Hebrew in the URL for SEO, or map to a transliterated/English slug and store the Hebrew as canonical via <code>hreflang</code> alternatives. And ensure full-text search is tokenizing on <strong>Hebrew</strong> (a search that only splits on ASCII whitespace treats Hebrew words as one opaque blob — CJK-style tokenizers won&#39;t help; you need per-language analyzers).</li>
+</ul>
+<pre><code class="language-css">/* A Hebrew-capable font stack that degrades gracefully */
+:root {
+  --font-hebrew: &quot;Heebo&quot;, &quot;Noto Sans Hebrew&quot;, &quot;Open Sans Hebrew&quot;,
+                 system-ui, sans-serif;
+}
+html[lang=&quot;he&quot;] { font-family: var(--font-hebrew); }
+html[lang=&quot;he&quot;] { line-height: 1.7; }  /* Hebrew glyphs can need slightly more leading */</code></pre>
+<h2>4. The layout reflow nobody tests (until it ships)</h2>
+<p>RTL is not just mirrored text — <strong>the entire layout reflows</strong>, and the failures show up where you least expect:</p>
+<ul>
+<li><strong>Fixed-width elements.</strong> A sidebar 280px wide may fit its longest Hebrew menu item in LTR-width testing but truncate in RTL, because Hebrew strings of the same <em>character count</em> can be visually wider or wrap earlier. Test longest-string-per-locale, not sample text.</li>
+<li><strong>Tables and grids.</strong> Columns reorder right-to-left. Data grids with sticky first columns, dragging handlers, and sorting arrows are the #1 place RTL breaks.</li>
+<li><strong>Overlays and dialogs.</strong> A centered modal is fine, but a toast anchored to <code>top-right</code> is now the <em>front</em> of an RTL screen — it belongs at <code>top-start</code> (top-left). Use logical inset properties.</li>
+<li><strong>Charts and graphs.</strong> Time series axes, legends, and data labels each need direction review. An X-axis that reads left-to-right contradicts a right-to-left page&#39;s mental model.</li>
+</ul>
+<pre><code class="language-js">// Angular/React pattern: drive direction + language off one locale
+// source instead of scattering `dir` attributes.
+const locale = &quot;he-IL&quot;;               // Hebrew (Israel)
+document.documentElement.setAttribute(&quot;dir&quot;,
+  isRtl(locale) ? &quot;rtl&quot; : &quot;ltr&quot;);     // base direction for the whole doc
+document.documentElement.setAttribute(&quot;lang&quot;, &quot;he&quot;);</code></pre>
+<h2>5. The test discipline that makes RTL shippable</h2>
+<p>RTL correctness does not fall out of unit tests that only assert on values — the <em>rendering</em> is wrong while the <em>data</em> is right. You need three layers:</p>
+<ul>
+<li><strong>Unit tests for logic:</strong> assert on logical values (never on visual/display strings). Verify date and number output via the locale formatter directly.</li>
+<li><strong>Golden visual tests / screenshots:</strong> snapshot every key screen in both LTR and RTL. Diff against a baseline; a changed screenshot is a changed layout. This is the only reliable way to catch mirrored icons, truncated longest-strings, and misplaced borders.</li>
+<li><strong>A bidi+fuzz pass:</strong> generate strings that mix Hebrew, Arabic, English, numbers, punctuation, and emoji — the exact conditions the UBA reorders — and assert the rendered layout matches an expected snapshot. Teams that skip this layer ship the parentheses-flip bug.</li>
+</ul>
+<p>I add one escalation rule to every RTL effort: <strong>longest-string and layout testing belong in CI, not in a manual QA sheet.</strong> When a regression breaks a menu in Arabic, you want the pipeline to say so at commit time, not discover it in a release demo.</p>
+<h2>Bring RTL and i18n discipline to your product</h2>
+<p>If your product serves even one Hebrew or Arabic market — or you plan to — RTL is not a sprint you bolt on after feature-complete; it is an architecture decision that touches layout, locale, fonts, search, and testing from day one. The cost of retrofitting is an order of magnitude higher than building it in. I spend 30 minutes with product and engineering teams reviewing their internationalization posture: whether layout is written in logical properties, how the bidi edge cases are handled, whether the test suite would actually catch an RTL regression, and how localization fits the roadmap — no obligation, and no product pitch.</p>
+<p>Reach me directly at <strong><a href="mailto:wisamdamouny@gmail.com">wisamdamouny@gmail.com</a></strong> or via the contact form below.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Wisam Damouny · Crafting self-hosted software for humans and AI agents.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'dark',
+          securityLevel: 'loose',
+          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

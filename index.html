@@ -1846,6 +1846,31 @@
       </div>
 
       <div class="blog-grid">
+        <!-- Post: RTL & Hebrew Software Engineering (newest) -->
+        <article class="blog-card" data-blog-category="saas" onclick="openArticleModal('post-rtl-hebrew')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">SaaS &amp; Infrastructure</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Oct 05, 2026</div>
+            <h3 class="blog-card-title">RTL &amp; Hebrew Software Engineering: What Most Teams Miss</h3>
+            <p class="blog-card-excerpt">Why RTL bugs live in the Unicode Bidi Algorithm, not your code — and the logical properties, Hebrew locale rules, and visual test discipline that make right-to-left products shippable.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
         <!-- Post: State Graph Orchestration (newest) -->
         <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-state-graph-orchestration')">
           <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(45, 212, 191, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero_serious.jpg');">
@@ -2296,6 +2321,41 @@
 
     // Blog Posts Data
     const ARTICLES = {
+      'post-rtl-hebrew': {
+        title: 'RTL & Hebrew Software Engineering: What Most Teams Miss',
+        category: 'SaaS & Infrastructure',
+        date: 'Oct 05, 2026',
+        readTime: '9 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Oct 05, 2026</span>
+            <span><i class="ph ph-clock"></i> 9 min read</span>
+            <a href="blog/rtl-hebrew-software-engineering.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>RTL (\u201cright-to-left\u201d) support is the rare engineering problem where <strong>the production bug lives in the browser\u2019s text algorithm, not in your code</strong>. A Hebrew string can be stored, fetched, and rendered perfectly left-to-right and still display wrong the moment a number, an emoji, or an English product name shares the same line. I have shipped products that must be correct in Hebrew, Arabic, and English at once, and the pattern that survives is not \u201cadd <code>dir="rtl"</code> and hope\u201d \u2014 it is understanding the Unicode Bidi Algorithm and building layout, locale, and test discipline around it.</p>
+
+          <h2>1. The bidi algorithm is the actual bug surface</h2>
+          <p>Every time you render a string with mixed-direction text, the browser runs the <strong>Unicode Bidirectional Algorithm</strong> (UAX #9), classifying characters into directionality types and <em>reordering</em> them for display without changing the stored string. The three layers: <strong>direction context</strong> (<code>dir="rtl"</code> sets base direction and which end of the line is start), <strong>the algorithm</strong> (it mirrors paired brackets so parentheses face inward \u2014 the classic \u201cwhy are my parentheses backwards?\u201d bug), and <strong>number handling</strong> (Western digits form a weak LTR run; a comma is not automatically the decimal separator in every locale). The lesson is to <strong>never flip a mixed-direction string</strong>: store and transmit logical order, and let the renderer apply the algorithm.</p>
+
+          <h2>2. Write your layout in logical properties, not physical ones</h2>
+          <p>Stop writing <code>margin-left</code>, <code>padding-right</code>, and <code>text-align: left</code>, and use the direction-aware ones instead: <code>margin-inline-start</code>, <code>padding-inline-end</code>, <code>text-align: start</code>, <code>border-inline-start</code>. The same stylesheet then serves Hebrew, Arabic, and English \u2014 no cascade of <code>[dir="rtl"]</code> overrides, no giant file of <code>!important</code> hacks. Flexbox and grid already default to the writing direction for placement, and directional icons (a \u201cnext\u201d arrow) should be mirrored with <code>transform: scaleX(-1)</code> under RTL.</p>
+
+          <h2>3. Hebrew specifics beyond direction</h2>
+          <blockquote>\u201cHebrew uses day/month/year, has singular/plural and grammatical gender, can carry vowel points, and tokenizes differently in search. Get these wrong and the layout looks fine while the data model, the copy, and the index are quietly broken.\u201d</blockquote>
+          <p><strong>Numbers, dates, and currency:</strong> use a locale-aware formatter, never string interpolation or hard-coded positions. <strong>Pluralization and gender:</strong> Hebrew inflects adjectives and verbs \u2014 a naive <code>count + noun</code> breaks; use a proper ICU-compatible pluralization library with gender rules. <strong>Vowel points and typography:</strong> in headings avoid niqqud (reads cleaner) and set a Hebrew-capable font fallback stack (<code>"Heebo", "Noto Sans Hebrew"</code>). <strong>Slugs, URLs, and search:</strong> decide a Hebrew-vs-transliterated slug policy and ensure full-text search tokenizes on Hebrew \u2014 a search that only splits on ASCII whitespace treats Arabic-script words as one opaque blob.</p>
+
+          <h2>4. The layout reflow nobody tests (until it ships)</h2>
+          <p>RTL is not just mirrored text; the entire layout reflows. Watch <strong>fixed-width elements</strong> (Hebrew of the same character count can be visually wider \u2014 test longest-string-per-locale), <strong>tables and grids</strong> (columns and sticky handlers reorder), <strong>overlays and dialogs</strong> (a toast anchored top-right is the front of an RTL screen \u2014 use logical inset properties), and <strong>charts</strong> (an X-axis reading left-to-right contradicts the page). Drive direction off one locale source rather than scattering <code>dir</code> attributes across templates.</p>
+
+          <h2>5. The test discipline that makes RTL shippable</h2>
+          <p>RTL correctness does not fall out of unit tests that only assert on values \u2014 the <em>rendering</em> is wrong while the <em>data</em> is right. You need three layers: <strong>unit tests</strong> that assert on logical values and locale-formatted output; <strong>golden visual screenshot tests</strong> in both LTR and RTL (the only reliable way to catch mirrored icons, truncated long strings, and misplaced borders); and a <strong>bidi + fuzz pass</strong> mixing Hebrew, Arabic, English, numbers, punctuation, and emoji to catch the parentheses-flip and reorder bugs. Put longest-string and layout testing in CI, not the manual QA sheet.</p>
+
+          <p><strong>Bring RTL and i18n discipline to your product.</strong> If your product serves even one Hebrew or Arabic market, RTL is not a sprint you bolt on after feature-complete \u2014 it is an architecture decision touching layout, locale, fonts, search, and testing from day one. I\u2019ll spend 30 minutes reviewing your internationalization posture \u2014 whether layout uses logical properties, how bidi edge cases are handled, whether the test suite would catch an RTL regression, and how localization fits the roadmap \u2014 no obligation. Reach me at <a href="mailto:wisamdamouny@gmail.com" style="color:var(--accent);">wisamdamouny@gmail.com</a> or via the contact form.</p>
+          <p><a href="blog/rtl-hebrew-software-engineering.html" target="_blank" style="display:inline-block; margin-top:8px; font-weight:600; color:var(--accent);">Read the full article \u2192</a></p>
+        `
+      },
       'post-state-graph-orchestration': {
         title: 'State Graph Orchestration: Production-Grade Control for AI Agents',
         category: 'AI Systems',
