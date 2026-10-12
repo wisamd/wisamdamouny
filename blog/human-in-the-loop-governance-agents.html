@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Human-in-the-Loop Governance for Enterprise AI Agents — Wisam Damouny</title>
+  <meta name="description" content="How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, designs human-in-the-loop governance for production AI agents — risk classification, policy-as-code approval gates, escalation matrices, and auditable human decisions that let autonomy run without unearned authority." />
+  <link rel="canonical" href="https://wisamdamouny.com/blog/human-in-the-loop-governance-agents.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Wisam Damouny" />
+
+  <!-- Open Graph Meta Tags for Social & SEO -->
+  <meta property="og:title" content="Human-in-the-Loop Governance for Enterprise AI Agents" />
+  <meta property="og:description" content="How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, designs human-in-the-loop governance for production AI agents — risk classification, policy-as-code approval gates, escalation matrices, and auditable human decisions that let autonomy run without unearned authority." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://wisamdamouny.com/blog/human-in-the-loop-governance-agents.html" />
+  <meta property="og:site_name" content="Wisam Damouny" />
+  <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Human-in-the-Loop Governance for Enterprise AI Agents",
+    "description": "How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, designs human-in-the-loop governance for production AI agents — risk classification, policy-as-code approval gates, escalation matrices, and auditable human decisions that let autonomy run without unearned authority.",
+    "url": "https://wisamdamouny.com/blog/human-in-the-loop-governance-agents.html",
+    "datePublished": "2026-10-12",
+    "author": { "@type": "Person", "name": "Wisam Damouny", "url": "https://wisamdamouny.com/" },
+    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
+    "mainEntityOfPage": "https://wisamdamouny.com/blog/human-in-the-loop-governance-agents.html"
+  }
+  </script>
+
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    :root {
+      --accent: #D97757;
+      --accent-hover: #E58A6C;
+      --accent-glow: rgba(217, 119, 87, 0.22);
+      --bg: #0b0c0e;
+      --bg-alt: #12141a;
+      --card-bg: rgba(20, 22, 28, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --fg: #f4f4f6;
+      --fg-muted: #9da2b0;
+      --fg-subtle: #6b7280;
+      --nav-bg: rgba(11, 12, 14, 0.88);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    html.light {
+      --bg: #f7f7f9;
+      --bg-alt: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --fg: #121316;
+      --fg-muted: #525866;
+      --fg-subtle: #868d9d;
+      --nav-bg: rgba(247, 247, 249, 0.88);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.8;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 18px 0;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      color: var(--fg);
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .back-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    main {
+      padding: 60px 0 100px;
+    }
+
+    .article-header {
+      margin-bottom: 40px;
+    }
+
+    .blog-tag {
+      background: #f43f5e;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 24px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--fg-muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .article-content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 36px 0 18px;
+      color: var(--fg);
+    }
+
+    .article-content h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 28px 0 14px;
+      color: var(--fg);
+    }
+
+    .article-content p {
+      margin-bottom: 24px;
+      color: var(--fg-muted);
+      font-size: 17px;
+    }
+
+    .article-content blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 20px 24px;
+      background: var(--card-bg);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--fg);
+      font-size: 18px;
+    }
+
+    .article-content pre {
+      background: #0d0e12;
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin: 28px 0;
+    }
+
+    .article-content pre.mermaid {
+      background: var(--card-bg);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      margin: 36px 0;
+    }
+
+    .article-content ul, .article-content ol {
+      margin: 20px 0 28px 24px;
+      color: var(--fg-muted);
+      font-size: 16px;
+    }
+
+    .article-content li {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="../index.html" class="brand">
+          <span class="brand-dot"></span>
+          <span>Wisam Damouny</span>
+        </a>
+        <a href="../index.html#blog" class="back-link">
+          <i class="ph ph-arrow-left"></i> Back to Articles
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <article class="article-header">
+        <span class="blog-tag">AI Systems</span>
+        <h1>Human-in-the-Loop Governance for Enterprise AI Agents</h1>
+
+        <div class="article-meta">
+          <div class="author-info">
+            <picture>
+              <source srcset="../assets/avatar_hero_wisam.webp" type="image/webp" />
+              <img src="../assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" width="40" height="40" />
+            </picture>
+            <div>
+              <strong style="color:var(--fg);">Wisam Damouny</strong>
+              <div style="font-size:12px; color:var(--fg-subtle)">Software Tech Leader &amp; AI Systems Architect</div>
+            </div>
+          </div>
+          <div><i class="ph ph-calendar-blank"></i> Oct 12, 2026</div>
+          <div><i class="ph ph-clock"></i> 9 min read</div>
+        </div>
+      </article>
+
+      <div class="article-content">
+        <p>The question that separates a pilot from a production deployment is never <em>&quot;how capable is the agent?&quot;</em> It is <em>&quot;who decides, and under what rules?&quot;</em> An agent with a model&#39;s judgment and a human&#39;s privileges is the most dangerous thing you can ship — not because the model is malicious, but because <strong>unearned authority fails at exactly the moment you are not watching</strong>.</p>
+<p>I have spent the last ten years building systems that must be responsible at 2 a.m., and the pattern that survives contact with compliance officers is the same every time: autonomy is not a slider you turn up. It is a <strong>governance contract</strong> — a precise, machine-readable agreement about what the agent may do on its own, what it must pause for, who escalates, and what evidence is kept of every human decision. This post is that contract, built from the same foundations as my posts on agent architecture, sandboxing, and state-graph orchestration.</p>
+<h2>1. Autonomy is a per-action decision, not a global setting</h2>
+<p>The most common governance mistake is a global dial: <em>&quot;the agent is 40% autonomous.&quot;</em> That number is meaningless to a system that must email a customer, write to a billing database, and draft an internal summary in the same hour — these actions do not share a risk profile.</p>
+<p>Governance has to be attached to the <strong>action</strong>, not to the agent. For every tool or transition, you declare three things:</p>
+<ul>
+<li><strong>Risk class.</strong> What is the worst credible outcome if this runs wrong? (data corruption, money movement, PII exposure, external communication, read-only analysis)</li>
+<li><strong>Authorization model.</strong> May the agent act unilaterally, must a human approve first, or is the action forbidden entirely?</li>
+<li><strong>Evidence requirement.</strong> What must be recorded before and after, so the decision is replayable?</li>
+</ul>
+<pre><code class="language-yaml"># policy/actions.yaml — governance attached to the action, not the agent
+actions:
+  search_internal_docs:
+    risk: low
+    authority: autonomous          # read-only, no approval
+  draft_reply_email:
+    risk: medium
+    authority: require_approval    # human reviews content + recipients
+  update_customer_record:
+    risk: high
+    authority: require_approval
+    approver_role: account_owner
+  issue_refund:
+    risk: critical
+    authority: require_dual        # two-person rule
+    approver_role: [finance_manager, compliance]
+  delete_production_row:
+    risk: critical
+    authority: forbidden           # no path exists</code></pre>
+<p>The rule of thumb I use with teams: <strong>if the failure is reversible and invisible, the agent can act alone. If the failure is irreversible or externally visible, a human signs off.</strong> Everything in between is a policy decision your organization should make explicitly, not the model by default.</p>
+<h2>2. Risk classification: the governance engine&#39;s first decision</h2>
+<p>Every incoming request must be classified into a risk class before it touches a tool. This is not a prompt asking the model <em>&quot;is this risky?&quot;</em> — that is a governance decision delegated back to the thing you are governing. Classification is a deterministic pipeline:</p>
+<ol>
+<li><strong>Intention extraction</strong> — what the agent intends to do (a structured action, not free text).</li>
+<li><strong>Target inspection</strong> — what it intends to act on (table, API, recipient, monetary amount).</li>
+<li><strong>Policy lookup</strong> — the risk class and authorization model for that action×target pair.</li>
+<li><strong>Override guards</strong> — deny-by-default rules that fire regardless of the model&#39;s self-assessment.</li>
+</ol>
+<pre><code class="language-python">def classify(request: AgentRequest, policy: Policy) -&gt; Decision:
+    action = extract_intent(request)            # structured, not free text
+    target = inspect_target(request)            # object, field, recipient, amount
+
+    # 1. Hard deny rules always win (deny-by-default).
+    if policy.forbidden(action, target):
+        return Decision.deny(&quot;action forbidden by policy&quot;)
+
+    # 2. Risk class from the action/target pair.
+    risk = policy.risk_class(action, target)
+
+    # 3. Authorization model per risk class.
+    if risk == &quot;critical&quot;:
+        return Decision.require_approval(risk, roles=policy.roles_for(action))
+    if risk == &quot;high&quot;:
+        return Decision.require_approval(risk, roles=policy.roles_for(action))
+    if risk == &quot;medium&quot;:
+        return Decision.require_approval(risk, roles=policy.roles_for(action))
+    return Decision.authorize(risk)              # low risk: run autonomously</code></pre>
+<p>Note what this buys you: the model cannot <strong>self-escalate its own privileges</strong> by describing a dangerous action in safe-sounding words, because the decision is made on the structured action and target, not on the model&#39;s prose. This composes directly with the sandbox layer I described in my post on tool execution — governance decides <em>whether</em> an action may happen; the sandbox decides <em>where</em> it runs.</p>
+<h2>3. The approval gate is a state machine with a timeout</h2>
+<p>A governance gate is not a Slack notification you hope someone answers. It is a <strong>state</strong> with a deadline, an owner, and a fail-closed path — exactly the pattern state-graph orchestration makes first-class.</p>
+<pre class="mermaid">graph TD
+    A[Request classified] --> B{Risk check}
+    B -->|low risk| C[Run autonomously]
+    B -->|medium/high| D[State: AWAIT_APPROVAL]
+    B -->|critical| E[State: AWAIT_DUAL_APPROVAL]
+    D -->|approved| C
+    D -->|rejected| F[State: TERMINATED]
+    D -->|timeout| F
+    E -->|two approvals| C
+    E -->|any reject| F
+    E -->|timeout| F
+    C --> G[Record evidence]
+    F --> G</pre>
+<p>The non-negotiables for a production gate:</p>
+<ul>
+<li><strong>Every gate has a timeout.</strong> An approval that can hang forever is a queue you will discover at 3 a.m. On timeout, fail closed — terminate, do not auto-approve.</li>
+<li><strong>Approvals are bounded, not open-ended.</strong> The approver reviews a <em>scoped payload</em>: the action, the target, the risk class, and the evidence snapshot. They do not review the whole agent conversation.</li>
+<li><strong>Rejection is a terminal state with a reason.</strong> You capture <em>why</em> a human said no. That reason is the single most valuable training signal your governance system produces — it is how autonomy learns its real boundaries.</li>
+</ul>
+<pre><code class="language-text">ApprovalTicket {
+  id: &quot;at_9f3c21&quot;,
+  action: &quot;update_customer_record&quot;,
+  target: &quot;customer:acme_0417&quot;,
+  risk: &quot;high&quot;,
+  requires: &quot;account_owner&quot;,
+  evidence: &quot;sha256:7b2e...&quot;,      # snapshot hash, not raw PII
+  expires_in: &quot;30m&quot;,
+  on_timeout: &quot;terminate&quot;          # fail closed
+}</code></pre>
+<h2>4. Escalation: the matrix is written down before the incident</h2>
+<p>The second most common failure is that nobody has decided <em>who decides when the first approver is unavailable or conflicted</em>. Your governance contract must answer the escalation question in advance — not during the incident.</p>
+<p>A practical escalation matrix for agent actions:</p>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Primary approver</th>
+<th>Escalation (after N min)</th>
+<th>Final authority</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Low</td>
+<td>— (autonomous)</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>Duty engineer</td>
+<td>Team lead (15m)</td>
+<td>On-call manager</td>
+</tr>
+<tr>
+<td>High</td>
+<td>Account owner</td>
+<td>Engineering manager (30m)</td>
+<td>Head of engineering</td>
+</tr>
+<tr>
+<td>Critical</td>
+<td>Finance + compliance (dual)</td>
+<td>CTO + compliance lead (45m)</td>
+<td>CEO sign-off</td>
+</tr>
+</tbody></table>
+<p>Two properties make this usable, not decorative:</p>
+<ul>
+<li><strong>Escalation is automatic and time-driven</strong>, not a human remembering to ping someone. The state machine raises the ticket after N minutes; it does not wait for someone to notice.</li>
+<li><strong>Every rung re-evaluates risk.</strong> Escalating to a more senior person does not mean <em>&quot;they will approve.&quot;</em> It means a more senior person now <em>decides</em> — approval, rejection, or a narrower scope (e.g., &quot;approve the refund, but cap it at $500&quot;).</li>
+</ul>
+<p>The point of the matrix is that at 2 a.m., with a half-awake engineer and a deadline, <strong>nobody has to invent policy under pressure</strong>. The contract already decided. This is what I mean when I tell teams that governance is the difference between a system you trust and a system you babysit.</p>
+<h2>5. Every human decision is evidence</h2>
+<p>An audit trail that only records what the <em>agent</em> did is half a record. The other half is what the <em>human</em> decided — and that half is what compliance actually interrogates. For every gate you must capture:</p>
+<ul>
+<li><strong>Who</strong> approved, rejected, or escalated (identity, not just a name).</li>
+<li><strong>What</strong> they were shown (the scoped payload — so you can prove they saw the risk class and the target).</li>
+<li><strong>When</strong> (timestamp) and <strong>how long they took</strong> (a 3-second approval of a critical action is itself a signal).</li>
+<li><strong>Why</strong> — the rejection reason, captured as structured data, not prose buried in a log.</li>
+</ul>
+<pre><code class="language-json">{&quot;ts&quot;:&quot;2026-10-12T08:41:22Z&quot;,&quot;ticket&quot;:&quot;at_9f3c21&quot;,
+ &quot;decided_by&quot;:&quot;u_wdamouny&quot;,&quot;role&quot;:&quot;account_owner&quot;,
+ &quot;decision&quot;:&quot;approved&quot;,&quot;scope&quot;:&quot;update_customer_record:acme_0417&quot;,
+ &quot;risk&quot;:&quot;high&quot;,&quot;evidence&quot;:&quot;sha256:7b2e...&quot;,
+ &quot;approved_via&quot;:&quot;policy_v2026-10&quot;,&quot;ttl_sec&quot;:38}</code></pre>
+<p>This record slots straight into the trajectory-log pattern from my post on multi-agent observability. The audit object becomes: <em>what the agent intended → what the policy allowed → who decided → what ran → what changed.</em> Five fields, one immutable row, and a compliance sign-off that takes minutes instead of weeks.</p>
+<h2>6. Where governance lives in your stack</h2>
+<p>Do not bolt governance onto the agent as a callback. It belongs in three concrete places:</p>
+<ol>
+<li><strong>Policy-as-code, versioned, reviewed.</strong> The YAML policy above is a deployment artifact with a version and a code review, exactly like infrastructure. Changes go through PR review; the audit trail records <em>which policy version</em> made each decision.</li>
+<li><strong>In the orchestration layer, as states.</strong> The approval gate is a node in your state graph, not a side effect. That gives you checkpointing, resumability, and observability for free (per my state-graph post).</li>
+<li><strong>In the evidence store, append-only.</strong> Human decisions are written to the same WORM-style store as agent trajectories — hashed, immutable, replayable.</li>
+</ol>
+<p>The cheap version of this is a policy file and a timeout. The production version adds versioning, escalation, dual-approval, and evidence capture. Start with the cheap version — but start now, because the alternative is discovering your governance gaps the first time the agent touches something that matters.</p>
+<h2>Bring governance discipline to your agent stack</h2>
+<p>If your team has an agent that can call tools with human-level privileges, the question is not <em>whether</em> it will need governance — it is whether the contract exists before the incident does. I spend 30 minutes with senior teams reviewing their agent governance: how actions are risk-classified, where the approval gates and timeouts live, whether escalation is written down, and whether the audit trail actually proves who decided what. No obligation, and no product pitch.</p>
+<p>Reach me directly at <strong><a href="mailto:wisamdamouny@gmail.com">wisamdamouny@gmail.com</a></strong> or via the contact form below.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Wisam Damouny · Crafting self-hosted software for humans and AI agents.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'dark',
+          securityLevel: 'loose',
+          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

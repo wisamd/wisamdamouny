@@ -1846,6 +1846,31 @@
       </div>
 
       <div class="blog-grid">
+        <!-- Post: Human-in-the-Loop Governance (newest) -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-human-in-the-loop-governance')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(244, 63, 94, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero_serious.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Oct 12, 2026</div>
+            <h3 class="blog-card-title">Human-in-the-Loop Governance for Enterprise AI Agents</h3>
+            <p class="blog-card-excerpt">Autonomy is a per-action decision, not a global setting — and the risk-classified approval gates, escalation matrices, and auditable human decisions that keep enterprise agents from acting with unearned authority.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
         <!-- Post: RTL & Hebrew Software Engineering (newest) -->
         <article class="blog-card" data-blog-category="saas" onclick="openArticleModal('post-rtl-hebrew')">
           <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
@@ -2321,6 +2346,44 @@
 
     // Blog Posts Data
     const ARTICLES = {
+      'post-human-in-the-loop-governance': {
+        title: 'Human-in-the-Loop Governance for Enterprise AI Agents',
+        category: 'AI Systems',
+        date: 'Oct 12, 2026',
+        readTime: '9 min read',
+        content: `
+          <div class="article-meta-row">
+            <span><i class="ph ph-user"></i> Wisam Damouny</span>
+            <span><i class="ph ph-calendar-blank"></i> Oct 12, 2026</span>
+            <span><i class="ph ph-clock"></i> 9 min read</span>
+            <a href="blog/human-in-the-loop-governance-agents.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
+          </div>
+
+          <p>The question that separates a pilot from a production deployment is never \u201chow capable is the agent?\u201d It is \u201cwho decides, and under what rules?\u201d An agent with a model\u2019s judgment and a human\u2019s privileges is the most dangerous thing you can ship \u2014 because <strong>unearned authority fails at exactly the moment you are not watching</strong>. The pattern that survives contact with compliance officers is the same every time: autonomy is not a slider you turn up \u2014 it is a <strong>governance contract</strong>, a machine-readable agreement about what the agent may do on its own, what it must pause for, who escalates, and what evidence is kept of every human decision.</p>
+
+          <h2>1. Autonomy is a per-action decision, not a global setting</h2>
+          <p>The most common governance mistake is a global dial \u2014 \u201cthe agent is 40% autonomous.\u201d That number is meaningless to a system that must email a customer, write to a billing database, and draft an internal summary in the same hour. Governance has to be attached to the <strong>action</strong>, not the agent. For every tool or transition, declare a <strong>risk class</strong> (data corruption, money movement, PII exposure, external communication, read-only analysis), an <strong>authorization model</strong> (autonomous, require approval, or forbidden), and an <strong>evidence requirement</strong> (what must be recorded before and after). A <code>policy/actions.yaml</code> mapping each action to risk + authority + approver role, with a <code>delete_production_row</code> action set to <code>forbidden</code> \u2014 no path exists \u2014 is the shape of a real contract.</p>
+
+          <h2>2. Risk classification: the governance engine\u2019s first decision</h2>
+          <p>Every incoming request must be classified before it touches a tool \u2014 and this is <strong>not</strong> a prompt asking the model \u201cis this risky?\u201d (that delegates governance back to the thing being governed). It is a deterministic pipeline: <strong>intention extraction</strong> (a structured action, not free text), <strong>target inspection</strong> (table, API, recipient, amount), <strong>policy lookup</strong> (risk class for that action x target pair), and <strong>override guards</strong> (deny-by-default rules that fire regardless of the model\u2019s self-assessment). A small <code>classify()</code> function shows the shape: hard deny rules always win, then the risk class from the pair, then the authorization model per class. The model cannot self-escalate its privileges by describing a dangerous action in safe-sounding words, because the decision is made on the structured action and target, not on prose \u2014 composing directly with the sandbox layer: governance decides <em>whether</em> an action may happen, the sandbox decides <em>where</em> it runs.</p>
+
+          <h2>3. The approval gate is a state machine with a timeout</h2>
+          <blockquote>\u201cA governance gate is not a Slack notification you hope someone answers. It is a state with a deadline, an owner, and a fail-closed path \u2014 exactly the pattern state-graph orchestration makes first-class.\u201d</blockquote>
+          <p>The flow: request classified, then low risk runs autonomously; medium/high enters <code>AWAIT_APPROVAL</code>; critical enters <code>AWAIT_DUAL_APPROVAL</code>; approved runs, rejected or timed out terminates. Three non-negotiables: <strong>every gate has a timeout</strong> that fails closed (never auto-approve), <strong>approvals are bounded</strong> (the approver reviews a scoped payload \u2014 action, target, risk class, evidence snapshot \u2014 not the whole conversation), and <strong>rejection is terminal with a reason</strong> \u2014 the single most valuable training signal for where autonomy\u2019s real boundaries are.</p>
+
+          <h2>4. Escalation: the matrix is written down before the incident</h2>
+          <p>The second most common failure is that nobody decided <em>who decides</em> when the first approver is unavailable or conflicted. An escalation matrix maps risk to primary approver and time-driven escalation \u2014 duty engineer to team lead in 15 minutes, account owner to engineering manager in 30, dual finance+compliance to CTO in 45. Two properties make it usable: <strong>escalation is automatic and time-driven</strong> (the state machine raises the ticket; it does not wait for someone to notice), and <strong>every rung re-evaluates risk</strong> (a more senior person now decides, possibly a narrower scope like \u201capprove the refund but cap it at $500\u201d). At 2 a.m., nobody has to invent policy under pressure \u2014 the contract already decided.</p>
+
+          <h2>5. Every human decision is evidence</h2>
+          <p>An audit trail that records only what the <em>agent</em> did is half a record; the other half is what the <em>human</em> decided, which is what compliance actually interrogates. Capture <strong>who</strong> decided (identity, not just a name), <strong>what</strong> they were shown (the scoped payload, proving they saw the risk class and target), <strong>when</strong> and <strong>how long</strong> (a 3-second approval of a critical action is itself a signal), and <strong>why</strong> (rejection reason as structured data). A JSON row \u2014 ticket, decider, role, decision, scope, risk, evidence hash, policy version, TTL \u2014 slots straight into the trajectory-log pattern from my observability post. The audit object becomes: <em>what the agent intended, what the policy allowed, who decided, what ran, what changed</em> \u2014 five fields, one immutable row, compliance sign-off in minutes.</p>
+
+          <h2>6. Where governance lives in your stack</h2>
+          <p>Do not bolt governance onto the agent as a callback. It belongs in three places: <strong>policy-as-code, versioned and reviewed</strong> (the YAML is a deployment artifact with a version and PR review, and the audit trail records which policy version made each decision); <strong>in the orchestration layer as states</strong> (the approval gate is a node in your state graph, not a side effect \u2014 giving checkpointing, resumability, and observability for free); and <strong>in an append-only evidence store</strong> (human decisions written to the same WORM-style store as agent trajectories). The cheap version is a policy file and a timeout; the production version adds versioning, escalation, dual-approval, and evidence capture. Start with the cheap version \u2014 but start now, because the alternative is discovering your governance gaps the first time the agent touches something that matters.</p>
+
+          <p><strong>Bring governance discipline to your agent stack.</strong> If your team has an agent that can call tools with human-level privileges, the question is not <em>whether</em> it needs governance \u2014 it is whether the contract exists before the incident does. I\u2019ll spend 30 minutes reviewing your agent governance \u2014 how actions are risk-classified, where approval gates and timeouts live, whether escalation is written down, and whether the audit trail actually proves who decided what \u2014 no obligation. Reach me at <a href="mailto:wisamdamouny@gmail.com" style="color:var(--accent);">wisamdamouny@gmail.com</a> or via the contact form.</p>
+          <p><a href="blog/human-in-the-loop-governance-agents.html" target="_blank" style="display:inline-block; margin-top:8px; font-weight:600; color:var(--accent);">Read the full article \u2192</a></p>
+        `
+      },
       'post-rtl-hebrew': {
         title: 'RTL & Hebrew Software Engineering: What Most Teams Miss',
         category: 'SaaS & Infrastructure',
