@@ -52,7 +52,7 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
   const date = meta.date || '';
   const readTime = meta.readTime || '';
   const author = meta.author || 'Wisam Damouny';
-  const authorRole = meta.authorRole || 'Software Tech Leader & AI Systems Architect';
+  const authorRole = meta.authorRole || 'Software Technical Leader | SAP Data Integration & Real-Time CDC';
   const authorImage = meta.authorImage || '../assets/avatar_hero_wisam.jpg';
   const ogImage = meta.ogImage || '../assets/avatar_hero.jpg';
 
@@ -86,7 +86,7 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${escapeHtml(title)} — Wisam Damouny</title>
+  <title>${escapeHtml(title)} | Wisam Damouny</title>
   <meta name="description" content="${escapeHtml(description)}" />
   <link rel="canonical" href="${canonical}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -381,7 +381,7 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
 
   <footer>
     <div class="container">
-      <p>© 2026 Wisam Damouny · Crafting self-hosted software for humans and AI agents.</p>
+      <p>© 2026 Wisam Damouny · SAP runs the industries the world depends on. Their data should move as fast as their business does.</p>
     </div>
   </footer>
 ${mermaidScript}

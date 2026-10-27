@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wisam Damouny — Software Technical Leader & AI Systems Architect</title>
+  <title>Wisam Damouny | SAP Data Integration & Real-Time CDC</title>
   <meta name="description"
-    content="Wisam Damouny — Software Technical Leader at Qlik, AI Systems Architect, and SaaS founder specializing in high-throughput enterprise data pipelines, self-hosted tools, and human-AI collaboration." />
+    content="Wisam Damouny is a Software Technical Lead at Qlik with 14+ years in engineering, specializing in SAP data integration and real-time CDC that make enterprise data ready for analytics and AI." />
 
   <!-- Canonical & crawling -->
   <link rel="canonical" href="https://wisamdamouny.com/" />
@@ -16,17 +16,17 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Wisam Damouny" />
-  <meta property="og:title" content="Wisam Damouny — Software Technical Leader & AI Systems Architect" />
+  <meta property="og:title" content="Wisam Damouny | SAP Data Integration & Real-Time CDC" />
   <meta property="og:description"
-    content="Software Technical Leader at Qlik, AI Systems Architect, and SaaS founder specializing in high-throughput enterprise data pipelines, self-hosted tools, and human-AI collaboration." />
+    content="Wisam Damouny is a Software Technical Lead at Qlik with 14+ years in engineering, specializing in SAP data integration and real-time CDC that make enterprise data ready for analytics and AI." />
   <meta property="og:url" content="https://wisamdamouny.com/" />
   <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Wisam Damouny — Software Technical Leader & AI Systems Architect" />
+  <meta name="twitter:title" content="Wisam Damouny | SAP Data Integration & Real-Time CDC" />
   <meta name="twitter:description"
-    content="Software Technical Leader at Qlik, AI Systems Architect, and SaaS founder." />
+    content="Software Technical Lead at Qlik with 14+ years in engineering, specializing in SAP data integration and real-time CDC." />
   <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
 
   <!-- Structured data -->
@@ -47,12 +47,14 @@
         "name": "Wisam Damouny",
         "url": "https://wisamdamouny.com/",
         "image": "https://wisamdamouny.com/assets/avatar_hero.jpg",
-        "jobTitle": "Software Technical Leader & AI Systems Architect",
+        "jobTitle": "Software Technical Leader | SAP Data Integration & Real-Time CDC",
         "worksFor": { "@type": "Organization", "name": "Qlik" },
         "sameAs": [
+          "https://www.linkedin.com/in/wisamdamouny",
           "https://github.com/wisamd",
-          "https://ikando.tech",
-          "https://zrikat.com"
+          "https://youtube.com/@Wisamai",
+          "https://instagram.com/wisam.ai",
+          "https://wisai.tech"
         ]
       }
     ]
@@ -352,7 +354,7 @@
       align-items: center;
     }
 
-    .status-badge {
+    .hero-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -360,19 +362,12 @@
       border: 1px solid rgba(217, 119, 87, 0.3);
       padding: 6px 14px;
       border-radius: var(--radius-full);
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 24px;
-    }
-
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background-color: #22c55e;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #22c55e;
-      animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
@@ -634,30 +629,43 @@
       margin-bottom: 20px;
     }
 
-    .skill-bar-item {
-      margin-bottom: 22px;
-    }
-
-    .skill-info {
+    .skills-wrapper {
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 600;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    .skill-progress-bg {
-      width: 100%;
-      height: 8px;
-      background: var(--card-border);
-      border-radius: var(--radius-full);
-      overflow: hidden;
+    .focus-pillar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 18px 20px;
+      transition: all 0.3s ease;
     }
 
-    .skill-progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
-      border-radius: var(--radius-full);
+    .focus-pillar:hover {
+      border-color: var(--card-hover-border);
+      border-left-color: var(--accent-hover);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .focus-pillar-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 6px;
+    }
+
+    .focus-pillar p {
+      font-size: 13.5px;
+      color: var(--fg-muted);
+      line-height: 1.5;
+      margin: 0;
     }
 
     .pill-tags {
@@ -1384,11 +1392,11 @@
 
         <ul class="nav-links" id="nav-links">
           <li><a href="#about" class="active">About</a></li>
-          <li><a href="#services">Services</a></li>
+          <li><a href="#focus">What I Work On</a></li>
           <li><a href="#experience">Experience</a></li>
           <li><a href="#education">Education</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#blog">Blog</a></li>
+          <li><a href="#projects">Things I Build</a></li>
+          <li><a href="#blog">Articles</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
 
@@ -1399,7 +1407,7 @@
           <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
             <i class="ph ph-list"></i>
           </button>
-          <a href="#contact" class="btn btn-primary">Hire Me</a>
+          <a href="#contact" class="btn btn-primary">Connect</a>
         </div>
       </nav>
     </div>
@@ -1407,47 +1415,46 @@
 
   <!-- Hero Section (Orange CV & Saira Hybrid) -->
   <section class="hero">
-    <div class="section-watermark">ENGINEER</div>
+    <div class="section-watermark">SAP DATA</div>
     <div class="container">
       <div class="hero-grid">
         <div class="hero-content">
-          <div class="status-badge">
-            <span class="pulse-dot"></span>
-            <span>AVAILABLE FOR NEW PROJECTS & CONSULTING</span>
+          <div class="hero-eyebrow">
+            <span>SAP DATA INTEGRATION · REAL-TIME CDC · AI FOR REAL INDUSTRIES</span>
           </div>
 
           <h1 class="hero-title">
-            Software Technical Leader & <br />
-            <span class="accent-text">AI Systems</span> Architect.
+            SAP data, <br />
+            <span class="accent-text">ready for AI.</span>
           </h1>
 
           <p class="hero-lead">
-            Hi, I'm <strong>Wisam Damouny</strong>. Software Technical Leader at Qlik & SaaS founder. I architect high-performance enterprise data pipelines, self-hosted systems, and autonomous human-AI workflows.
+            Hi, I'm <strong>Wisam Damouny</strong>. For 14+ years I've built complex systems, most of them deep inside SAP data integration. At Qlik, I lead the SAP endpoints domain in Qlik Replicate, making enterprise data move reliably and in real time.
           </p>
 
           <div class="hero-ctas">
-            <a href="#projects" class="btn btn-primary">
-              <span>Explore My Work</span>
+            <a href="#blog" class="btn btn-primary">
+              <span>Read My Articles</span>
               <i class="ph ph-arrow-down-right"></i>
             </a>
-            <a href="#contact" class="btn btn-outline">
-              <i class="ph ph-envelope-simple"></i>
-              <span>Get In Touch</span>
+            <a href="https://www.linkedin.com/in/wisamdamouny" target="_blank" rel="noopener" class="btn btn-outline">
+              <i class="ph ph-linkedin-logo"></i>
+              <span>Connect on LinkedIn</span>
             </a>
           </div>
 
           <div class="hero-stats">
             <div class="stat-card">
-              <div class="stat-number">10+</div>
-              <div class="stat-label">Years Tech Leadership</div>
+              <div class="stat-number">14+</div>
+              <div class="stat-label">Years Engineering</div>
             </div>
             <div class="stat-card">
               <div class="stat-number">+70%</div>
-              <div class="stat-label">Data Pipeline Boost</div>
+              <div class="stat-label">SAP HANA Throughput</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number">4</div>
-              <div class="stat-label">Languages (EN/DE/HE/AR)</div>
+              <div class="stat-number">Lecturer</div>
+              <div class="stat-label">AI in Construction</div>
             </div>
           </div>
         </div>
@@ -1467,11 +1474,11 @@
 
           <div class="floating-card">
             <div class="icon-box">
-              <i class="ph ph-kanban"></i>
+              <i class="ph ph-chalkboard-teacher"></i>
             </div>
             <div>
-              <div class="title">Founder @ ikando</div>
-              <div class="sub">Human + AI Task Orchestration</div>
+              <div class="title">Lecturer @ Ono College</div>
+              <div class="sub">AI in Construction & Engineering</div>
             </div>
           </div>
         </div>
@@ -1479,119 +1486,113 @@
     </div>
   </section>
 
-  <!-- About & Skills Section -->
+  <!-- About Section -->
   <section id="about">
     <div class="section-watermark">ABOUT</div>
     <div class="container">
       <div class="section-header">
         <span class="section-tag">About Me</span>
-        <h2 class="section-title">Engineering Autonomy & Privacy</h2>
+        <h2 class="section-title">Making enterprise data move as fast as the business</h2>
       </div>
 
       <div class="about-grid">
         <div class="about-text">
           <p>
-            I am a <strong>Software Technical Leader</strong> with 10+ years of experience engineering high-throughput enterprise data pipelines and self-hosted platforms. At <strong>Qlik</strong>, I lead SAP data integration teams and performance optimization across complex enterprise environments.
+            I am a <strong>Software Technical Lead</strong> with 14+ years of experience building complex systems, leading technical teams, and making enterprise data move reliably and in real time. At <strong>Qlik</strong>, I lead the SAP endpoints domain in Qlik Replicate, architecting high-throughput replication engines that get data out of SAP efficiently, reliably, and within SAP's strict rules.
           </p>
           <p>
-            I hold a <strong>B.Sc. in Electrical & Computer Engineering from TU Darmstadt (Germany)</strong>. Fluent in 4 languages—<strong>English, German, Hebrew, and Arabic</strong>—I specialize in building high-performance systems and environments where autonomous AI agents and human teams collaborate seamlessly.
+            I also lecture at <strong>Ono Academic College</strong>, where I work with the next generation of engineers and architects on applied AI in construction and civil engineering. My work centers on a core belief: AI does not replace expertise, it multiplies it. The real value is unlocked when deep domain knowledge meets grounded, production-grade AI execution.
+          </p>
+          <p>
+            I hold a degree in <strong>Electrical and Electronics Engineering from TU Darmstadt (Germany)</strong>. Fluent in 4 languages: <strong>English, German, Hebrew, and Arabic</strong>.
           </p>
 
           <div class="pill-tags">
             <span class="tag-pill">Software Tech Lead @ Qlik</span>
-            <span class="tag-pill">Enterprise Data Integration</span>
+            <span class="tag-pill">SAP Data Integration</span>
+            <span class="tag-pill">Real-Time CDC</span>
+            <span class="tag-pill">Lecturer @ Ono College</span>
             <span class="tag-pill">C / C++ / Java Performance</span>
-            <span class="tag-pill">Self-Hosted Architecture</span>
-            <span class="tag-pill">Node.js & React</span>
-            <span class="tag-pill">AI Agent Workflows</span>
+            <span class="tag-pill">AI in Construction</span>
             <span class="tag-pill">TU Darmstadt Alum (Germany)</span>
             <span class="tag-pill">4 Languages (EN/DE/HE/AR)</span>
           </div>
         </div>
 
         <div class="skills-wrapper">
-          <div class="skill-bar-item">
-            <div class="skill-info">
-              <span>Enterprise Systems & Data Pipelines (C/C++/Java/SAP)</span>
-              <span class="accent-text">96%</span>
+          <div class="focus-pillar">
+            <div class="focus-pillar-header">
+              <i class="ph ph-database" style="color:var(--accent);"></i>
+              <span>SAP Endpoints & Real-Time CDC</span>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-fill" style="width: 96%;"></div>
-            </div>
+            <p>Architecting low-level log-based change data capture for SAP HANA, Application, and trigger-based replication at scale.</p>
           </div>
 
-          <div class="skill-bar-item">
-            <div class="skill-info">
-              <span>Self-Hosted & System Architecture</span>
-              <span class="accent-text">95%</span>
+          <div class="focus-pillar">
+            <div class="focus-pillar-header">
+              <i class="ph ph-lightning" style="color:var(--accent);"></i>
+              <span>High-Throughput Engine Performance</span>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-fill" style="width: 95%;"></div>
-            </div>
+            <p>Mission-critical C, C++, and Java optimization: zero-allocation memory pools, streaming backpressure, and high-frequency replication.</p>
           </div>
 
-          <div class="skill-bar-item">
-            <div class="skill-info">
-              <span>Full-Stack & AI Agent Integration (Node / React)</span>
-              <span class="accent-text">92%</span>
+          <div class="focus-pillar">
+            <div class="focus-pillar-header">
+              <i class="ph ph-chalkboard-teacher" style="color:var(--accent);"></i>
+              <span>Academic Instruction & Real-Industry AI</span>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-fill" style="width: 92%;"></div>
-            </div>
+            <p>Lecturing at Ono Academic College on AI adoption in construction, estimation, and engineering workflows.</p>
           </div>
 
-          <div class="skill-bar-item">
-            <div class="skill-info">
-              <span>Multilingual & RTL Engineering (EN / DE / HE / AR)</span>
-              <span class="accent-text">98%</span>
+          <div class="focus-pillar">
+            <div class="focus-pillar-header">
+              <i class="ph ph-globe" style="color:var(--accent);"></i>
+              <span>Global Technical Leadership</span>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-fill" style="width: 98%;"></div>
-            </div>
+            <p>Leading distributed engineering initiatives across time zones and cultures in English, German, Hebrew, and Arabic.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Services / Specializations (Portfo Style) -->
-  <section id="services">
-    <div class="section-watermark">SERVICES</div>
+  <!-- What I Work On (replaces Services) -->
+  <section id="focus">
+    <span id="services" style="display:none;"></span>
+    <div class="section-watermark">FOCUS</div>
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">Specializations</span>
-        <h2 class="section-title">What I Deliver</h2>
+        <span class="section-tag">Focus Areas</span>
+        <h2 class="section-title">What I Work On</h2>
       </div>
 
       <div class="services-grid">
         <div class="service-card">
           <div class="num">01</div>
-          <div class="icon"><i class="ph ph-hard-drive"></i></div>
-          <h3>Self-Hosted Systems</h3>
-          <p>Architecting secure, private software stacks that operate entirely on your infrastructure with low latency
-            and zero vendor lock-in.</p>
+          <div class="icon"><i class="ph ph-database"></i></div>
+          <h3>SAP Data Integration</h3>
+          <p>Getting data out of SAP reliably, efficiently, and within SAP's rules.</p>
         </div>
 
         <div class="service-card">
           <div class="num">02</div>
-          <div class="icon"><i class="ph ph-robot"></i></div>
-          <h3>Human-AI Orchestration</h3>
-          <p>Building intuitive kanban and task systems where human developers and AI agents collaborate on real code
-            bases.</p>
+          <div class="icon"><i class="ph ph-lightning"></i></div>
+          <h3>Real-Time CDC & Performance</h3>
+          <p>High-throughput replication engines built for demanding enterprise environments.</p>
         </div>
 
         <div class="service-card">
           <div class="num">03</div>
-          <div class="icon"><i class="ph ph-translate"></i></div>
-          <h3>Hebrew & RTL Perfection</h3>
-          <p>First-class support for right-to-left UI layout dynamics, typography, and localized user experience.</p>
+          <div class="icon"><i class="ph ph-hard-hat"></i></div>
+          <h3>AI for Real Industries</h3>
+          <p>Teaching and applying AI in construction and engineering, where efficiency changes real work.</p>
         </div>
 
         <div class="service-card">
           <div class="num">04</div>
-          <div class="icon"><i class="ph ph-code"></i></div>
-          <h3>Full-Stack Product Design</h3>
-          <p>From initial domain concepts to scalable APIs and responsive, micro-animated user interfaces.</p>
+          <div class="icon"><i class="ph ph-code-block"></i></div>
+          <h3>Building Products</h3>
+          <p>Turning ideas into working software, end to end. <a href="https://wisai.tech" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:underline;">See them at wisai.tech</a>.</p>
         </div>
       </div>
     </div>
@@ -1603,7 +1604,7 @@
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Experience</span>
-        <h2 class="section-title">Career & Key Projects</h2>
+        <h2 class="section-title">Career & Technical Leadership</h2>
       </div>
 
       <div class="timeline">
@@ -1611,14 +1612,14 @@
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <span class="timeline-role">Software Technical Leader — Qlik</span>
-              <span class="timeline-date">10/2019 — Present</span>
+              <span class="timeline-role">Software Technical Leader | Qlik</span>
+              <span class="timeline-date">10/2019 : Present</span>
             </div>
-            <div class="timeline-subtitle">SAP Data Integration & High-Throughput Pipeline Engines</div>
+            <div class="timeline-subtitle">SAP Endpoints Domain & High-Throughput CDC Engines</div>
             <ul class="timeline-list">
-              <li>Lead technical architecture for core SAP data integration and high-throughput replication engines.</li>
-              <li>Engineered performance optimizations yielding +70% throughput boost and +20% overall team delivery efficiency.</li>
-              <li>Drove internal AI adoption, AI agent workflow workshops, and technical mentoring across engineering teams.</li>
+              <li>Lead technical architecture for core SAP data integration and high-throughput replication endpoints in Qlik Replicate.</li>
+              <li>Architect enterprise CDC pipelines that move mission-critical SAP data reliably, securely, and in real time.</li>
+              <li>Drive internal technical mentoring, architectural reviews, and production-grade software engineering best practices.</li>
             </ul>
           </div>
         </div>
@@ -1627,13 +1628,13 @@
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <span class="timeline-role">Founder — ikando</span>
-              <span class="timeline-date">2026 — Present</span>
+              <span class="timeline-role">Lecturer | Ono Academic College</span>
+              <span class="timeline-date">2024 : Present</span>
             </div>
-            <div class="timeline-subtitle">Self-Hosted Human + AI Board (ikando.tech)</div>
+            <div class="timeline-subtitle">Faculty of Architecture & Civil Engineering : AI in Construction</div>
             <ul class="timeline-list">
-              <li>Designed and built a self-hosted project management platform where humans and AI agents operate on the same kanban board.</li>
-              <li>Hebrew-native with complete RTL optimization and clean dark mode aesthetics.</li>
+              <li>Design and teach specialized academic coursework on applied AI, automation, and generative workflows for engineering professionals.</li>
+              <li>Bridge modern AI capability with real-world industry requirements: project estimation, BOQ workflows, and engineering productivity.</li>
             </ul>
           </div>
         </div>
@@ -1642,28 +1643,13 @@
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <span class="timeline-role">Founder — Zrikat</span>
-              <span class="timeline-date">Construction Software</span>
-            </div>
-            <div class="timeline-subtitle">Hebrew-first Construction & BOQ Platform (zrikat.com)</div>
-            <ul class="timeline-list">
-              <li>Engineered a domain-specific platform for construction estimation, bill of quantities, and workflow tracking.</li>
-              <li>Tailored for precision, high performance, and seamless Hebrew regional compliance.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-header">
-              <span class="timeline-role">Senior Software Engineer — Attunity</span>
-              <span class="timeline-date">07/2017 — 10/2019</span>
+              <span class="timeline-role">R&D Lead Engineer | Attunity</span>
+              <span class="timeline-date">07/2017 : 10/2019</span>
             </div>
             <div class="timeline-subtitle">High-Throughput SAP Data Replication (C & Java)</div>
             <ul class="timeline-list">
               <li>Architected and implemented high-performance SAP HANA Replicate endpoints utilizing C and Java.</li>
-              <li>Achieved a 70% throughput increase for enterprise CDC data replication pipelines.</li>
+              <li>Achieved a signature +70% throughput increase for enterprise CDC data replication pipelines.</li>
             </ul>
           </div>
         </div>
@@ -1672,8 +1658,8 @@
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <span class="timeline-role">Software Engineer — NICE Systems / Qognify</span>
-              <span class="timeline-date">06/2013 — 06/2017</span>
+              <span class="timeline-role">Software Engineer | NICE Systems / Qognify</span>
+              <span class="timeline-date">06/2013 : 06/2017</span>
             </div>
             <div class="timeline-subtitle">Real-Time Video Connectors & Automation (C++ / C# / Java)</div>
             <ul class="timeline-list">
@@ -1698,8 +1684,8 @@
       <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
         <div class="service-card">
           <div class="icon"><i class="ph ph-graduation-cap"></i></div>
-          <h3>B.Sc. Electrical & Computer Engineering</h3>
-          <p><strong>TU Darmstadt (Darmstadt University of Technology, Germany)</strong> · 2009–2013</p>
+          <h3>Electrical and Electronics Engineering</h3>
+          <p><strong>TU Darmstadt (Darmstadt University of Technology, Germany)</strong> · 2009 : 2013</p>
           <p style="margin-top: 10px; font-size: 13px; color: var(--fg-muted);">
             Specialized in low-level system design, multithreading, and ML systems. Final Project: Java ML Self-Learning Energy Monitoring System.
           </p>
@@ -1719,7 +1705,7 @@
 
         <div class="service-card">
           <div class="icon"><i class="ph ph-heart-beat"></i></div>
-          <h3>Social Impact & AI Research</h3>
+          <h3>Social Impact & AI Mentorship</h3>
           <p><strong>Educational AI Tools & Mentorship</strong></p>
           <p style="margin-top: 10px; font-size: 13px; color: var(--fg-muted);">
             Building educational speech & literacy AI tools for children in Arabic and Hebrew. STEM volunteer mentor since 2004.
@@ -1729,13 +1715,13 @@
     </div>
   </section>
 
-  <!-- Projects Showcase Grid (Orange CV & Portfo Hybrid with Tech Stack Pills) -->
+  <!-- Projects Showcase Grid: Things I Build -->
   <section id="projects">
-    <div class="section-watermark">WORKS</div>
+    <div class="section-watermark">BUILDS</div>
     <div class="container">
       <div class="section-header" style="text-align: center;">
-        <span class="section-tag">Featured Work</span>
-        <h2 class="section-title">Crafted Solutions</h2>
+        <span class="section-tag">Software & Platforms</span>
+        <h2 class="section-title">Things I Build</h2>
       </div>
 
       <div class="project-filters">
@@ -1749,12 +1735,11 @@
         <div class="project-card" data-category="ai">
           <div class="project-thumb">
             <img src="assets/ikando_preview.png" alt="ikando.tech dashboard preview" loading="lazy" />
-            <span class="project-badge">AI & Board</span>
+            <span class="project-badge">Product</span>
           </div>
           <div class="project-body">
             <h3 class="project-title">ikando</h3>
-            <p class="project-desc">The project management board where humans and AI agents work together in real-time.
-              Hebrew-native, self-hosted, and ultra-fast.</p>
+            <p class="project-desc">The project management board where humans and AI agents work together in real-time. Hebrew-native, self-hosted, and ultra-fast.</p>
 
             <div class="project-tech-tags">
               <span class="tech-pill">Node.js</span>
@@ -1776,12 +1761,11 @@
         <div class="project-card" data-category="domain">
           <div class="project-thumb">
             <img src="assets/zrikat_preview.png" alt="zrikat.com dashboard preview" loading="lazy" />
-            <span class="project-badge">Domain Tools</span>
+            <span class="project-badge">Co-founder</span>
           </div>
           <div class="project-body">
             <h3 class="project-title">Zrikat</h3>
-            <p class="project-desc">Hebrew-first construction estimation & bill of quantities (BOQ) workspace platform
-              for contractors and engineers.</p>
+            <p class="project-desc">Hebrew-first construction estimation & bill of quantities (BOQ) workspace platform for contractors and engineers.</p>
 
             <div class="project-tech-tags">
               <span class="tech-pill">BOQ Engine</span>
@@ -1806,8 +1790,7 @@
           </div>
           <div class="project-body">
             <h3 class="project-title">Kaneo</h3>
-            <p class="project-desc">Open-source project management contributor — added comprehensive Hebrew translation,
-              RTL layout, and modern dark themes.</p>
+            <p class="project-desc">Open-source project management contributor: added comprehensive Hebrew translation, RTL layout, and modern dark themes.</p>
 
             <div class="project-tech-tags">
               <span class="tech-pill">Open Source</span>
@@ -1825,6 +1808,14 @@
           </div>
         </div>
       </div>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="https://wisai.tech" target="_blank" rel="noopener" class="btn btn-outline" style="padding: 12px 28px; font-weight: 600;">
+          <i class="ph ph-squares-four"></i>
+          <span>See everything I build at wisai.tech</span>
+          <i class="ph ph-arrow-up-right"></i>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -1840,238 +1831,13 @@
       <!-- Blog Filters -->
       <div class="project-filters blog-filters">
         <button class="filter-btn active" data-blog-filter="all">All Posts</button>
-        <button class="filter-btn" data-blog-filter="ai">AI Systems</button>
         <button class="filter-btn" data-blog-filter="data">Data Pipelines</button>
+        <button class="filter-btn" data-blog-filter="ai">AI Systems</button>
         <button class="filter-btn" data-blog-filter="saas">SaaS & Infrastructure</button>
       </div>
 
       <div class="blog-grid">
-        <!-- Post: Human-in-the-Loop Governance (newest) -->
-        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-human-in-the-loop-governance')">
-          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(244, 63, 94, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero_serious.jpg');">
-            <div class="blog-badge-group">
-              <span class="blog-tag">AI Systems</span>
-              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
-            </div>
-          </div>
-          <div class="blog-card-body">
-            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Oct 12, 2026</div>
-            <h3 class="blog-card-title">Human-in-the-Loop Governance for Enterprise AI Agents</h3>
-            <p class="blog-card-excerpt">Autonomy is a per-action decision, not a global setting — and the risk-classified approval gates, escalation matrices, and auditable human decisions that keep enterprise agents from acting with unearned authority.</p>
-            <div class="blog-card-footer">
-              <div class="blog-author">
-                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
-                <span class="blog-author-name">Wisam Damouny</span>
-              </div>
-              <span class="blog-read-btn">
-                <span>Read Article</span>
-                <i class="ph ph-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Post: RTL & Hebrew Software Engineering (newest) -->
-        <article class="blog-card" data-blog-category="saas" onclick="openArticleModal('post-rtl-hebrew')">
-          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
-            <div class="blog-badge-group">
-              <span class="blog-tag">SaaS &amp; Infrastructure</span>
-              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
-            </div>
-          </div>
-          <div class="blog-card-body">
-            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Oct 05, 2026</div>
-            <h3 class="blog-card-title">RTL &amp; Hebrew Software Engineering: What Most Teams Miss</h3>
-            <p class="blog-card-excerpt">Why RTL bugs live in the Unicode Bidi Algorithm, not your code — and the logical properties, Hebrew locale rules, and visual test discipline that make right-to-left products shippable.</p>
-            <div class="blog-card-footer">
-              <div class="blog-author">
-                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
-                <span class="blog-author-name">Wisam Damouny</span>
-              </div>
-              <span class="blog-read-btn">
-                <span>Read Article</span>
-                <i class="ph ph-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Post: State Graph Orchestration (newest) -->
-        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-state-graph-orchestration')">
-          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(45, 212, 191, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero_serious.jpg');">
-            <div class="blog-badge-group">
-              <span class="blog-tag">AI Systems</span>
-              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
-            </div>
-          </div>
-          <div class="blog-card-body">
-            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 21, 2026</div>
-            <h3 class="blog-card-title">State Graph Orchestration: Production-Grade Control for AI Agents</h3>
-            <p class="blog-card-excerpt">Why raw LLM control flow does not scale in production — and the typed states, human-in-the-loop gates, checkpointing, and fallbacks that turn a stochastic agent into a deterministic, resumable machine.</p>
-            <div class="blog-card-footer">
-              <div class="blog-author">
-                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
-                <span class="blog-author-name">Wisam Damouny</span>
-              </div>
-              <span class="blog-read-btn">
-                <span>Read Article</span>
-                <i class="ph ph-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Post: Tool Execution Sandboxing (newest) -->
-        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-tool-sandboxing')">
-          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(139, 92, 246, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
-            <div class="blog-badge-group">
-              <span class="blog-tag">AI Systems</span>
-              <span class="blog-read-time"><i class="ph ph-clock"></i> 8 min read</span>
-            </div>
-          </div>
-          <div class="blog-card-body">
-            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 14, 2026</div>
-            <h3 class="blog-card-title">Tooling a Safe Sandbox for Enterprise AI Agents</h3>
-            <p class="blog-card-excerpt">The practical playbook for isolating agent tool execution — gVisor/Firecracker boundaries, seccomp syscall allowlists, egress control, and permission gates that contain an agent's blast radius.</p>
-            <div class="blog-card-footer">
-              <div class="blog-author">
-                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
-                <span class="blog-author-name">Wisam Damouny</span>
-              </div>
-              <span class="blog-read-btn">
-                <span>Read Article</span>
-                <i class="ph ph-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Post: Multi-Agent Observability & Audit (newest) -->
-        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-multi-agent-observability')">
-          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(129, 140, 248, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/kaneo_preview.jpg');">
-            <div class="blog-badge-group">
-              <span class="blog-tag">AI Systems</span>
-              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
-            </div>
-          </div>
-          <div class="blog-card-body">
-            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 07, 2026</div>
-            <h3 class="blog-card-title">Making Multi-Agent Systems Auditable &amp; Observable in Production</h3>
-            <p class="blog-card-excerpt">Why production AI agents fail on observability — and the OpenTelemetry-based tracing, trajectory logs, and replay surface that turn "the agent seems fine" into proof.</p>
-            <div class="blog-card-footer">
-              <div class="blog-author">
-                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
-                <span class="blog-author-name">Wisam Damouny</span>
-              </div>
-              <span class="blog-read-btn">
-                <span>Read Article</span>
-                <i class="ph ph-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Post: Enterprise AI Agents (newest) -->
-        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-enterprise-ai-agents')">
-          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
-            <div class="blog-badge-group">
-              <span class="blog-tag">AI Systems</span>
-              <span class="blog-read-time"><i class="ph ph-clock"></i> 8 min read</span>
-            </div>
-          </div>
-          <div class="blog-card-body">
-            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 04, 2026</div>
-            <h3 class="blog-card-title">Why Your Enterprise AI Agents Fail Without an Architecture</h3>
-            <p class="blog-card-excerpt">Why most enterprise AI-agent initiatives die — and the sandboxing, authorization, and observability patterns that separate working autonomous systems from demo toys.</p>
-            <div class="blog-card-footer">
-              <div class="blog-author">
-                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
-                <span class="blog-author-name">Wisam Damouny</span>
-              </div>
-              <span class="blog-read-btn">
-                <span>Read Article</span>
-                <i class="ph ph-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Post: Hermes on Hostinger -->
-        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-hermes-hostinger')">
-          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/zrikat_preview.jpg');">
-            <div class="blog-badge-group">
-              <span class="blog-tag">AI Systems</span>
-              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
-            </div>
-          </div>
-          <div class="blog-card-body">
-            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 27, 2026</div>
-            <h3 class="blog-card-title">Deploying a Managed Hermes Agent on Hostinger</h3>
-            <p class="blog-card-excerpt">Stand up a Hermes autonomous AI agent in one click — connect a model provider, wire messaging channels, and know when to self-host instead.</p>
-            <div class="blog-card-footer">
-              <div class="blog-author">
-                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
-                <span class="blog-author-name">Wisam Damouny</span>
-              </div>
-              <span class="blog-read-btn">
-                <span>Read Article</span>
-                <i class="ph ph-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Post: Self-hosted Hermes on VPS -->
-        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-hermes-selfhosted')">
-          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/ikando_preview.jpg');">
-            <div class="blog-badge-group">
-              <span class="blog-tag">AI Systems</span>
-              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
-            </div>
-          </div>
-          <div class="blog-card-body">
-            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 27, 2026</div>
-            <h3 class="blog-card-title">Self-Hosting a Hermes Agent on a Hostinger VPS</h3>
-            <p class="blog-card-excerpt">The DIY path: a Nous Hermes 3 model as an autonomous tool-using agent on one CPU VPS — provisioning, Ollama serving, the agent loop, TLS hardening.</p>
-            <div class="blog-card-footer">
-              <div class="blog-author">
-                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
-                <span class="blog-author-name">Wisam Damouny</span>
-              </div>
-              <span class="blog-read-btn">
-                <span>Read Article</span>
-                <i class="ph ph-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Post 1 -->
-        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-ai-agents')">
-          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
-            <div class="blog-badge-group">
-              <span class="blog-tag">AI Systems</span>
-              <span class="blog-read-time"><i class="ph ph-clock"></i> 6 min read</span>
-            </div>
-          </div>
-          <div class="blog-card-body">
-            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 24, 2026</div>
-            <h3 class="blog-card-title">Architecting Autonomous Human-AI Collaboration Workflows</h3>
-            <p class="blog-card-excerpt">Key design principles for production multi-agent systems, tool execution sandboxes, state graph orchestration, and human-in-the-loop governance.</p>
-            <div class="blog-card-footer">
-              <div class="blog-author">
-                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
-                <span class="blog-author-name">Wisam Damouny</span>
-              </div>
-              <span class="blog-read-btn">
-                <span>Read Article</span>
-                <i class="ph ph-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Post 2 -->
+        <!-- Post: Data Pipelines (Featured Lead) -->
         <article class="blog-card" data-blog-category="data" onclick="openArticleModal('post-data-pipelines')">
           <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/ikando_preview.jpg');">
             <div class="blog-badge-group">
@@ -2096,7 +1862,232 @@
           </div>
         </article>
 
-        <!-- Post 3 -->
+        <!-- Post: Human-in-the-Loop Governance -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-human-in-the-loop-governance')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(244, 63, 94, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero_serious.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Oct 12, 2026</div>
+            <h3 class="blog-card-title">Human-in-the-Loop Governance for Enterprise AI Agents</h3>
+            <p class="blog-card-excerpt">Autonomy is a per-action decision, not a global setting: the risk-classified approval gates, escalation matrices, and auditable human decisions that keep enterprise agents from acting with unearned authority.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: RTL & Hebrew Software Engineering -->
+        <article class="blog-card" data-blog-category="saas" onclick="openArticleModal('post-rtl-hebrew')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">SaaS &amp; Infrastructure</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Oct 05, 2026</div>
+            <h3 class="blog-card-title">RTL &amp; Hebrew Software Engineering: What Most Teams Miss</h3>
+            <p class="blog-card-excerpt">Why RTL bugs live in the Unicode Bidi Algorithm, not your code: the logical properties, Hebrew locale rules, and visual test discipline that make right-to-left products shippable.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: State Graph Orchestration -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-state-graph-orchestration')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(45, 212, 191, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero_serious.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 21, 2026</div>
+            <h3 class="blog-card-title">State Graph Orchestration: Production-Grade Control for AI Agents</h3>
+            <p class="blog-card-excerpt">Why raw LLM control flow does not scale in production: the typed states, human-in-the-loop gates, checkpointing, and fallbacks that turn a stochastic agent into a deterministic, resumable machine.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: Tool Execution Sandboxing -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-tool-sandboxing')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(139, 92, 246, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 8 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 14, 2026</div>
+            <h3 class="blog-card-title">Tooling a Safe Sandbox for Enterprise AI Agents</h3>
+            <p class="blog-card-excerpt">The practical playbook for isolating agent tool execution: gVisor/Firecracker boundaries, seccomp syscall allowlists, egress control, and permission gates that contain an agent's blast radius.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: Multi-Agent Observability & Audit -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-multi-agent-observability')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(129, 140, 248, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/kaneo_preview.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 07, 2026</div>
+            <h3 class="blog-card-title">Making Multi-Agent Systems Auditable &amp; Observable in Production</h3>
+            <p class="blog-card-excerpt">Why production AI agents fail on observability: the OpenTelemetry-based tracing, trajectory logs, and replay surface that turn "the agent seems fine" into proof.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: Enterprise AI Agents -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-enterprise-ai-agents')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 8 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Sep 04, 2026</div>
+            <h3 class="blog-card-title">Why Your Enterprise AI Agents Fail Without an Architecture</h3>
+            <p class="blog-card-excerpt">Why most enterprise AI-agent initiatives die: the sandboxing, authorization, and observability patterns that separate working autonomous systems from demo toys.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: Hermes on Hostinger -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-hermes-hostinger')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/zrikat_preview.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 27, 2026</div>
+            <h3 class="blog-card-title">Deploying a Managed Hermes Agent on Hostinger</h3>
+            <p class="blog-card-excerpt">Stand up a Hermes autonomous AI agent in one click: connect a model provider, wire messaging channels, and know when to self-host instead.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: Self-hosted Hermes on VPS -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-hermes-selfhosted')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/ikando_preview.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 9 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 27, 2026</div>
+            <h3 class="blog-card-title">Self-Hosting a Hermes Agent on a Hostinger VPS</h3>
+            <p class="blog-card-excerpt">The DIY path: a Nous Hermes 3 model as an autonomous tool-using agent on one CPU VPS: provisioning, Ollama serving, the agent loop, and TLS hardening.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: Autonomous Collaboration Workflows -->
+        <article class="blog-card" data-blog-category="ai" onclick="openArticleModal('post-ai-agents')">
+          <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(217, 119, 87, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/avatar_hero.jpg');">
+            <div class="blog-badge-group">
+              <span class="blog-tag">AI Systems</span>
+              <span class="blog-read-time"><i class="ph ph-clock"></i> 6 min read</span>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-date"><i class="ph ph-calendar-blank"></i> Aug 24, 2026</div>
+            <h3 class="blog-card-title">Architecting Autonomous Human-AI Collaboration Workflows</h3>
+            <p class="blog-card-excerpt">Key design principles for production multi-agent systems, tool execution sandboxes, state graph orchestration, and human-in-the-loop governance.</p>
+            <div class="blog-card-footer">
+              <div class="blog-author">
+                <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
+                <span class="blog-author-name">Wisam Damouny</span>
+              </div>
+              <span class="blog-read-btn">
+                <span>Read Article</span>
+                <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post: Self-Hosted SaaS -->
         <article class="blog-card" data-blog-category="saas" onclick="openArticleModal('post-self-hosted')">
           <div class="blog-card-banner" style="background-image: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(18, 20, 26, 0.95) 100%), url('assets/zrikat_preview.jpg');">
             <div class="blog-badge-group">
@@ -2107,7 +2098,7 @@
           <div class="blog-card-body">
             <div class="blog-date"><i class="ph ph-calendar-blank"></i> Jul 30, 2026</div>
             <h3 class="blog-card-title">Building Resilient Self-Hosted SaaS Infrastructure</h3>
-            <p class="blog-card-excerpt">Why self-hosting developer tooling reduces cloud overhead by 70% while improving security compliance, latency, and full operational control.</p>
+            <p class="blog-card-excerpt">Why self-hosting developer tooling cuts recurring cloud overhead substantially while improving security compliance, latency, and full operational control.</p>
             <div class="blog-card-footer">
               <div class="blog-author">
                 <img src="assets/avatar_hero_wisam.jpg" alt="Wisam Damouny" />
@@ -2142,15 +2133,25 @@
 
   <!-- Contact Section -->
   <section id="contact">
-    <div class="section-watermark">CONTACT</div>
+    <div class="section-watermark">CONNECT</div>
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Get In Touch</span>
-        <h2 class="section-title">Let's Build Something Premium</h2>
+        <h2 class="section-title">Let's talk SAP data, AI, or real industries</h2>
       </div>
 
       <div class="contact-grid">
         <div class="contact-info-card">
+          <div class="contact-method">
+            <div class="contact-icon">
+              <i class="ph ph-linkedin-logo"></i>
+            </div>
+            <div class="contact-detail">
+              <div class="label">LinkedIn Profile</div>
+              <a href="https://www.linkedin.com/in/wisamdamouny" target="_blank" rel="noopener" class="val">linkedin.com/in/wisamdamouny</a>
+            </div>
+          </div>
+
           <div class="contact-method">
             <div class="contact-icon">
               <i class="ph ph-envelope-simple"></i>
@@ -2173,15 +2174,29 @@
 
           <div class="contact-method">
             <div class="contact-icon">
-              <i class="ph ph-globe"></i>
+              <i class="ph ph-broadcast"></i>
             </div>
             <div class="contact-detail">
-              <div class="label">Active Platforms</div>
-              <div style="display:flex; gap:12px; margin-top:4px;">
-                <a href="https://ikando.tech" target="_blank" rel="noopener" class="val">ikando.tech</a>
+              <div class="label">Local Channels (AI & Industry)</div>
+              <div style="display:flex; gap:12px; margin-top:6px; flex-wrap:wrap;">
+                <a href="https://instagram.com/wisam.ai" target="_blank" rel="noopener" class="val">
+                  <i class="ph ph-instagram-logo"></i> @wisam.ai
+                </a>
                 <span style="color:var(--fg-muted)">•</span>
-                <a href="https://zrikat.com" target="_blank" rel="noopener" class="val">zrikat.com</a>
+                <a href="https://youtube.com/@Wisamai" target="_blank" rel="noopener" class="val">
+                  <i class="ph ph-youtube-logo"></i> @Wisamai
+                </a>
               </div>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <div class="contact-icon">
+              <i class="ph ph-squares-four"></i>
+            </div>
+            <div class="contact-detail">
+              <div class="label">All Builds & Platforms</div>
+              <a href="https://wisai.tech" target="_blank" rel="noopener" class="val">wisai.tech</a>
             </div>
           </div>
         </div>
@@ -2205,7 +2220,7 @@
 
           <div class="form-group">
             <label for="msg">Message</label>
-            <textarea id="msg" name="message" class="form-control" placeholder="Tell me about your project or inquiry..."
+            <textarea id="msg" name="message" class="form-control" placeholder="Tell me about your inquiry or project..."
               required></textarea>
           </div>
 
@@ -2221,7 +2236,7 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <p>© <span id="year"></span> Wisam Damouny · Crafting self-hosted software for humans and AI agents.</p>
+      <p>© <span id="year"></span> Wisam Damouny · SAP runs the industries the world depends on. Their data should move as fast as their business does.</p>
     </div>
   </footer>
 
@@ -2565,7 +2580,7 @@
             <a href="blog/hermes-agent-on-hostinger.html" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:auto; font-weight:600;"><i class="ph ph-arrow-square-out"></i> Open Full Page</a>
           </div>
 
-          <p>There is a widening gap between "chatbot" and "agent": an agent has channels it listens on, tools it can call, memory that persists, and a loop that keeps running when you close the tab. <strong>Hermes</strong> collapses that plumbing into one deployable unit — and Hostinger now offers it as a managed, one-click product.</p>
+          <p>There is a widening gap between "chatbot" and "agent": an agent has channels it listens on, tools it can call, memory that persists, and a loop that keeps running when you close the tab. <strong>Hermes</strong> collapses that plumbing into one deployable unit: and Hostinger now offers it as a managed, one-click product.</p>
 
           <h2>1. What a Hermes agent is</h2>
           <ul>
@@ -2576,19 +2591,19 @@
           </ul>
 
           <h2>2. Managed vs. self-hosted</h2>
-          <p>Managed gets you an agent in Telegram tonight — minutes, one click, no SSH, updates handled. Self-hosting on your own VPS is an afternoon of setup and your ongoing uptime burden, bought in exchange for full control of the data path and tool code. Choose managed unless a real requirement forces the other way.</p>
+          <p>Managed gets you an agent in Telegram tonight: minutes, one click, no SSH, updates handled. Self-hosting on your own VPS is an afternoon of setup and your ongoing uptime burden, bought in exchange for full control of the data path and tool code. Choose managed unless a real requirement forces the other way.</p>
 
-          <p>Go straight to a discounted <a href="https://www.hostinger.com/cart?product=hagents%3Astarter&amp;period=12&amp;referral_type=cart_link&amp;REFERRALCODE=NHJWISAMDKAY&amp;referral_id=01a04384-666a-7361-bf76-90025e9ce5a8" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">Hermes Agent Starter checkout &mdash; 20% off</a>, or see the <a href="https://www.hostinger.com/managed-hermes-agent" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">product page</a> for current pricing and larger plans.</p>
+          <p>Go straight to a discounted <a href="https://www.hostinger.com/cart?product=hagents%3Astarter&amp;period=12&amp;referral_type=cart_link&amp;REFERRALCODE=NHJWISAMDKAY&amp;referral_id=01a04384-666a-7361-bf76-90025e9ce5a8" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">Hermes Agent Starter checkout | 20% off</a>, or see the <a href="https://www.hostinger.com/managed-hermes-agent" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">product page</a> for current pricing and larger plans.</p>
 
           <h2>3. The one-click deploy</h2>
           <ol>
             <li>Choose the plan and term on the Managed Hermes Agent page, then check out.</li>
-            <li>Click <strong>Deploy</strong> in hPanel — Hostinger provisions the server environment and agent config together. No OS template, no <code>docker compose</code>.</li>
+            <li>Click <strong>Deploy</strong> in hPanel: Hostinger provisions the server environment and agent config together. No OS template, no <code>docker compose</code>.</li>
             <li>Wait for "live". The agent comes up with a visual interface and a CLI in the panel.</li>
           </ol>
 
           <h2>4. Connect a model and channels</h2>
-          <p>Point the agent at <strong>OpenRouter</strong> (one key, many models — best default), a <strong>direct Anthropic/OpenAI key</strong>, or a <strong>custom OpenAI-compatible endpoint</strong> to keep inference on infrastructure you control. Then enable one channel — Telegram via <code>@BotFather</code> is the fastest — confirm the round trip, and add the rest.</p>
+          <p>Point the agent at <strong>OpenRouter</strong> (one key, many models: best default), a <strong>direct Anthropic/OpenAI key</strong>, or a <strong>custom OpenAI-compatible endpoint</strong> to keep inference on infrastructure you control. Then enable one channel: Telegram via <code>@BotFather</code> is the fastest: confirm the round trip, and add the rest.</p>
 
           <h2>5. If you would rather self-host</h2>
           <p>Same shape on a plain KVM VPS: the "Ubuntu 24.04 with Docker" template, the agent in a container, Caddy in front for TLS, and a restart policy so the loop survives reboots. You then supply the model key, channel tokens, and the updates yourself.</p>
@@ -2598,9 +2613,9 @@
           </blockquote>
 
           <h2>Conclusion</h2>
-          <p>An autonomous agent used to be an infrastructure project. Hermes turns it into a product decision — take the one-click deploy, bring your own model key, and drop to a self-hosted VPS only when a concrete requirement demands it.</p>
+          <p>An autonomous agent used to be an infrastructure project. Hermes turns it into a product decision: take the one-click deploy, bring your own model key, and drop to a self-hosted VPS only when a concrete requirement demands it.</p>
 
-          <p style="font-size:13px; color:var(--fg-subtle); font-style:italic;">Affiliate disclosure: the Hostinger links above are referral links — you get 20% off and I may earn a commission at no extra cost to you. Pricing reflects the product page at the time of writing.</p>
+          <p style="font-size:13px; color:var(--fg-subtle); font-style:italic;">Affiliate disclosure: the Hostinger links above are referral links: you get 20% off and I may earn a commission at no extra cost to you. Pricing reflects the product page at the time of writing.</p>
         `
       },
       'post-hermes-selfhosted': {
@@ -2619,7 +2634,7 @@
           <p>Want a Hermes agent with the least effort? Hostinger's <a href="blog/hermes-agent-on-hostinger.html" target="_blank" style="color:var(--accent); font-weight:600;">Managed Hermes Agent</a> is a one-click deploy. This is the other path: building the agent yourself on a bare VPS so you own the model, the data path, and every tool it can call. Nous Research's <strong>Hermes 3</strong> (Llama-3.1-based, fine-tuned for tool calling) is small enough to self-host and capable enough to drive a real agent loop.</p>
 
           <h2>1. Why Hermes, and why a plain VPS</h2>
-          <p>Hermes 3 8B has native tool calling, a <code>Q4_K_M</code> GGUF fits in ~8–10 GB of RAM, and CPU inference at 6–12 tok/sec is plenty for bursty agent work — no GPU required. Target at least 4 vCPU / 16 GB RAM (Hostinger KVM 4 / KVM 8).</p>
+          <p>Hermes 3 8B has native tool calling, a <code>Q4_K_M</code> GGUF fits in ~8–10 GB of RAM, and CPU inference at 6–12 tok/sec is plenty for bursty agent work: no GPU required. Target at least 4 vCPU / 16 GB RAM (Hostinger KVM 4 / KVM 8).</p>
 
           <p>This referral link applies <strong>20% off</strong> either route: <a href="https://www.hostinger.com?REFERRALCODE=NHJWISAMDKAY" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">hostinger.com &rarr; 20% off</a>.</p>
 
@@ -2630,10 +2645,10 @@ ollama pull hermes3:8b
 # Keep the model resident so agent steps have no cold start
 #   Environment="OLLAMA_KEEP_ALIVE=-1"
 #   Environment="OLLAMA_NUM_PARALLEL=1"</code></pre>
-          <p>Ollama exposes an OpenAI-compatible route at <code>127.0.0.1:11434/v1</code>. Never expose that port publicly — it has no auth.</p>
+          <p>Ollama exposes an OpenAI-compatible route at <code>127.0.0.1:11434/v1</code>. Never expose that port publicly: it has no auth.</p>
 
           <h2>3. The agent loop</h2>
-          <p>An agent is a loop: send the conversation plus a tool catalogue, execute whatever tool the model asks for, append the result, repeat until it stops. The OpenAI SDK works unchanged — only <code>base_url</code> changes.</p>
+          <p>An agent is a loop: send the conversation plus a tool catalogue, execute whatever tool the model asks for, append the result, repeat until it stops. The OpenAI SDK works unchanged: only <code>base_url</code> changes.</p>
           <pre><code>client = OpenAI(base_url="http://127.0.0.1:11434/v1", api_key="local")
 
 for _ in range(MAX_STEPS):
@@ -2655,7 +2670,7 @@ for _ in range(MAX_STEPS):
           <h2>Conclusion</h2>
           <p>A single CPU VPS, an 8B tool-calling model, and ~40 lines of loop code is enough for a genuinely autonomous agent you fully control. If that control is not a hard requirement, the <a href="blog/hermes-agent-on-hostinger.html" target="_blank" style="color:var(--accent); font-weight:600;">managed one-click deploy</a> gets you there in minutes instead.</p>
 
-          <p style="font-size:13px; color:var(--fg-subtle); font-style:italic;">Affiliate disclosure: the Hostinger links above are referral links — you get 20% off and I may earn a commission at no extra cost to you.</p>
+          <p style="font-size:13px; color:var(--fg-subtle); font-style:italic;">Affiliate disclosure: the Hostinger links above are referral links: you get 20% off and I may earn a commission at no extra cost to you.</p>
         `
       },
       'post-ai-agents': {
@@ -2750,7 +2765,7 @@ async function executeAgentStep(state: AgentState): Promise&lt;AgentState&gt; {
           <p>Relying exclusively on proprietary cloud SaaS platforms often leads to ballooning operational costs, vendor lock-in, and unpredictable API changes. Self-hosting core developer tooling and infrastructure restores full operational control.</p>
 
           <h2>1. Why Self-Host Internal Software?</h2>
-          <p>Through building platforms like <strong>ikando.tech</strong> and <strong>zrikat.com</strong>, self-hosted Docker and VPS infrastructure cut recurring cloud expenses by over 70% while improving data privacy compliance.</p>
+          <p>Through building platforms like <strong>ikando.tech</strong> and <strong>zrikat.com</strong>, self-hosted Docker and VPS infrastructure cut recurring cloud expenses by more than half while improving data privacy compliance.</p>
 
           <h2>2. The Self-Hosted Infrastructure Stack</h2>
           <ul>
@@ -2760,7 +2775,7 @@ async function executeAgentStep(state: AgentState): Promise&lt;AgentState&gt; {
           </ul>
 
           <h2>3. Key Takeaway</h2>
-          <p>Self-hosting is no longer just for hobbyists — it is a strategic business decision for software leaders seeking performance, security ownership, and fiscal efficiency.</p>
+          <p>Self-hosting is no longer just for hobbyists: it is a strategic business decision for software leaders seeking performance, security ownership, and fiscal efficiency.</p>
         `
       }
     };
