@@ -5,78 +5,59 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Self-Hosting a Hermes Agent on a Hostinger VPS | Wisam Damouny</title>
-  <meta name="description" content="The DIY path: run a Nous Hermes 3 model as an autonomous tool-using agent on a single Hostinger KVM VPS — provisioning, Ollama serving, the agent loop, and TLS hardening, by Wisam Damouny." />
+  <meta name="description" content="The DIY path: run a Nous Hermes 3 model as an autonomous tool-using agent on a single Hostinger KVM VPS ,  provisioning, Ollama serving, the agent loop, and TLS hardening, by Wisam Damouny." />
   <link rel="canonical" href="https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="author" content="Wisam Damouny" />
 
-  <!-- Open Graph Meta Tags for Social & SEO -->
-  <meta property="og:title" content="Self-Hosting a Hermes Agent on a Hostinger VPS" />
-  <meta property="og:description" content="The DIY path: run a Nous Hermes 3 model as an autonomous tool-using agent on a single Hostinger KVM VPS — provisioning, Ollama serving, the agent loop, and TLS hardening, by Wisam Damouny." />
+  <!-- Open Graph -->
   <meta property="og:type" content="article" />
+  <meta property="og:title" content="Self-Hosting a Hermes Agent on a Hostinger VPS | Wisam Damouny" />
+  <meta property="og:description" content="The DIY path: run a Nous Hermes 3 model as an autonomous tool-using agent on a single Hostinger KVM VPS ,  provisioning, Ollama serving, the agent loop, and TLS hardening, by Wisam Damouny." />
   <meta property="og:url" content="https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html" />
-  <meta property="og:site_name" content="Wisam Damouny" />
   <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+  <meta property="article:published_time" content="2026-08-27" />
+  <meta property="article:author" content="Wisam Damouny" />
+  <meta property="article:section" content="AI Systems" />
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Self-Hosting a Hermes Agent on a Hostinger VPS | Wisam Damouny" />
+  <meta name="twitter:description" content="The DIY path: run a Nous Hermes 3 model as an autonomous tool-using agent on a single Hostinger KVM VPS ,  provisioning, Ollama serving, the agent loop, and TLS hardening, by Wisam Damouny." />
   <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Self-Hosting a Hermes Agent on a Hostinger VPS",
-    "description": "The DIY path: run a Nous Hermes 3 model as an autonomous tool-using agent on a single Hostinger KVM VPS — provisioning, Ollama serving, the agent loop, and TLS hardening, by Wisam Damouny.",
-    "url": "https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html",
-    "datePublished": "2026-08-27",
-    "author": { "@type": "Person", "name": "Wisam Damouny", "url": "https://wisamdamouny.com/" },
-    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
-    "mainEntityOfPage": "https://wisamdamouny.com/blog/self-hosted-hermes-agent-vps.html"
-  }
-  </script>
-
-  <!-- Google Fonts & Icons -->
+  <!-- Google Fonts: Rubik & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
     :root {
-      --accent: #D97757;
-      --accent-hover: #E58A6C;
-      --accent-glow: rgba(217, 119, 87, 0.22);
-      --bg: #0b0c0e;
-      --bg-alt: #12141a;
-      --card-bg: rgba(20, 22, 28, 0.78);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --fg: #f4f4f6;
-      --fg-muted: #9da2b0;
-      --fg-subtle: #6b7280;
-      --nav-bg: rgba(11, 12, 14, 0.88);
+      --accent: #F6A93B;
+      --accent-hover: #FFC163;
+      --accent-glow: rgba(246, 169, 59, 0.2);
+      --bg: #0A0A0B;
+      --bg-alt: #0D0D0F;
+      --card-bg: #141416;
+      --card-border: #26262A;
+      --fg: #F4F2EC;
+      --fg-muted: #C9C6BD;
+      --fg-subtle: #8C897F;
+      --nav-bg: rgba(10, 10, 11, 0.92);
       --radius-sm: 8px;
       --radius-md: 16px;
       --radius-lg: 24px;
-      --radius-full: 9999px;
-    }
-
-    html.light {
-      --bg: #f7f7f9;
-      --bg-alt: #ffffff;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(0, 0, 0, 0.08);
-      --fg: #121316;
-      --fg-muted: #525866;
-      --fg-subtle: #868d9d;
-      --nav-bg: rgba(247, 247, 249, 0.88);
+      --radius-full: 999px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Rubik', system-ui, sans-serif;
       background-color: var(--bg);
       color: var(--fg);
       line-height: 1.8;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
     header {
@@ -104,7 +85,7 @@
     .brand {
       color: var(--fg);
       text-decoration: none;
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-weight: 700;
       font-size: 18px;
       display: flex;
@@ -127,6 +108,10 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      transition: color 0.18s ease;
+    }
+    .back-link:hover {
+      color: var(--accent-hover);
     }
 
     main {
@@ -138,24 +123,28 @@
     }
 
     .blog-tag {
-      background: #D97757;
-      color: #fff;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 6px 14px;
       border-radius: var(--radius-full);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.08em;
       display: inline-block;
       margin-bottom: 20px;
     }
 
     h1 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-size: clamp(32px, 5vw, 44px);
       font-weight: 800;
       line-height: 1.25;
+      letter-spacing: -0.02em;
       margin-bottom: 24px;
+      color: var(--fg);
     }
 
     .article-meta {
@@ -187,6 +176,7 @@
       font-weight: 700;
       margin: 36px 0 18px;
       color: var(--fg);
+      letter-spacing: -0.015em;
     }
 
     .article-content h3 {
@@ -219,7 +209,7 @@
       padding: 20px;
       border-radius: var(--radius-sm);
       overflow-x: auto;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 14px;
       color: #e2e8f0;
       margin: 28px 0;
@@ -244,6 +234,15 @@
       margin-bottom: 10px;
     }
 
+    .article-content a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .article-content a:hover {
+      color: var(--accent-hover);
+    }
+
     footer {
       border-top: 1px solid var(--card-border);
       padding: 40px 0;
@@ -262,7 +261,7 @@
           <span class="brand-dot"></span>
           <span>Wisam Damouny</span>
         </a>
-        <a href="../index.html#blog" class="back-link">
+        <a href="../index.html#write" class="back-link">
           <i class="ph ph-arrow-left"></i> Back to Articles
         </a>
       </nav>
@@ -292,16 +291,16 @@
       </article>
 
       <div class="article-content">
-        <p>If you want a Hermes agent running with the least effort, Hostinger&#39;s <a href="https://www.hostinger.com/managed-hermes-agent">Managed Hermes Agent</a> is a one-click deploy — I cover it in a <a href="hermes-agent-on-hostinger.html">separate article</a>. This piece is the other path: building the agent yourself on a bare VPS so you own the model, the data path, and every tool it can call. Nous Research&#39;s <strong>Hermes 3</strong> family — Llama-3.1-based, explicitly fine-tuned for structured tool calling — is small enough to self-host and capable enough to drive a real agent loop. Here is the 8B variant as an autonomous agent on a single <strong>Hostinger KVM VPS</strong>, from bare provisioning to a TLS-terminated endpoint.</p>
+        <p>If you want a Hermes agent running with the least effort, Hostinger&#39;s <a href="https://www.hostinger.com/managed-hermes-agent">Managed Hermes Agent</a> is a one-click deploy ,  I cover it in a <a href="hermes-agent-on-hostinger.html">separate article</a>. This piece is the other path: building the agent yourself on a bare VPS so you own the model, the data path, and every tool it can call. Nous Research&#39;s <strong>Hermes 3</strong> family ,  Llama-3.1-based, explicitly fine-tuned for structured tool calling ,  is small enough to self-host and capable enough to drive a real agent loop. Here is the 8B variant as an autonomous agent on a single <strong>Hostinger KVM VPS</strong>, from bare provisioning to a TLS-terminated endpoint.</p>
 <div style="border:1px solid var(--accent); border-radius:12px; padding:20px 24px; margin:32px 0; background:rgba(217,119,87,0.08);">
   <strong style="color:var(--fg); display:block; margin-bottom:8px;">Managed or DIY?</strong>
-  <p style="margin:0; color:var(--fg-muted); font-size:16px;">Choose <a href="https://www.hostinger.com/cart?product=hagents%3Astarter&amp;period=12&amp;referral_type=cart_link&amp;REFERRALCODE=NHJWISAMDKAY&amp;referral_id=01a04384-666a-7361-bf76-90025e9ce5a8" style="color:var(--accent); font-weight:600;">Managed Hermes Agent</a> (20% off, Starter plan) if you want the agent, not the plumbing — patching and uptime are handled. Choose the DIY route below if you need a specific model, an air-gapped data path, or custom tooling — the same <strong>20% off</strong> applies to a VPS: <a href="https://www.hostinger.com?REFERRALCODE=NHJWISAMDKAY" style="color:var(--accent); font-weight:600;">hostinger.com &rarr; 20% off</a>.</p>
+  <p style="margin:0; color:var(--fg-muted); font-size:16px;">Choose <a href="https://www.hostinger.com/cart?product=hagents%3Astarter&amp;period=12&amp;referral_type=cart_link&amp;REFERRALCODE=NHJWISAMDKAY&amp;referral_id=01a04384-666a-7361-bf76-90025e9ce5a8" style="color:var(--accent); font-weight:600;">Managed Hermes Agent</a> (20% off, Starter plan) if you want the agent, not the plumbing ,  patching and uptime are handled. Choose the DIY route below if you need a specific model, an air-gapped data path, or custom tooling ,  the same <strong>20% off</strong> applies to a VPS: <a href="https://www.hostinger.com?REFERRALCODE=NHJWISAMDKAY" style="color:var(--accent); font-weight:600;">hostinger.com &rarr; 20% off</a>.</p>
 </div><h2>1. Why Hermes, and why a plain VPS</h2>
 <p>Hermes 3 8B is a practical sweet spot for self-hosting:</p>
 <ul>
 <li><strong>Tool calling is native.</strong> The model was trained on function-call formatting, so you get reliable JSON tool invocations without heavy prompt gymnastics.</li>
 <li><strong>It fits in RAM.</strong> A <code>Q4_K_M</code> GGUF quantisation of the 8B model is roughly 5 GB on disk and needs ~8–10 GB of RAM to serve with a usable context window.</li>
-<li><strong>CPU inference is good enough for agents.</strong> Agent workloads are bursty and tolerant of a few seconds of latency per step — very different from a chat UI that needs 30+ tokens/sec.</li>
+<li><strong>CPU inference is good enough for agents.</strong> Agent workloads are bursty and tolerant of a few seconds of latency per step ,  very different from a chat UI that needs 30+ tokens/sec.</li>
 </ul>
 <p>That last point matters, because it means you do <strong>not</strong> need a GPU instance. A CPU-only KVM VPS with enough vCPUs and RAM will comfortably run an 8B model at 6–12 tokens/sec, which is plenty for background automation, scheduled research tasks, or a Slack bot that answers every few minutes.</p>
 <blockquote>
@@ -323,7 +322,7 @@ ufw allow OpenSSH
 ufw allow 443/tcp
 ufw enable
 
-# 8B inference is memory-hungry at load time — add swap as a safety net
+# 8B inference is memory-hungry at load time ,  add swap as a safety net
 fallocate -l 4G /swapfile &amp;&amp; chmod 600 /swapfile
 mkswap /swapfile &amp;&amp; swapon /swapfile
 echo &#039;/swapfile none swap sw 0 0&#039; &gt;&gt; /etc/fstab</code></pre>
@@ -355,7 +354,7 @@ EOF
 systemctl daemon-reload &amp;&amp; systemctl restart ollama</code></pre>
 <p><code>OLLAMA_KEEP_ALIVE=-1</code> keeps the model resident in RAM so you do not pay a cold-load penalty on every agent step. <code>OLLAMA_NUM_PARALLEL=1</code> keeps memory predictable on a CPU box.</p>
 <h2>4. The agent loop</h2>
-<p>An agent is just a loop: send the conversation plus a tool catalogue to the model, execute whatever tool it asks for, append the result, repeat until it stops calling tools. Because Ollama speaks the OpenAI wire format, the standard SDK works unchanged — you only swap the <code>base_url</code>.</p>
+<p>An agent is just a loop: send the conversation plus a tool catalogue to the model, execute whatever tool it asks for, append the result, repeat until it stops calling tools. Because Ollama speaks the OpenAI wire format, the standard SDK works unchanged ,  you only swap the <code>base_url</code>.</p>
 <pre><code class="language-python">import json, subprocess, requests
 from openai import OpenAI
 
@@ -433,7 +432,7 @@ if __name__ == &quot;__main__&quot;:
     style Hermes fill:#0f291e,stroke:#10b981,color:#fff
     style Sandbox fill:#1e293b,stroke:#3b82f6,color:#fff</pre>
 <h2>6. TLS and authentication with Caddy</h2>
-<p>If the agent runs on the same box as the model, you are done — talk to <code>127.0.0.1</code> and nothing else needs to be public. If the agent, a webhook, or a teammate needs to reach the model from outside, put <strong>Caddy</strong> in front so you get automatic Let&#39;s Encrypt certificates and a bearer-token gate.</p>
+<p>If the agent runs on the same box as the model, you are done ,  talk to <code>127.0.0.1</code> and nothing else needs to be public. If the agent, a webhook, or a teammate needs to reach the model from outside, put <strong>Caddy</strong> in front so you get automatic Let&#39;s Encrypt certificates and a bearer-token gate.</p>
 <pre><code class="language-caddy"># /etc/caddy/Caddyfile
 hermes.example.com {
     @unauthorised not header Authorization &quot;Bearer {env.HERMES_TOKEN}&quot;
@@ -452,7 +451,7 @@ systemctl restart caddy</code></pre>
 <li>Keeping the model <strong>resident</strong> (<code>OLLAMA_KEEP_ALIVE=-1</code>) trades a few GB of idle RAM for removing multi-second cold starts on every agent run. On an agent box, always make that trade.</li>
 </ul>
 <h2>Conclusion</h2>
-<p>A single CPU VPS, an 8B tool-calling model, and about forty lines of loop code is enough to run a genuinely autonomous agent that you fully control — no per-token metering, no data leaving your box, no upstream deprecation notices. If that control is not a hard requirement, the <a href="hermes-agent-on-hostinger.html">managed one-click deploy</a> will get you there in minutes instead. Pick the level of ownership the workload actually needs.</p>
+<p>A single CPU VPS, an 8B tool-calling model, and about forty lines of loop code is enough to run a genuinely autonomous agent that you fully control ,  no per-token metering, no data leaving your box, no upstream deprecation notices. If that control is not a hard requirement, the <a href="hermes-agent-on-hostinger.html">managed one-click deploy</a> will get you there in minutes instead. Pick the level of ownership the workload actually needs.</p>
 <p style="font-size:13px; color:var(--fg-subtle); font-style:italic; border-top:1px solid var(--card-border); padding-top:16px; margin-top:40px;">Affiliate disclosure: the Hostinger links in this article are referral links. If you buy a plan through one you get 20% off and I may receive a commission, at no extra cost to you. I use Hostinger VPS instances for the setup described above.</p>
 
       </div>
@@ -464,19 +463,9 @@ systemctl restart caddy</code></pre>
       <p>© 2026 Wisam Damouny · SAP runs the industries the world depends on. Their data should move as fast as their business does.</p>
     </div>
   </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof mermaid !== 'undefined') {
-        mermaid.initialize({
-          startOnLoad: true,
-          theme: 'dark',
-          securityLevel: 'loose',
-          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
-        });
-      }
-    });
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
   </script>
 </body>
 

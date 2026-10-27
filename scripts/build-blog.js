@@ -35,6 +35,11 @@ function escapeHtml(html) {
     .replace(/'/g, '&#039;');
 }
 
+function removeEmDashes(str) {
+  if (!str) return '';
+  return str.replace(/—/g, ', ');
+}
+
 function toIsoDate(raw) {
   const d = new Date(raw);
   if (isNaN(d)) return '';
@@ -42,13 +47,13 @@ function toIsoDate(raw) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
+function generateHtmlTemplate(meta, rawContentHtml, hasMermaid, slug) {
   const canonical = `${SITE_ORIGIN}/blog/${slug}.html`;
   const isoDate = toIsoDate(meta.date);
-  const title = meta.title || 'Wisam Damouny Article';
-  const description = meta.description || '';
+  const title = removeEmDashes(meta.title || 'Wisam Damouny Article');
+  const description = removeEmDashes(meta.description || '');
   const tag = meta.tag || 'Article';
-  const tagColor = meta.tagColor || 'var(--accent)';
+  const tagColor = 'var(--accent)';
   const date = meta.date || '';
   const readTime = meta.readTime || '';
   const author = meta.author || 'Wisam Damouny';
@@ -56,29 +61,20 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
   const authorImage = meta.authorImage || '../assets/avatar_hero_wisam.jpg';
   const ogImage = meta.ogImage || '../assets/avatar_hero.jpg';
 
-  // Prefer a .webp sibling if it exists (smaller payload, faster LCP). Author/avatar
-  // images are above the fold on blog pages; og:image stays JPG for social crawlers.
-  function preferWebp(asset) {
-    if (!asset) return asset;
-    const webp = asset.replace(/\.(jpe?g|png)$/i, '.webp');
-    return fs.existsSync(path.join(SITE_ROOT, webp.replace(/^\.\.\//, ''))) ? webp : asset;
-  }
-  const authorImageSrc = preferWebp(authorImage);
+  // Remove all em dashes from rendered article HTML as per design instructions
+  const contentHtml = removeEmDashes(rawContentHtml);
 
-  const mermaidScript = hasMermaid ? `
-  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof mermaid !== 'undefined') {
-        mermaid.initialize({
-          startOnLoad: true,
-          theme: 'dark',
-          securityLevel: 'loose',
-          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
-        });
-      }
-    });
-  </script>` : '';
+  // Author image fallback
+  const authorImageSrc = authorImage.endsWith('.jpg')
+    ? authorImage.replace(/\.jpg$/, '.webp')
+    : authorImage;
+
+  const mermaidScript = hasMermaid
+    ? `  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+  </script>`
+    : '';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -89,76 +85,57 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
   <title>${escapeHtml(title)} | Wisam Damouny</title>
   <meta name="description" content="${escapeHtml(description)}" />
   <link rel="canonical" href="${canonical}" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="author" content="${escapeHtml(author)}" />
 
-  <!-- Open Graph Meta Tags for Social & SEO -->
-  <meta property="og:title" content="${escapeHtml(title)}" />
-  <meta property="og:description" content="${escapeHtml(description)}" />
+  <!-- Open Graph -->
   <meta property="og:type" content="article" />
+  <meta property="og:title" content="${escapeHtml(title)} | Wisam Damouny" />
+  <meta property="og:description" content="${escapeHtml(description)}" />
   <meta property="og:url" content="${canonical}" />
-  <meta property="og:site_name" content="Wisam Damouny" />
-  <meta property="og:image" content="${escapeHtml(ogImage.replace(/^\.\.\//, SITE_ORIGIN + '/'))}" />
+  <meta property="og:image" content="${ogImage.startsWith('http') ? ogImage : SITE_ORIGIN + '/' + ogImage.replace(/^\.\.\//, '')}" />
+  <meta property="article:published_time" content="${isoDate}" />
+  <meta property="article:author" content="${escapeHtml(author)}" />
+  <meta property="article:section" content="${escapeHtml(tag)}" />
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="${escapeHtml(ogImage.replace(/^\.\.\//, SITE_ORIGIN + '/'))}" />
+  <meta name="twitter:title" content="${escapeHtml(title)} | Wisam Damouny" />
+  <meta name="twitter:description" content="${escapeHtml(description)}" />
+  <meta name="twitter:image" content="${ogImage.startsWith('http') ? ogImage : SITE_ORIGIN + '/' + ogImage.replace(/^\.\.\//, '')}" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": ${JSON.stringify(title)},
-    "description": ${JSON.stringify(description)},
-    "url": "${canonical}",
-    "datePublished": ${JSON.stringify(isoDate)},
-    "author": { "@type": "Person", "name": ${JSON.stringify(author)}, "url": "${SITE_ORIGIN}/" },
-    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
-    "mainEntityOfPage": "${canonical}"
-  }
-  </script>
-
-  <!-- Google Fonts & Icons -->
+  <!-- Google Fonts: Rubik & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
     :root {
-      --accent: #D97757;
-      --accent-hover: #E58A6C;
-      --accent-glow: rgba(217, 119, 87, 0.22);
-      --bg: #0b0c0e;
-      --bg-alt: #12141a;
-      --card-bg: rgba(20, 22, 28, 0.78);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --fg: #f4f4f6;
-      --fg-muted: #9da2b0;
-      --fg-subtle: #6b7280;
-      --nav-bg: rgba(11, 12, 14, 0.88);
+      --accent: #F6A93B;
+      --accent-hover: #FFC163;
+      --accent-glow: rgba(246, 169, 59, 0.2);
+      --bg: #0A0A0B;
+      --bg-alt: #0D0D0F;
+      --card-bg: #141416;
+      --card-border: #26262A;
+      --fg: #F4F2EC;
+      --fg-muted: #C9C6BD;
+      --fg-subtle: #8C897F;
+      --nav-bg: rgba(10, 10, 11, 0.92);
       --radius-sm: 8px;
       --radius-md: 16px;
       --radius-lg: 24px;
-      --radius-full: 9999px;
-    }
-
-    html.light {
-      --bg: #f7f7f9;
-      --bg-alt: #ffffff;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(0, 0, 0, 0.08);
-      --fg: #121316;
-      --fg-muted: #525866;
-      --fg-subtle: #868d9d;
-      --nav-bg: rgba(247, 247, 249, 0.88);
+      --radius-full: 999px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Rubik', system-ui, sans-serif;
       background-color: var(--bg);
       color: var(--fg);
       line-height: 1.8;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
     header {
@@ -186,7 +163,7 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
     .brand {
       color: var(--fg);
       text-decoration: none;
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-weight: 700;
       font-size: 18px;
       display: flex;
@@ -209,6 +186,10 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
       display: flex;
       align-items: center;
       gap: 6px;
+      transition: color 0.18s ease;
+    }
+    .back-link:hover {
+      color: var(--accent-hover);
     }
 
     main {
@@ -220,24 +201,28 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
     }
 
     .blog-tag {
-      background: ${tagColor};
-      color: #fff;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 6px 14px;
       border-radius: var(--radius-full);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.08em;
       display: inline-block;
       margin-bottom: 20px;
     }
 
     h1 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-size: clamp(32px, 5vw, 44px);
       font-weight: 800;
       line-height: 1.25;
+      letter-spacing: -0.02em;
       margin-bottom: 24px;
+      color: var(--fg);
     }
 
     .article-meta {
@@ -269,6 +254,7 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
       font-weight: 700;
       margin: 36px 0 18px;
       color: var(--fg);
+      letter-spacing: -0.015em;
     }
 
     .article-content h3 {
@@ -301,7 +287,7 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
       padding: 20px;
       border-radius: var(--radius-sm);
       overflow-x: auto;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 14px;
       color: #e2e8f0;
       margin: 28px 0;
@@ -326,6 +312,15 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
       margin-bottom: 10px;
     }
 
+    .article-content a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .article-content a:hover {
+      color: var(--accent-hover);
+    }
+
     footer {
       border-top: 1px solid var(--card-border);
       padding: 40px 0;
@@ -344,7 +339,7 @@ function generateHtmlTemplate(meta, contentHtml, hasMermaid, slug) {
           <span class="brand-dot"></span>
           <span>Wisam Damouny</span>
         </a>
-        <a href="../index.html#blog" class="back-link">
+        <a href="../index.html#write" class="back-link">
           <i class="ph ph-arrow-left"></i> Back to Articles
         </a>
       </nav>
@@ -422,7 +417,12 @@ function buildBlog() {
 
 function writeSitemap(blogUrls) {
   const today = new Date().toISOString().slice(0, 10);
-  const entries = [`${SITE_ORIGIN}/`, ...blogUrls]
+  const entries = [
+    `${SITE_ORIGIN}/`,
+    `${SITE_ORIGIN}/ar/`,
+    `${SITE_ORIGIN}/he/`,
+    ...blogUrls
+  ]
     .map(loc => `  <url><loc>${loc}</loc><lastmod>${today}</lastmod></url>`)
     .join('\n');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

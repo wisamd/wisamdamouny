@@ -5,78 +5,59 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Why Your Enterprise AI Agents Fail Without an Architecture (And How to Fix It) | Wisam Damouny</title>
-  <meta name="description" content="An honest technical breakdown of why most enterprise AI-agent initiatives fail — and the architecture patterns, sandboxing rules, and human-in-the-loop controls that separate working autonomous systems from demo toys, by Wisam Damouny." />
+  <meta name="description" content="An honest technical breakdown of why most enterprise AI-agent initiatives fail ,  and the architecture patterns, sandboxing rules, and human-in-the-loop controls that separate working autonomous systems from demo toys, by Wisam Damouny." />
   <link rel="canonical" href="https://wisamdamouny.com/blog/enterprise-ai-agents-fail-without-architecture.html" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="author" content="Wisam Damouny" />
 
-  <!-- Open Graph Meta Tags for Social & SEO -->
-  <meta property="og:title" content="Why Your Enterprise AI Agents Fail Without an Architecture (And How to Fix It)" />
-  <meta property="og:description" content="An honest technical breakdown of why most enterprise AI-agent initiatives fail — and the architecture patterns, sandboxing rules, and human-in-the-loop controls that separate working autonomous systems from demo toys, by Wisam Damouny." />
+  <!-- Open Graph -->
   <meta property="og:type" content="article" />
+  <meta property="og:title" content="Why Your Enterprise AI Agents Fail Without an Architecture (And How to Fix It) | Wisam Damouny" />
+  <meta property="og:description" content="An honest technical breakdown of why most enterprise AI-agent initiatives fail ,  and the architecture patterns, sandboxing rules, and human-in-the-loop controls that separate working autonomous systems from demo toys, by Wisam Damouny." />
   <meta property="og:url" content="https://wisamdamouny.com/blog/enterprise-ai-agents-fail-without-architecture.html" />
-  <meta property="og:site_name" content="Wisam Damouny" />
   <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+  <meta property="article:published_time" content="2026-09-04" />
+  <meta property="article:author" content="Wisam Damouny" />
+  <meta property="article:section" content="AI Systems" />
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Why Your Enterprise AI Agents Fail Without an Architecture (And How to Fix It) | Wisam Damouny" />
+  <meta name="twitter:description" content="An honest technical breakdown of why most enterprise AI-agent initiatives fail ,  and the architecture patterns, sandboxing rules, and human-in-the-loop controls that separate working autonomous systems from demo toys, by Wisam Damouny." />
   <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Why Your Enterprise AI Agents Fail Without an Architecture (And How to Fix It)",
-    "description": "An honest technical breakdown of why most enterprise AI-agent initiatives fail — and the architecture patterns, sandboxing rules, and human-in-the-loop controls that separate working autonomous systems from demo toys, by Wisam Damouny.",
-    "url": "https://wisamdamouny.com/blog/enterprise-ai-agents-fail-without-architecture.html",
-    "datePublished": "2026-09-04",
-    "author": { "@type": "Person", "name": "Wisam Damouny", "url": "https://wisamdamouny.com/" },
-    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
-    "mainEntityOfPage": "https://wisamdamouny.com/blog/enterprise-ai-agents-fail-without-architecture.html"
-  }
-  </script>
-
-  <!-- Google Fonts & Icons -->
+  <!-- Google Fonts: Rubik & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
     :root {
-      --accent: #D97757;
-      --accent-hover: #E58A6C;
-      --accent-glow: rgba(217, 119, 87, 0.22);
-      --bg: #0b0c0e;
-      --bg-alt: #12141a;
-      --card-bg: rgba(20, 22, 28, 0.78);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --fg: #f4f4f6;
-      --fg-muted: #9da2b0;
-      --fg-subtle: #6b7280;
-      --nav-bg: rgba(11, 12, 14, 0.88);
+      --accent: #F6A93B;
+      --accent-hover: #FFC163;
+      --accent-glow: rgba(246, 169, 59, 0.2);
+      --bg: #0A0A0B;
+      --bg-alt: #0D0D0F;
+      --card-bg: #141416;
+      --card-border: #26262A;
+      --fg: #F4F2EC;
+      --fg-muted: #C9C6BD;
+      --fg-subtle: #8C897F;
+      --nav-bg: rgba(10, 10, 11, 0.92);
       --radius-sm: 8px;
       --radius-md: 16px;
       --radius-lg: 24px;
-      --radius-full: 9999px;
-    }
-
-    html.light {
-      --bg: #f7f7f9;
-      --bg-alt: #ffffff;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(0, 0, 0, 0.08);
-      --fg: #121316;
-      --fg-muted: #525866;
-      --fg-subtle: #868d9d;
-      --nav-bg: rgba(247, 247, 249, 0.88);
+      --radius-full: 999px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Rubik', system-ui, sans-serif;
       background-color: var(--bg);
       color: var(--fg);
       line-height: 1.8;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
     header {
@@ -104,7 +85,7 @@
     .brand {
       color: var(--fg);
       text-decoration: none;
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-weight: 700;
       font-size: 18px;
       display: flex;
@@ -127,6 +108,10 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      transition: color 0.18s ease;
+    }
+    .back-link:hover {
+      color: var(--accent-hover);
     }
 
     main {
@@ -138,24 +123,28 @@
     }
 
     .blog-tag {
-      background: #D97757;
-      color: #fff;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 6px 14px;
       border-radius: var(--radius-full);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.08em;
       display: inline-block;
       margin-bottom: 20px;
     }
 
     h1 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-size: clamp(32px, 5vw, 44px);
       font-weight: 800;
       line-height: 1.25;
+      letter-spacing: -0.02em;
       margin-bottom: 24px;
+      color: var(--fg);
     }
 
     .article-meta {
@@ -187,6 +176,7 @@
       font-weight: 700;
       margin: 36px 0 18px;
       color: var(--fg);
+      letter-spacing: -0.015em;
     }
 
     .article-content h3 {
@@ -219,7 +209,7 @@
       padding: 20px;
       border-radius: var(--radius-sm);
       overflow-x: auto;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 14px;
       color: #e2e8f0;
       margin: 28px 0;
@@ -244,6 +234,15 @@
       margin-bottom: 10px;
     }
 
+    .article-content a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .article-content a:hover {
+      color: var(--accent-hover);
+    }
+
     footer {
       border-top: 1px solid var(--card-border);
       padding: 40px 0;
@@ -262,7 +261,7 @@
           <span class="brand-dot"></span>
           <span>Wisam Damouny</span>
         </a>
-        <a href="../index.html#blog" class="back-link">
+        <a href="../index.html#write" class="back-link">
           <i class="ph ph-arrow-left"></i> Back to Articles
         </a>
       </nav>
@@ -296,10 +295,10 @@
 <blockquote>
 <p>&quot;An AI agent is only as reliable as the boundary conditions and inspection layers surrounding its tool execution environment.&quot;</p>
 </blockquote>
-<p>The good news: the failures are structural, which means they are fixable — with architecture, not prayers.</p>
+<p>The good news: the failures are structural, which means they are fixable ,  with architecture, not prayers.</p>
 <h2>1. The Three Ways Enterprise Agents Actually Die</h2>
-<p><strong>Death one: the demo-vs-production cliff.</strong> A chatbot that answers questions is a calculator. An agent that reads your database, writes to your ticket system, triggers a deployment, or moves money is a new, untrusted user with direct tool access. The engineering bar is not higher — it is <em>categorically different</em>: sandboxing, authorization, audit, rollback.</p>
-<p><strong>Death two: no state graph.</strong> Most teams wire prompts directly to tools with <code>if/else</code> glue. The result is an unconstrained loop that cannot be inspected, resumed after a failure, or audited by compliance. Production agents need explicit states, transitions, and fallback nodes — not vibes.</p>
+<p><strong>Death one: the demo-vs-production cliff.</strong> A chatbot that answers questions is a calculator. An agent that reads your database, writes to your ticket system, triggers a deployment, or moves money is a new, untrusted user with direct tool access. The engineering bar is not higher ,  it is <em>categorically different</em>: sandboxing, authorization, audit, rollback.</p>
+<p><strong>Death two: no state graph.</strong> Most teams wire prompts directly to tools with <code>if/else</code> glue. The result is an unconstrained loop that cannot be inspected, resumed after a failure, or audited by compliance. Production agents need explicit states, transitions, and fallback nodes ,  not vibes.</p>
 <p><strong>Death three: no human-in-the-loop gate.</strong> When an agent is allowed to act on high-consequence operations (a production deploy, a billing update, a client-facing message) without explicit human approval, one mistake erases a year of trust.</p>
 <h2>2. The Architecture That Fixes All Three</h2>
 <p>The pattern I use in production is a <strong>state-graph orchestrator with a mandatory human verification gate</strong>:</p>
@@ -322,23 +321,23 @@
     style Audit fill:#0f291e,stroke:#10b981,color:#fff</pre>
 <h3>The three non-negotiables</h3>
 <ul>
-<li><strong>Tool execution sandboxing.</strong> Code, bash, and database queries run inside ephemeral, isolated environments with no write access to the host. The agent can break its sandbox all day — it cannot break <em>you</em>.</li>
+<li><strong>Tool execution sandboxing.</strong> Code, bash, and database queries run inside ephemeral, isolated environments with no write access to the host. The agent can break its sandbox all day ,  it cannot break <em>you</em>.</li>
 <li><strong>Explicit authorization boundaries.</strong> Define, in advance, the action classes that require human approval. If it touches production, billing, or a client, it stops at the gate. No exceptions, no &quot;the model seemed confident.&quot;</li>
 <li><strong>Full trajectory observability.</strong> Log the exact JSON: the prompts, the tool inputs, the outputs, the decision path. You need to <em>replay</em> any decision for compliance auditability. If you cannot explain why the agent did something, you cannot ship it.</li>
 </ul>
 <h2>3. Where Most Teams Skip and Pay Later</h2>
-<p>They defer the <strong>audit log</strong> and the <strong>authorization map</strong> because the demo works without them. That is precisely the seductive trap: rename &quot;demo&quot; to &quot;production,&quot; add a real user, and the missing governance instantly becomes a liability — a mysterious action with no owner, no explanation, no rollback.</p>
+<p>They defer the <strong>audit log</strong> and the <strong>authorization map</strong> because the demo works without them. That is precisely the seductive trap: rename &quot;demo&quot; to &quot;production,&quot; add a real user, and the missing governance instantly becomes a liability ,  a mysterious action with no owner, no explanation, no rollback.</p>
 <p>Start with the boring parts. The sandbox and the audit trail are not overhead; they are the <em>product</em>. They are what make an autonomous system something a compliance officer, a CTO, and a CFO will each sign off on.</p>
 <h2>4. What This Looks Like in Practice</h2>
 <ul>
-<li><strong>State graph orchestration</strong> — explicit states, transitions, fallback nodes, resume-from-failure.</li>
-<li><strong>Tool execution sandboxing</strong> — ephemeral, isolated, no host write access.</li>
-<li><strong>Human-in-the-loop verification</strong> — mandatory approval for high-consequence operations.</li>
-<li><strong>Observability &amp; replayability</strong> — full JSON trajectory logs for compliance.</li>
+<li><strong>State graph orchestration</strong> ,  explicit states, transitions, fallback nodes, resume-from-failure.</li>
+<li><strong>Tool execution sandboxing</strong> ,  ephemeral, isolated, no host write access.</li>
+<li><strong>Human-in-the-loop verification</strong> ,  mandatory approval for high-consequence operations.</li>
+<li><strong>Observability &amp; replayability</strong> ,  full JSON trajectory logs for compliance.</li>
 </ul>
-<p>This is the difference between an agent that demos well and an agent that can be trusted with your production environment — or your clients&#39;.</p>
+<p>This is the difference between an agent that demos well and an agent that can be trusted with your production environment ,  or your clients&#39;.</p>
 <h2>Get the audit your team actually needs</h2>
-<p>If your team is building an AI agent (or already shipped one and is nervous), I&#39;ll spend 30 minutes reviewing your architecture and hand you a concrete list of the sandboxing, authorization, and observability gaps — what&#39;s production-safe and what isn&#39;t. No obligation.</p>
+<p>If your team is building an AI agent (or already shipped one and is nervous), I&#39;ll spend 30 minutes reviewing your architecture and hand you a concrete list of the sandboxing, authorization, and observability gaps ,  what&#39;s production-safe and what isn&#39;t. No obligation.</p>
 <p>You can reach me directly at <strong><a href="mailto:wisamdamouny@gmail.com">wisamdamouny@gmail.com</a></strong> or through the contact form below.</p>
 
       </div>
@@ -350,19 +349,9 @@
       <p>© 2026 Wisam Damouny · SAP runs the industries the world depends on. Their data should move as fast as their business does.</p>
     </div>
   </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof mermaid !== 'undefined') {
-        mermaid.initialize({
-          startOnLoad: true,
-          theme: 'dark',
-          securityLevel: 'loose',
-          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
-        });
-      }
-    });
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
   </script>
 </body>
 

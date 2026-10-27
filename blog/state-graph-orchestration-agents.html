@@ -5,78 +5,59 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>State Graph Orchestration: Production-Grade Control for AI Agents | Wisam Damouny</title>
-  <meta name="description" content="How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, builds production AI agents with explicit state graph orchestration — typed states, human-in-the-loop gates, checkpointing, and resilient fallbacks that replace fragile LLM control flow." />
+  <meta name="description" content="How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, builds production AI agents with explicit state graph orchestration ,  typed states, human-in-the-loop gates, checkpointing, and resilient fallbacks that replace fragile LLM control flow." />
   <link rel="canonical" href="https://wisamdamouny.com/blog/state-graph-orchestration-agents.html" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="author" content="Wisam Damouny" />
 
-  <!-- Open Graph Meta Tags for Social & SEO -->
-  <meta property="og:title" content="State Graph Orchestration: Production-Grade Control for AI Agents" />
-  <meta property="og:description" content="How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, builds production AI agents with explicit state graph orchestration — typed states, human-in-the-loop gates, checkpointing, and resilient fallbacks that replace fragile LLM control flow." />
+  <!-- Open Graph -->
   <meta property="og:type" content="article" />
+  <meta property="og:title" content="State Graph Orchestration: Production-Grade Control for AI Agents | Wisam Damouny" />
+  <meta property="og:description" content="How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, builds production AI agents with explicit state graph orchestration ,  typed states, human-in-the-loop gates, checkpointing, and resilient fallbacks that replace fragile LLM control flow." />
   <meta property="og:url" content="https://wisamdamouny.com/blog/state-graph-orchestration-agents.html" />
-  <meta property="og:site_name" content="Wisam Damouny" />
   <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+  <meta property="article:published_time" content="2026-09-21" />
+  <meta property="article:author" content="Wisam Damouny" />
+  <meta property="article:section" content="AI Systems" />
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="State Graph Orchestration: Production-Grade Control for AI Agents | Wisam Damouny" />
+  <meta name="twitter:description" content="How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, builds production AI agents with explicit state graph orchestration ,  typed states, human-in-the-loop gates, checkpointing, and resilient fallbacks that replace fragile LLM control flow." />
   <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "State Graph Orchestration: Production-Grade Control for AI Agents",
-    "description": "How Wisam Damouny, Software Tech Leader at Qlik and AI Systems Architect, builds production AI agents with explicit state graph orchestration — typed states, human-in-the-loop gates, checkpointing, and resilient fallbacks that replace fragile LLM control flow.",
-    "url": "https://wisamdamouny.com/blog/state-graph-orchestration-agents.html",
-    "datePublished": "2026-09-21",
-    "author": { "@type": "Person", "name": "Wisam Damouny", "url": "https://wisamdamouny.com/" },
-    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
-    "mainEntityOfPage": "https://wisamdamouny.com/blog/state-graph-orchestration-agents.html"
-  }
-  </script>
-
-  <!-- Google Fonts & Icons -->
+  <!-- Google Fonts: Rubik & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
     :root {
-      --accent: #D97757;
-      --accent-hover: #E58A6C;
-      --accent-glow: rgba(217, 119, 87, 0.22);
-      --bg: #0b0c0e;
-      --bg-alt: #12141a;
-      --card-bg: rgba(20, 22, 28, 0.78);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --fg: #f4f4f6;
-      --fg-muted: #9da2b0;
-      --fg-subtle: #6b7280;
-      --nav-bg: rgba(11, 12, 14, 0.88);
+      --accent: #F6A93B;
+      --accent-hover: #FFC163;
+      --accent-glow: rgba(246, 169, 59, 0.2);
+      --bg: #0A0A0B;
+      --bg-alt: #0D0D0F;
+      --card-bg: #141416;
+      --card-border: #26262A;
+      --fg: #F4F2EC;
+      --fg-muted: #C9C6BD;
+      --fg-subtle: #8C897F;
+      --nav-bg: rgba(10, 10, 11, 0.92);
       --radius-sm: 8px;
       --radius-md: 16px;
       --radius-lg: 24px;
-      --radius-full: 9999px;
-    }
-
-    html.light {
-      --bg: #f7f7f9;
-      --bg-alt: #ffffff;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(0, 0, 0, 0.08);
-      --fg: #121316;
-      --fg-muted: #525866;
-      --fg-subtle: #868d9d;
-      --nav-bg: rgba(247, 247, 249, 0.88);
+      --radius-full: 999px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Rubik', system-ui, sans-serif;
       background-color: var(--bg);
       color: var(--fg);
       line-height: 1.8;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
     header {
@@ -104,7 +85,7 @@
     .brand {
       color: var(--fg);
       text-decoration: none;
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-weight: 700;
       font-size: 18px;
       display: flex;
@@ -127,6 +108,10 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      transition: color 0.18s ease;
+    }
+    .back-link:hover {
+      color: var(--accent-hover);
     }
 
     main {
@@ -138,24 +123,28 @@
     }
 
     .blog-tag {
-      background: #10b981;
-      color: #fff;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 6px 14px;
       border-radius: var(--radius-full);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.08em;
       display: inline-block;
       margin-bottom: 20px;
     }
 
     h1 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-size: clamp(32px, 5vw, 44px);
       font-weight: 800;
       line-height: 1.25;
+      letter-spacing: -0.02em;
       margin-bottom: 24px;
+      color: var(--fg);
     }
 
     .article-meta {
@@ -187,6 +176,7 @@
       font-weight: 700;
       margin: 36px 0 18px;
       color: var(--fg);
+      letter-spacing: -0.015em;
     }
 
     .article-content h3 {
@@ -219,7 +209,7 @@
       padding: 20px;
       border-radius: var(--radius-sm);
       overflow-x: auto;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 14px;
       color: #e2e8f0;
       margin: 28px 0;
@@ -244,6 +234,15 @@
       margin-bottom: 10px;
     }
 
+    .article-content a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .article-content a:hover {
+      color: var(--accent-hover);
+    }
+
     footer {
       border-top: 1px solid var(--card-border);
       padding: 40px 0;
@@ -262,7 +261,7 @@
           <span class="brand-dot"></span>
           <span>Wisam Damouny</span>
         </a>
-        <a href="../index.html#blog" class="back-link">
+        <a href="../index.html#write" class="back-link">
           <i class="ph ph-arrow-left"></i> Back to Articles
         </a>
       </nav>
@@ -293,13 +292,13 @@
 
       <div class="article-content">
         <p>The difference between a demo agent and a production agent is rarely the model. It is almost always the <strong>control flow</strong>. A demo wires a prompt to a tool with <code>if/else</code> glue and hopes. A production agent knows exactly where it is, what it is allowed to do at each point, how to pause for a human, and how to resume after a crash. That is what a <strong>state graph</strong> gives you: the orchestration layer that turns a stochastic model into a deterministic, inspectable, resumable machine.</p>
-<p>I have spent the last ten years building systems that must be responsible at 2 a.m., and the pattern that survives contact with auditors, compliance officers, and angry customers is the same one every time. This post is the state-graph orchestrator I reach for — how to model states, gate the transitions that matter, checkpoint so nothing is lost, and design fallbacks so a stuck agent fails cleanly instead of failing loudly.</p>
+<p>I have spent the last ten years building systems that must be responsible at 2 a.m., and the pattern that survives contact with auditors, compliance officers, and angry customers is the same one every time. This post is the state-graph orchestrator I reach for ,  how to model states, gate the transitions that matter, checkpoint so nothing is lost, and design fallbacks so a stuck agent fails cleanly instead of failing loudly.</p>
 <h2>1. Why raw LLM control flow does not scale</h2>
 <p>When a team first builds an agent, they often do it as a single long prompt: <em>&quot;Do X, then Y, then Z, and call these tools.&quot;</em> It works in the demo. In production it collapses for three structural reasons:</p>
 <ul>
 <li><strong>No defined states.</strong> The model improvises its next action from whatever the last tool returned, so there is no single place you can look to answer <em>&quot;what is this agent doing right now?&quot;</em></li>
 <li><strong>Unbounded loops.</strong> A retry loop that should stop and escalate instead spins, each iteration paying an LLM call and mutating state.</li>
-<li><strong>No resume point.</strong> If the orchestrator dies mid-task, everything it did is lost and the run restarts from zero — or worse, restarts and repeats a side effect.</li>
+<li><strong>No resume point.</strong> If the orchestrator dies mid-task, everything it did is lost and the run restarts from zero ,  or worse, restarts and repeats a side effect.</li>
 </ul>
 <p>A state graph replaces all three with structure. Instead of asking the model <em>&quot;what should you do next?&quot;</em>, you ask it <em>&quot;which transition out of this explicit state do you take?&quot;</em> The set of possibilities is bounded, auditable, and safe.</p>
 <pre class="mermaid">graph TD
@@ -344,19 +343,19 @@ builder.add_conditional_edges(
 )</code></pre>
 <p>Three things make this production-grade rather than demo-grade:</p>
 <ul>
-<li><strong>Typed state.</strong> Every transition reads and writes a strongly typed state object. You can serialize it, log it, and replay it — which is the foundation of the audit trail.</li>
+<li><strong>Typed state.</strong> Every transition reads and writes a strongly typed state object. You can serialize it, log it, and replay it ,  which is the foundation of the audit trail.</li>
 <li><strong>Bounded transitions.</strong> The model does not choose an arbitrary next action; it chooses one of N named edges. Even if the model behaves badly, it can only reach the states you designed.</li>
 <li><strong>Deterministic identity.</strong> The <code>request_id</code> survives the whole run, so a checkpoint, a crash, and a resume all reference the same logical task.</li>
 </ul>
 <h2>3. The human-in-the-loop gate is a state, not a callback</h2>
-<p>Almost every serious agent-automation failure is an agent acting with <em>unearned authority</em>. The fix is not to remove autonomy; it is to make approval an <strong>explicit state</strong> in the graph, not a detached callback. When a transition leads to a high-consequence action, the orchestrator moves to <code>AWAIT_APPROVAL</code> and <em>stops</em>. No clock ticks, no hidden retry — the run is simply paused at a defined point with a defined payload.</p>
+<p>Almost every serious agent-automation failure is an agent acting with <em>unearned authority</em>. The fix is not to remove autonomy; it is to make approval an <strong>explicit state</strong> in the graph, not a detached callback. When a transition leads to a high-consequence action, the orchestrator moves to <code>AWAIT_APPROVAL</code> and <em>stops</em>. No clock ticks, no hidden retry ,  the run is simply paused at a defined point with a defined payload.</p>
 <pre><code class="language-text">AgentState.Status = &quot;awaiting_approval&quot;
   payload: { action, target, risk_class, token_scope_required }
 
   on human_approve(task_id)  -&gt; status = &quot;executing&quot;
   on human_reject(task_id)   -&gt; status = &quot;terminated&quot;
   on timeout(task_id)        -&gt; status = &quot;terminated&quot;   # fail closed</code></pre>
-<p>This is the same human-in-the-loop pattern regular readers will recognize from my posts on agent architecture and sandboxing — and state graphs are the <em>mechanism</em> that makes it first-class. It is deterministic, testable, and non-negotiable. The gate between <em>intent</em> and <em>execution</em> is not a nice-to-have; it is the difference between a system you trust and a system you babysit.</p>
+<p>This is the same human-in-the-loop pattern regular readers will recognize from my posts on agent architecture and sandboxing ,  and state graphs are the <em>mechanism</em> that makes it first-class. It is deterministic, testable, and non-negotiable. The gate between <em>intent</em> and <em>execution</em> is not a nice-to-have; it is the difference between a system you trust and a system you babysit.</p>
 <h2>4. Checkpointing: cheap persistence, failover for free</h2>
 <p>A state graph&#39;s biggest operational win is that because the <em>entire state</em> is a serializable object, you can <strong>persist it after every transition</strong> for nearly free. That persistence is what makes resumability and retry possible without re-doing side effects.</p>
 <pre><code class="language-python">checkpointer = SqliteSaver.from_conn_string(&quot;checkpoints.db&quot;)
@@ -370,7 +369,7 @@ result = app.invoke(new_input, config=thread)</code></pre>
 <ul>
 <li><strong>Orchestrator crash?</strong> Restart the process, resume each in-flight <code>request_id</code> from its last checkpointed state. No work lost.</li>
 <li><strong>Tool call idempotency?</strong> Because you persist state <em>before</em> executing a side-effecting tool, you never re-run a transition you already completed. The state is the source of truth for what has happened.</li>
-<li><strong>Audit for free.</strong> The checkpoint log is already a chronological, immutable record of every state the run entered — the same data an auditor asks for, without building a separate pipeline.</li>
+<li><strong>Audit for free.</strong> The checkpoint log is already a chronological, immutable record of every state the run entered ,  the same data an auditor asks for, without building a separate pipeline.</li>
 </ul>
 <h2>5. Fallback and max-retry: design the failure before it happens</h2>
 <p>Every graph needs an explicit answer to the question <em>&quot;what happens when this is stuck?&quot;</em> Bounded retries and a fallback node are the two mechanisms, and both must be <em>part of the graph</em>, not exceptions thrown at the last minute.</p>
@@ -386,14 +385,14 @@ fallback:
     - do_not_auto_retry</code></pre>
 <p>The discipline is that a stuck run <strong>fails closed into a reviewable state</strong> rather than burning tokens or repeating mutations. This is the engineering equivalent of a circuit breaker: when a dependency is misbehaving, you stop amplifying it and route to a controlled shutdown. Your operations team gets a clean, single row saying <em>&quot;run X hit its retry budget and is parked for review,&quot;</em> instead of a pager storm.</p>
 <h2>6. Observability falls out of the graph</h2>
-<p>Because every run is a sequence of named states, observability stops being a bolt-on and becomes a property of the system. Each transition is a natural event with a timestamp, a <code>request_id</code>, and the state delta. This composes directly with the OpenTelemetry tracing and trajectory logging I covered in my post on multi-agent auditability — the graph <em>is</em> the trace.</p>
+<p>Because every run is a sequence of named states, observability stops being a bolt-on and becomes a property of the system. Each transition is a natural event with a timestamp, a <code>request_id</code>, and the state delta. This composes directly with the OpenTelemetry tracing and trajectory logging I covered in my post on multi-agent auditability ,  the graph <em>is</em> the trace.</p>
 <ul>
 <li><strong>Where is every agent right now?</strong> Group runs by current state. One dashboard query.</li>
 <li><strong>Where do agents get stuck?</strong> Alarm on time-in-state exceeding a threshold. The bottleneck is a named state, not a mystery.</li>
 <li><strong>What did this run do?</strong> Replay the checkpoint log. Compliance sign-off in minutes.</li>
 </ul>
 <h2>Bring state graph orchestration to your agent stack</h2>
-<p>If your team&#39;s agent is structured as a long prompt or <code>if/else</code> glue, you are carrying the structural failure modes that state graphs eliminate — and they will surface the first time a run matters at 2 a.m. I spend 30 minutes with senior teams reviewing their agent orchestration: whether states and transitions are explicit, where the human-in-the-loop gates belong, how checkpoints and fallbacks are wired, and what your audit trail actually proves. No obligation, and no product pitch.</p>
+<p>If your team&#39;s agent is structured as a long prompt or <code>if/else</code> glue, you are carrying the structural failure modes that state graphs eliminate ,  and they will surface the first time a run matters at 2 a.m. I spend 30 minutes with senior teams reviewing their agent orchestration: whether states and transitions are explicit, where the human-in-the-loop gates belong, how checkpoints and fallbacks are wired, and what your audit trail actually proves. No obligation, and no product pitch.</p>
 <p>Reach me directly at <strong><a href="mailto:wisamdamouny@gmail.com">wisamdamouny@gmail.com</a></strong> or via the contact form below.</p>
 
       </div>
@@ -405,19 +404,9 @@ fallback:
       <p>© 2026 Wisam Damouny · SAP runs the industries the world depends on. Their data should move as fast as their business does.</p>
     </div>
   </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof mermaid !== 'undefined') {
-        mermaid.initialize({
-          startOnLoad: true,
-          theme: 'dark',
-          securityLevel: 'loose',
-          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
-        });
-      }
-    });
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
   </script>
 </body>
 

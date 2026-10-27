@@ -5,78 +5,59 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tooling a Safe Sandbox for Enterprise AI Agents | Wisam Damouny</title>
-  <meta name="description" content="The practical playbook Wisam Damouny uses to isolate AI agent tool execution — gVisor/Firecracker isolation, seccomp and eBPF syscall filtering, egress control, and permission gates that let senior teams ship agents that touch production safely." />
+  <meta name="description" content="The practical playbook Wisam Damouny uses to isolate AI agent tool execution ,  gVisor/Firecracker isolation, seccomp and eBPF syscall filtering, egress control, and permission gates that let senior teams ship agents that touch production safely." />
   <link rel="canonical" href="https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="author" content="Wisam Damouny" />
 
-  <!-- Open Graph Meta Tags for Social & SEO -->
-  <meta property="og:title" content="Tooling a Safe Sandbox for Enterprise AI Agents" />
-  <meta property="og:description" content="The practical playbook Wisam Damouny uses to isolate AI agent tool execution — gVisor/Firecracker isolation, seccomp and eBPF syscall filtering, egress control, and permission gates that let senior teams ship agents that touch production safely." />
+  <!-- Open Graph -->
   <meta property="og:type" content="article" />
+  <meta property="og:title" content="Tooling a Safe Sandbox for Enterprise AI Agents | Wisam Damouny" />
+  <meta property="og:description" content="The practical playbook Wisam Damouny uses to isolate AI agent tool execution ,  gVisor/Firecracker isolation, seccomp and eBPF syscall filtering, egress control, and permission gates that let senior teams ship agents that touch production safely." />
   <meta property="og:url" content="https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html" />
-  <meta property="og:site_name" content="Wisam Damouny" />
   <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+  <meta property="article:published_time" content="2026-09-14" />
+  <meta property="article:author" content="Wisam Damouny" />
+  <meta property="article:section" content="AI Systems" />
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tooling a Safe Sandbox for Enterprise AI Agents | Wisam Damouny" />
+  <meta name="twitter:description" content="The practical playbook Wisam Damouny uses to isolate AI agent tool execution ,  gVisor/Firecracker isolation, seccomp and eBPF syscall filtering, egress control, and permission gates that let senior teams ship agents that touch production safely." />
   <meta name="twitter:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Tooling a Safe Sandbox for Enterprise AI Agents",
-    "description": "The practical playbook Wisam Damouny uses to isolate AI agent tool execution — gVisor/Firecracker isolation, seccomp and eBPF syscall filtering, egress control, and permission gates that let senior teams ship agents that touch production safely.",
-    "url": "https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html",
-    "datePublished": "2026-09-14",
-    "author": { "@type": "Person", "name": "Wisam Damouny", "url": "https://wisamdamouny.com/" },
-    "publisher": { "@type": "Person", "name": "Wisam Damouny" },
-    "mainEntityOfPage": "https://wisamdamouny.com/blog/tool-execution-sandboxing-agents.html"
-  }
-  </script>
-
-  <!-- Google Fonts & Icons -->
+  <!-- Google Fonts: Rubik & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
     :root {
-      --accent: #D97757;
-      --accent-hover: #E58A6C;
-      --accent-glow: rgba(217, 119, 87, 0.22);
-      --bg: #0b0c0e;
-      --bg-alt: #12141a;
-      --card-bg: rgba(20, 22, 28, 0.78);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --fg: #f4f4f6;
-      --fg-muted: #9da2b0;
-      --fg-subtle: #6b7280;
-      --nav-bg: rgba(11, 12, 14, 0.88);
+      --accent: #F6A93B;
+      --accent-hover: #FFC163;
+      --accent-glow: rgba(246, 169, 59, 0.2);
+      --bg: #0A0A0B;
+      --bg-alt: #0D0D0F;
+      --card-bg: #141416;
+      --card-border: #26262A;
+      --fg: #F4F2EC;
+      --fg-muted: #C9C6BD;
+      --fg-subtle: #8C897F;
+      --nav-bg: rgba(10, 10, 11, 0.92);
       --radius-sm: 8px;
       --radius-md: 16px;
       --radius-lg: 24px;
-      --radius-full: 9999px;
-    }
-
-    html.light {
-      --bg: #f7f7f9;
-      --bg-alt: #ffffff;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(0, 0, 0, 0.08);
-      --fg: #121316;
-      --fg-muted: #525866;
-      --fg-subtle: #868d9d;
-      --nav-bg: rgba(247, 247, 249, 0.88);
+      --radius-full: 999px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Rubik', system-ui, sans-serif;
       background-color: var(--bg);
       color: var(--fg);
       line-height: 1.8;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
     header {
@@ -104,7 +85,7 @@
     .brand {
       color: var(--fg);
       text-decoration: none;
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-weight: 700;
       font-size: 18px;
       display: flex;
@@ -127,6 +108,10 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      transition: color 0.18s ease;
+    }
+    .back-link:hover {
+      color: var(--accent-hover);
     }
 
     main {
@@ -138,24 +123,28 @@
     }
 
     .blog-tag {
-      background: #D97757;
-      color: #fff;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 6px 14px;
       border-radius: var(--radius-full);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.08em;
       display: inline-block;
       margin-bottom: 20px;
     }
 
     h1 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Rubik', sans-serif;
       font-size: clamp(32px, 5vw, 44px);
       font-weight: 800;
       line-height: 1.25;
+      letter-spacing: -0.02em;
       margin-bottom: 24px;
+      color: var(--fg);
     }
 
     .article-meta {
@@ -187,6 +176,7 @@
       font-weight: 700;
       margin: 36px 0 18px;
       color: var(--fg);
+      letter-spacing: -0.015em;
     }
 
     .article-content h3 {
@@ -219,7 +209,7 @@
       padding: 20px;
       border-radius: var(--radius-sm);
       overflow-x: auto;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 14px;
       color: #e2e8f0;
       margin: 28px 0;
@@ -244,6 +234,15 @@
       margin-bottom: 10px;
     }
 
+    .article-content a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .article-content a:hover {
+      color: var(--accent-hover);
+    }
+
     footer {
       border-top: 1px solid var(--card-border);
       padding: 40px 0;
@@ -262,7 +261,7 @@
           <span class="brand-dot"></span>
           <span>Wisam Damouny</span>
         </a>
-        <a href="../index.html#blog" class="back-link">
+        <a href="../index.html#write" class="back-link">
           <i class="ph ph-arrow-left"></i> Back to Articles
         </a>
       </nav>
@@ -292,7 +291,7 @@
       </article>
 
       <div class="article-content">
-        <p>An agent is a new, untrusted user that can run code, call your APIs, and mutate state — and the most debated part of a production AI system is not the model, it is <em>where the tools execute</em>. I have seen teams replace a convincing demo with a production incident in one afternoon because the agent had full host access and &quot;just knew&quot; how to call the runbook. This post is the sandboxing layer I put between an agent and anything that matters: what is worth isolating, which isolation primitives to reach for at each trust level, and the permission gate that turns &quot;the agent can do it&quot; into &quot;the agent can do it after a human or policy says so.&quot;</p>
+        <p>An agent is a new, untrusted user that can run code, call your APIs, and mutate state ,  and the most debated part of a production AI system is not the model, it is <em>where the tools execute</em>. I have seen teams replace a convincing demo with a production incident in one afternoon because the agent had full host access and &quot;just knew&quot; how to call the runbook. This post is the sandboxing layer I put between an agent and anything that matters: what is worth isolating, which isolation primitives to reach for at each trust level, and the permission gate that turns &quot;the agent can do it&quot; into &quot;the agent can do it after a human or policy says so.&quot;</p>
 <h2>1. The threat model is the design brief</h2>
 <p>Before choosing a sandbox, write down what fails. For an enterprise agent that reads your database, writes tickets, and triggers deploys, the realistic failure modes are not a rogue model plotting world domination. They are banal and specific:</p>
 <ul>
@@ -314,14 +313,14 @@
     C --> G[Host OS]
     D --> G</pre>
 <ul>
-<li><strong>Tier 1 — in-process with seccomp.</strong> For tools that only call well-known APIs, run them in a worker thread fenced off by a <code>seccomp</code> allowlist of syscalls plus resource limits. Fastest; sufficient for read-only operations.</li>
-<li><strong>Tier 2 — user-space sandbox.</strong> For tools that execute code or scripts but don&#39;t need the host kernel — think <code>node</code> for a headless browser task, or a LISP/JS eval. A user-space sandbox like gVisor&#39;s <code>runsc</code> or a <code>bwrap</code> bubblewrap layer gives you syscall interception without a full VM.</li>
-<li><strong>Tier 3 — microVM.</strong> For anything that runs untrusted, third-party, or genuinely arbitrary code, use a Firecracker or Cloud Hypervisor microVM with a read-only rootfs and no network by default. Boot times are 100–200ms, so the cost is low enough to use per-call.</li>
-<li><strong>Tier 4 — in / out anonymizer.</strong> For processing untrusted documents, the microVM also gets <strong>no outbound network</strong> unless the task explicitly needs it, and if it does, it goes through an egress proxy that filters destinations.</li>
+<li><strong>Tier 1 ,  in-process with seccomp.</strong> For tools that only call well-known APIs, run them in a worker thread fenced off by a <code>seccomp</code> allowlist of syscalls plus resource limits. Fastest; sufficient for read-only operations.</li>
+<li><strong>Tier 2 ,  user-space sandbox.</strong> For tools that execute code or scripts but don&#39;t need the host kernel ,  think <code>node</code> for a headless browser task, or a LISP/JS eval. A user-space sandbox like gVisor&#39;s <code>runsc</code> or a <code>bwrap</code> bubblewrap layer gives you syscall interception without a full VM.</li>
+<li><strong>Tier 3 ,  microVM.</strong> For anything that runs untrusted, third-party, or genuinely arbitrary code, use a Firecracker or Cloud Hypervisor microVM with a read-only rootfs and no network by default. Boot times are 100–200ms, so the cost is low enough to use per-call.</li>
+<li><strong>Tier 4 ,  in / out anonymizer.</strong> For processing untrusted documents, the microVM also gets <strong>no outbound network</strong> unless the task explicitly needs it, and if it does, it goes through an egress proxy that filters destinations.</li>
 </ul>
 <p>Every tier still needs the two cross-cutting controls below: a syscall policy and an egress policy.</p>
 <h2>3. syscalls: the allowlist that does the heavy lifting</h2>
-<p>On Linux, the boundary your agent actually feels is the kernel syscall surface. <code>seccomp-bpf</code> lets you deny everything except an allowlist. Working from an allowlist (not a deny list) is the whole game — deny lists always leak one stray syscall you hadn&#39;t thought of.</p>
+<p>On Linux, the boundary your agent actually feels is the kernel syscall surface. <code>seccomp-bpf</code> lets you deny everything except an allowlist. Working from an allowlist (not a deny list) is the whole game ,  deny lists always leak one stray syscall you hadn&#39;t thought of.</p>
 <p>A pragmatic start for a typed, single-purpose tool runner is a <em>reserved</em> set of syscalls:</p>
 <pre><code class="language-c">// seccomp filter sketch: allow only the syscalls a
 // function-calling tool runner needs; kill everything else
@@ -335,9 +334,9 @@ struct sock_filter filter[] = {
     /* mmap munmap mprotect exit exit_group (your subset)  */
 };</code></pre>
 <p>The exact whitelist depends on your runtime, but the discipline is identical: <strong>deny by default, then add back only what the tool provably needs.</strong> When you add a syscall, you add it with the reasoning, not because a stack trace complained once.</p>
-<p>If your tool runtime needs more syscalls than a comfortable allowlist allows, or you need to filter at the <em>network</em> and <em>file-path</em> level rather than the syscall level, move from raw seccomp to a syscall-intercepting user-space sandbox (gVisor <code>runsc</code>) or to eBPF-based filtering with tools like <code>bpftrace</code>/<code>badger</code> for visibility and <code>LVE</code> for enforcement. The principle is unchanged — you are shrinking the kernel surface the untrusted code sees.</p>
+<p>If your tool runtime needs more syscalls than a comfortable allowlist allows, or you need to filter at the <em>network</em> and <em>file-path</em> level rather than the syscall level, move from raw seccomp to a syscall-intercepting user-space sandbox (gVisor <code>runsc</code>) or to eBPF-based filtering with tools like <code>bpftrace</code>/<code>badger</code> for visibility and <code>LVE</code> for enforcement. The principle is unchanged ,  you are shrinking the kernel surface the untrusted code sees.</p>
 <h2>4. Egress control: the firewall is the GDPR layer</h2>
-<p>Almost every serious leak in an agent system is not syscall abuse — it is the agent phoning home, or phoning out. An agent with a <code>.env</code> in scope and a working internet connection is a DIMM slot away from an outbound POST. The fix is that an agent&#39;s network is a proxy you control, not a pipe to the world.</p>
+<p>Almost every serious leak in an agent system is not syscall abuse ,  it is the agent phoning home, or phoning out. An agent with a <code>.env</code> in scope and a working internet connection is a DIMM slot away from an outbound POST. The fix is that an agent&#39;s network is a proxy you control, not a pipe to the world.</p>
 <p>Concretely, per tool invocation pass a scoped, short-lived token and route all outbound traffic through an egress filter that answers one question: <em>is this destination one this task is permitted to reach?</em> Deny by default, then allow a small set:</p>
 <pre><code class="language-yaml"># per-sandbox egress policy (deny-by-default)
 egress:
@@ -373,7 +372,7 @@ def make_sandbox_root():
    --&gt; enforce quota/idempotency --&gt; record trajectory</code></pre>
 <p>High-consequence executions (write paths, billing, deploys, anything touching PII) always stop at the gate. Low-risk read-only steps proceed but still record their trajectory. The sandbox makes the blast radius small; the gate decides which explosions are allowed at all. Ship both, and an agent becomes a tool you can be responsible for at 2 a.m., because a runaway call dies inside the sandbox instead of inside your database.</p>
 <h2>Get a sandboxing review of your agent stack</h2>
-<p>If your team&#39;s agents have tool access and you are not certain what that means for your blast radius, I will spend 30 minutes reviewing your tool execution layer — isolation boundaries, syscall policy, egress control, and permission gates — and hand you a concrete list of what is production-safe and what is not. No obligation, and no product pitch.</p>
+<p>If your team&#39;s agents have tool access and you are not certain what that means for your blast radius, I will spend 30 minutes reviewing your tool execution layer ,  isolation boundaries, syscall policy, egress control, and permission gates ,  and hand you a concrete list of what is production-safe and what is not. No obligation, and no product pitch.</p>
 <p>Reach me directly at <strong><a href="mailto:wisamdamouny@gmail.com">wisamdamouny@gmail.com</a></strong> or via the contact form below.</p>
 
       </div>
@@ -385,19 +384,9 @@ def make_sandbox_root():
       <p>© 2026 Wisam Damouny · SAP runs the industries the world depends on. Their data should move as fast as their business does.</p>
     </div>
   </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof mermaid !== 'undefined') {
-        mermaid.initialize({
-          startOnLoad: true,
-          theme: 'dark',
-          securityLevel: 'loose',
-          fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
-        });
-      }
-    });
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
   </script>
 </body>
 

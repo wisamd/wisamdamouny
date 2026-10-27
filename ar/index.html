@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>وسام دموني | دمج بيانات SAP والنسخ المتماثل اللحظي (CDC)</title>
+  <meta name="description"
+    content="وسام دموني هو قائد تقني في Qlik مع أكثر من 14 عاماً في الهندسة، متخصص في دمج بيانات SAP والنسخ المتماثل اللحظي لجعل بيانات المؤسسات جاهزة للتحليلات والذكاء الاصطناعي." />
+
+  <!-- Canonical & Multilingual Alternates -->
+  <link rel="canonical" href="https://wisamdamouny.com/ar/" />
+  <link rel="alternate" hreflang="en" href="https://wisamdamouny.com/" />
+  <link rel="alternate" hreflang="ar" href="https://wisamdamouny.com/ar/" />
+  <link rel="alternate" hreflang="he" href="https://wisamdamouny.com/he/" />
+  <link rel="alternate" hreflang="x-default" href="https://wisamdamouny.com/" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23F6A93B'/></svg>" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Wisam Damouny" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="وسام دموني" />
+  <meta property="og:title" content="وسام دموني | دمج بيانات SAP والنسخ المتماثل اللحظي (CDC)" />
+  <meta property="og:description"
+    content="قائد تقني في Qlik مع أكثر من 14 عاماً في الهندسة، متخصص في دمج بيانات SAP والنسخ المتماثل اللحظي." />
+  <meta property="og:url" content="https://wisamdamouny.com/ar/" />
+  <meta property="og:image" content="https://wisamdamouny.com/assets/avatar_hero.jpg" />
+
+  <!-- Google Fonts: Rubik -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --ground: #0A0A0B;
+      --alt: #0D0D0F;
+      --card: #141416;
+      --raised: #1B1B1E;
+      --border: #26262A;
+      --border-strong: #33333A;
+      --divider: #1E1E22;
+      --text: #F4F2EC;
+      --text-secondary: #C9C6BD;
+      --muted: #A8A59C;
+      --dim: #8C897F;
+      --accent: #F6A93B;
+      --accent-hover: #FFC163;
+      --accent-text: #1A1205;
+      --accent-chip-bg: #14100A;
+      --accent-chip-border: #4A3516;
+      --font-sans: 'Rubik', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --radius-card: 18px;
+      --radius-btn: 12px;
+      --radius-chip: 999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--ground);
+    }
+
+    body {
+      background: var(--ground);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      text-align: right;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.18s ease, border-color 0.18s ease;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    a.nav {
+      color: var(--muted);
+      padding: 10px 0;
+      display: inline-flex;
+      align-items: center;
+      transition: color 0.18s ease;
+    }
+    a.nav:hover,
+    a.nav.active {
+      color: var(--accent);
+    }
+
+    a.lnk {
+      transition: color 0.18s ease, border-color 0.18s ease;
+    }
+    a.lnk:hover {
+      color: var(--accent);
+    }
+
+    .btn-p {
+      background: var(--accent);
+      color: var(--accent-text);
+      font-weight: 600;
+      font-size: 16px;
+      padding: 13px 22px;
+      border-radius: 10px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.18s ease, transform 0.12s ease;
+    }
+    .btn-p:hover {
+      background: var(--accent-hover);
+    }
+    .btn-p:active {
+      transform: translateY(1px);
+    }
+
+    .btn-s {
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      font-weight: 500;
+      font-size: 16px;
+      padding: 15px 26px;
+      border-radius: var(--radius-btn);
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      background: transparent;
+      transition: border-color 0.18s ease, color 0.18s ease;
+    }
+    .btn-s:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover {
+      border-color: var(--accent);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: clamp(16px, 4vw, 48px);
+      box-sizing: border-box;
+    }
+
+    .section-wrap {
+      padding-block: clamp(64px, 9vw, 112px);
+      border-top: 1px solid var(--divider);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header / Navigation -->
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(10, 10, 11, 0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--divider);">
+    <div class="container" style="padding-block: 18px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 19px;">
+        <span style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: inline-block;"></span>
+        وسام دموني
+      </a>
+
+      <nav style="display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 16px; color: var(--muted);" aria-label="التنقل الرئيسي">
+        <a class="nav" href="#build">ما أبنيه</a>
+        <a class="nav" href="#teach">التدريس</a>
+        <a class="nav" href="#contact">تواصل</a>
+      </nav>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px;">
+        <div style="display: flex; gap: 4px; font-size: 14px;" aria-label="محدد اللغة">
+          <a class="nav" href="../index.html" hreflang="en" style="padding: 10px 12px; border-radius: 8px; color: var(--muted); font-family: var(--font-mono);">EN</a>
+          <span style="padding: 10px 12px; border-radius: 8px; background: var(--raised); color: var(--text);" aria-current="page">العربية</span>
+          <a class="nav" href="../he/index.html" hreflang="he" style="padding: 10px 12px; border-radius: 8px; color: var(--muted);">עברית</a>
+        </div>
+        <a class="btn-p" href="#contact">لنتحدث</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <div id="top" class="scroll-target" style="background-image: radial-gradient(#2A2A2E 1px, transparent 1px); background-size: 26px 26px;">
+      <div class="container" style="padding-block: clamp(48px, 8vw, 96px) clamp(40px, 6vw, 72px); display: flex; flex-wrap: wrap; align-items: center; gap: 56px;">
+        <div style="flex: 1 1 520px; min-width: 0;">
+          <div style="display: inline-block; font-size: 13px; font-weight: 500; color: var(--accent); border: 1px solid var(--accent-chip-border); background: var(--accent-chip-bg); padding: 9px 16px; border-radius: var(--radius-chip);">
+            دمج بيانات <span dir="ltr">SAP</span> · النسخ المتماثل اللحظي · الذكاء الاصطناعي للصناعات الحقيقية
+          </div>
+          <h1 style="margin: 28px 0 0; font-size: clamp(44px, 7vw, 88px); line-height: 1.15; font-weight: 800; color: var(--text);">
+            بيانات <span dir="ltr">SAP</span>،<br><span style="color: var(--accent);">جاهزة للذكاء الاصطناعي.</span>
+          </h1>
+          <p style="margin: 28px 0 0; max-width: 580px; font-size: 20px; color: var(--text-secondary);">
+            أهلاً، أنا <strong style="color: var(--text); font-weight: 600;">وسام دموني</strong>. على مدى أكثر من 14 عاماً بنيت أنظمة معقدة، معظمها في عمق دمج بيانات <span dir="ltr">SAP</span>. في <span dir="ltr">Qlik</span> أقود مجال نقاط <span dir="ltr">SAP</span> الطرفية في <span dir="ltr">Qlik Replicate</span>، لتتحرك بيانات المؤسسات بموثوقية وفي الزمن الحقيقي.
+          </p>
+          <p style="margin: 14px 0 0; max-width: 580px; font-size: 20px; color: var(--text-secondary);">
+            كما أبني منتجات وأدرّس الذكاء الاصطناعي التطبيقي للمهندسين والعاملين في قطاع البناء.
+          </p>
+          <div style="margin-top: 36px; display: flex; flex-wrap: wrap; gap: 14px;">
+            <a class="btn-p" href="#build" style="font-size: 17px; padding: 16px 26px; border-radius: var(--radius-btn);">شاهد ما أبنيه ←</a>
+            <a class="btn-s" href="https://www.linkedin.com/in/wisamdamouny" target="_blank" rel="noopener">تواصل عبر LinkedIn</a>
+          </div>
+          <div style="margin-top: 56px; display: flex; flex-wrap: wrap; gap: 20px 48px; padding-top: 28px; border-top: 1px solid var(--border);">
+            <div>
+              <div style="font-size: 40px; font-weight: 700; color: var(--text); line-height: 1.2;">+14</div>
+              <div style="font-size: 15px; color: var(--muted); margin-top: 4px;">سنة من الهندسة</div>
+            </div>
+            <div>
+              <div style="font-size: 40px; font-weight: 700; color: var(--accent); line-height: 1.2;" dir="ltr">+70%</div>
+              <div style="font-size: 15px; color: var(--muted); margin-top: 4px;">زيادة سرعة النسخ المتماثل<br>(Attunity)</div>
+            </div>
+            <div>
+              <div style="font-size: 40px; font-weight: 700; color: var(--text); line-height: 1.2;">4</div>
+              <div style="font-size: 15px; color: var(--muted); margin-top: 4px;">لغات: العربية والعبرية والإنجليزية والألمانية</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex: 0 1 400px; min-width: 260px; position: relative; margin-inline-start: 16px;">
+          <div style="position: absolute; top: 16px; right: 16px; left: -16px; bottom: -16px; border: 1px solid var(--accent); border-radius: 22px; opacity: 0.45; pointer-events: none;"></div>
+          <div style="position: relative; aspect-ratio: 4/5; width: 100%; background: var(--card); border: 1px solid #2A2A2E; border-radius: 22px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center;">
+            <img src="../assets/avatar_hero_nobg.webp" alt="وسام دموني" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;" loading="eager" width="400" height="500" />
+          </div>
+          <div style="position: absolute; right: -18px; bottom: 28px; background: var(--ground); border: 1px solid var(--border-strong); border-radius: 14px; padding: 12px 16px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
+            <span style="font-weight: 600; font-size: 15px;">قائد تقني في Qlik</span>
+            <span style="font-size: 13px; color: var(--muted);"><span dir="ltr">SAP</span> و<span dir="ltr">Qlik Replicate</span></span>
+          </div>
+          <div style="position: absolute; left: -18px; top: 28px; background: var(--ground); border: 1px solid var(--border-strong); border-radius: 14px; padding: 12px 16px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
+            <span style="font-weight: 600; font-size: 15px;">محاضر في كلية أونو</span>
+            <span style="font-size: 13px; color: var(--muted);">الذكاء الاصطناعي في البناء</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STREAM DIVIDER -->
+    <div style="border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); background: var(--alt);">
+      <div class="container" style="padding-block: 18px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 28px; font-size: 14px; color: var(--dim);">
+        <span><span dir="ltr">Qlik</span> · قائد تقني</span><span style="color: var(--accent);">●</span>
+        <span>كلية أونو الأكاديمية · محاضر</span><span style="color: var(--accent);">●</span>
+        <span><span dir="ltr">TU Darmstadt</span> · بكالوريوس</span><span style="color: var(--accent);">●</span>
+        <span dir="ltr">العربية · עברית · EN · DE</span>
+      </div>
+    </div>
+
+    <!-- 01 BUILD -->
+    <section id="build" class="section-wrap scroll-target" style="border-top: 0;">
+      <div class="container">
+        <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; color: var(--accent);">
+          <span style="width: 28px; height: 1px; background: var(--accent); display: inline-block;"></span>01 / ما أبنيه
+        </div>
+        <h2 style="margin: 16px 0 0; max-width: 760px; font-size: clamp(32px, 4.4vw, 54px); line-height: 1.25; font-weight: 700;">
+          أشياء أبنيها من الفكرة إلى الإطلاق.
+        </h2>
+        <p style="margin: 18px 0 0; max-width: 620px; font-size: 19px; color: var(--muted);">
+          منتجات أصممها وأبرمجها وأطلقها، من تقدير الكميات في البناء إلى لوحات المشاريع المبنية للذكاء الاصطناعي.
+        </p>
+
+        <div style="margin-top: 48px; display: flex; flex-wrap: wrap; gap: 24px;">
+          <!-- ikando -->
+          <a class="card" href="https://ikando.tech" target="_blank" rel="noopener" style="flex: 1 1 320px; min-width: 0; padding: 20px; display: flex; flex-direction: column; gap: 18px;">
+            <div dir="ltr" style="aspect-ratio: 16/10; background: var(--alt); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+              <img src="../assets/ikando_preview.png" alt="ikando.tech preview" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
+            </div>
+            <h3 style="margin: 0; font-size: 26px; font-weight: 700;" dir="ltr">ikando</h3>
+            <p style="margin: 0; font-size: 17px; color: var(--text-secondary);">
+              لوحة إدارة مشاريع يعمل عليها البشر ووكلاء الذكاء الاصطناعي معاً في الزمن الحقيقي. دعم أصيل للعبرية، ذاتية الاستضافة وسريعة جداً.
+            </p>
+            <span style="margin-top: auto; font-weight: 600; color: var(--accent);">ikando.tech ↖</span>
+          </a>
+
+          <!-- Zrikat -->
+          <a class="card" href="https://zrikat.com" target="_blank" rel="noopener" style="flex: 1 1 320px; min-width: 0; padding: 20px; display: flex; flex-direction: column; gap: 18px;">
+            <div dir="ltr" style="aspect-ratio: 16/10; background: var(--alt); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+              <img src="../assets/zrikat_preview.png" alt="zrikat.com preview" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
+            </div>
+            <h3 style="margin: 0; font-size: 26px; font-weight: 700;" dir="ltr">Zrikat</h3>
+            <p style="margin: 0; font-size: 17px; color: var(--text-secondary);">
+              منصة عبرية أولاً لتقدير الكميات وجداول الكميات (<span dir="ltr">BOQ</span>) للمقاولين والمهندسين.
+            </p>
+            <span style="margin-top: auto; font-weight: 600; color: var(--accent);">zrikat.com ↖</span>
+          </a>
+
+          <!-- Kaneo -->
+          <a class="card" href="https://github.com/usekaneo/kaneo" target="_blank" rel="noopener" style="flex: 1 1 320px; min-width: 0; padding: 20px; display: flex; flex-direction: column; gap: 18px;">
+            <div dir="ltr" style="aspect-ratio: 16/10; background: var(--alt); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+              <img src="../assets/kaneo_preview.jpg" alt="Kaneo preview" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
+            </div>
+            <h3 style="margin: 0; font-size: 26px; font-weight: 700;" dir="ltr">Kaneo</h3>
+            <p style="margin: 0; font-size: 17px; color: var(--text-secondary);">
+              مساهمة مفتوحة المصدر في أداة لإدارة المشاريع: ترجمة عبرية شاملة، وتخطيط من اليمين إلى اليسار، وسمات داكنة حديثة.
+            </p>
+            <span style="margin-top: auto; font-weight: 600; color: var(--accent);">مستودع GitHub ↖</span>
+          </a>
+        </div>
+
+        <div style="margin-top: 32px;">
+          <a class="lnk" href="https://wisai.tech" target="_blank" rel="noopener" style="font-size: 18px; font-weight: 500; border-bottom: 1px solid var(--accent); padding-bottom: 3px;">
+            شاهد كل ما أبنيه على wisai.tech ←
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 TEACH -->
+    <section id="teach" class="section-wrap scroll-target" style="background: var(--alt);">
+      <div class="container">
+        <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; color: var(--accent);">
+          <span style="width: 28px; height: 1px; background: var(--accent); display: inline-block;"></span>02 / التدريس
+        </div>
+        <h2 style="margin: 24px 0 0; max-width: 900px; font-size: clamp(34px, 5vw, 62px); line-height: 1.25; font-weight: 800;">
+          الذكاء الاصطناعي لا يحلّ محل الخبرة، <span style="color: var(--accent);">بل يضاعفها.</span>
+        </h2>
+        <p style="margin: 26px 0 0; max-width: 640px; font-size: 19px; color: var(--text-secondary);">
+          تظهر القيمة الحقيقية حين تلتقي المعرفة العميقة بالمجال مع تنفيذ ذكاء اصطناعي متين وجاهز للإنتاج. هذه هي الفكرة وراء ما أدرّسه في كلية أونو الأكاديمية وما أطلقه من منتجات.
+        </p>
+      </div>
+    </section>
+
+    <!-- 03 CONTACT -->
+    <section id="contact" class="section-wrap scroll-target">
+      <div class="container">
+        <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; color: var(--accent);">
+          <span style="width: 28px; height: 1px; background: var(--accent); display: inline-block;"></span>03 / تواصل
+        </div>
+        <h2 style="margin: 16px 0 0; max-width: 860px; font-size: clamp(32px, 4.8vw, 60px); line-height: 1.25; font-weight: 800;">
+          لنتحدث عن بيانات <span dir="ltr">SAP</span> والذكاء الاصطناعي <span style="color: var(--accent);">والصناعات الحقيقية.</span>
+        </h2>
+        <div style="margin-top: 36px; display: flex; flex-wrap: wrap; gap: 14px;">
+          <a class="btn-p" href="mailto:wisamdamouny@gmail.com" style="font-size: 17px; padding: 16px 26px; border-radius: var(--radius-btn);">راسلني ←</a>
+          <a class="btn-s" href="https://instagram.com/wisam.ai" target="_blank" rel="noopener" style="font-size: 17px; padding: 15px 26px; border-radius: var(--radius-btn);" dir="ltr">@wisam.ai</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="border-top: 1px solid var(--divider);">
+    <div class="container" style="padding-block: 36px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 20px 40px;">
+      <div style="max-width: 560px;">
+        <div style="font-weight: 700; font-size: 19px; display: flex; align-items: center; gap: 10px;">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: inline-block;"></span>
+          وسام دموني
+        </div>
+        <p style="margin: 12px 0 0; font-size: 17px; color: var(--muted);">
+          تعتمد الصناعات التي يقوم عليها العالم على <span dir="ltr">SAP</span>. ويجب أن تتحرك بياناتها بسرعة أعمالها.
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--dim);">
+        <div style="display: flex; gap: 8px;">
+          <a class="nav" href="../index.html" hreflang="en" style="padding: 8px 12px; color: var(--muted); font-family: var(--font-mono);">EN</a>
+          <span style="padding: 8px 12px; border-radius: 8px; background: var(--raised); color: var(--text);">العربية</span>
+          <a class="nav" href="../he/index.html" hreflang="he" style="padding: 8px 12px; color: var(--muted);">עברית</a>
+        </div>
+        <span>© <span id="current-year">2026</span> وسام دموني</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const yearElem = document.getElementById('current-year');
+    if (yearElem) {
+      yearElem.textContent = new Date().getFullYear();
+    }
+
+    const navLinks = document.querySelectorAll('header nav a.nav');
+    const sections = document.querySelectorAll('.scroll-target');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach((link) => {
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active');
+              } else {
+                link.classList.remove('active');
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-25% 0px -65% 0px' });
+
+      sections.forEach((sec) => observer.observe(sec));
+    }
+  </script>
+</body>
+
+</html>
